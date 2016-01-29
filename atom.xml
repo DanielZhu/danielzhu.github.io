@@ -1,0 +1,1153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  
+  <title><![CDATA[Xiaodan's Everything]]></title>
+  <subtitle><![CDATA[A foolish Programmer from Shanghai China]]></subtitle>
+  <link href="/atom.xml" rel="self"/>
+  <link href="http://blog.staydan.com//"/>
+  <updated>2015-06-19T01:57:18.000Z</updated>
+  <id>http://blog.staydan.com//</id>
+  
+  <author>
+    <name><![CDATA[Daniel Zhu]]></name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[How to trigger Single Click and Double Click event in Ext.grid]]></title>
+    <link href="http://blog.staydan.com/2014/10/03/2014-10-03-how-to-trigger-single-click-and-double-click-event-in-ext-dot-grid/"/>
+    <id>http://blog.staydan.com/2014/10/03/2014-10-03-how-to-trigger-single-click-and-double-click-event-in-ext-dot-grid/</id>
+    <published>2014-10-03T08:00:11.000Z</published>
+    <updated>2015-06-19T01:57:18.000Z</updated>
+    <content type="html"><![CDATA[<p>在ExtJS中，Grid应当是频繁使用的控件之一，而且Grid表格和用户交互的方式有很多种，包括单击、双击单元格，单击、双击一整行，右键上下文菜单，长按某行，鼠标选中平移某行，单选、多选行等等。。。</p>
+<p>但在实际的应用中，发现了一个问题，当Grid中对单元格同时监听了单击和双击事件的话，那么这个双击事件永远也没办法被触发到，因为始终会被单击事件先截获。</p>
+<p>解决方法得分两种情况分析：</p>
+<ol>
+<li>普通的Grid</li>
+</ol>
+<p>这里的普通Grid是指没有使用任何插件，所以它不具备行编辑等高级功能，在这边，我们有非常非常多的事件，例如cellclick和celldblclick，itemclick和itemdblclick，举例来讲，如果你在同一个grid上同时添加了单击和双击的监听事件，那么，你将始终无法正确获取到单击和双击事件，因为这两个会相互干扰和影响，导致程序出错。</p>
+<ol>
+<li>具备行编辑的Grid（RowEditor Plugin）</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Ext.create(<span class="string">'Ext.grid.plugin.RowEditing'</span>, &#123;</span><br><span class="line">    clicksToEdit: <span class="number">1</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>这种模式下的Grid，又多了不少状态，尤其是在处理单双击事件时，有一个 beforeedit 是值得关注的，因为任何的在每一行上的单击都会唤起编辑器。<br>所以在这种情况下，想要区分处理单击和双击变的愈加困难。</p>
+<a id="more"></a>
+<p>小丹<strong>解决方案</strong>如下<a href="https://github.com/Staydan/Husky/blob/master/Front_End/ExtJs/grid/extjs_grid_single_click_double_click_trigger.html" target="_blank" rel="external">源码在此</a><br><iframe src="http://www.staydan.com/sweet/Husky/Front_End/ExtJs/grid/extjs_grid_single_click_double_click_trigger.html" width="80%" height="500" frameborder="0" allowfullscreen></iframe></p>
+<p>分析：</p>
+<p>添加标志位：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Double click or not</span></span><br><span class="line">celldblclicked: <span class="literal">false</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">// Double click or not used in RowEditor plugin enabled grid</span></span><br><span class="line">editorCelldblclicked: <span class="literal">false</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">// unprocessed signle click event times</span></span><br><span class="line">singleClickedTimes: <span class="number">0</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">// Set this flag to avoid the endless loop</span></span><br><span class="line">rowEditorStarted: <span class="literal">false</span></span><br></pre></td></tr></table></figure></p>
+<p>添加充当传递作用的方法，用来判断是什么事件，确定后再调用它<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">onBeforeEdit: <span class="function"><span class="keyword">function</span> (<span class="params">grid, context, eOpts</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.setSingleClickedTimes(<span class="keyword">this</span>.getSingleClickedTimes() + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">if</span> (self.getRowEditorStarted()) &#123;</span><br><span class="line">        self.setRowEditorStarted(<span class="literal">false</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">window</span>.setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	        <span class="comment">// setTimeout method - let the grid know onBeforeEdit excuted. Hide the editor first</span></span><br><span class="line">            grid.cancelEdit();</span><br><span class="line">            <span class="built_in">window</span>.setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="keyword">if</span>(self.getSingleClickedTimes() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (self.getEditorCelldblclicked()) &#123;</span><br><span class="line">                        self.setEditorCelldblclicked(<span class="literal">false</span>);</span><br><span class="line">                        self.setSingleClickedTimes(<span class="number">0</span>);</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	                    <span class="comment">// Single click, show the editor</span></span><br><span class="line">                        self.setRowEditorStarted(<span class="literal">true</span>);</span><br><span class="line">                        grid.startEdit(context.record, context.column);</span><br><span class="line">                        self.getGridEditorDemoPanelLabel().setText(<span class="string">"Edit mode enabled."</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;, <span class="number">300</span>);</span><br><span class="line">        &#125;, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">onItemClick: <span class="function"><span class="keyword">function</span> (<span class="params">context, record, item, index, el</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.setSingleClickedTimes(<span class="keyword">this</span>.getSingleClickedTimes() + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line">    <span class="comment">// Catch up the double click event during the timeout period(200 ms)</span></span><br><span class="line">    <span class="built_in">window</span>.setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(self.getSingleClickedTimes() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">	        <span class="comment">// See if the event is double click</span></span><br><span class="line">            <span class="keyword">if</span> (self.getCelldblclicked()) &#123;</span><br><span class="line">	            <span class="comment">// Reset double click flag to false</span></span><br><span class="line">                self.setCelldblclicked(<span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// Reset the single click times to 0</span></span><br><span class="line">                self.setSingleClickedTimes(<span class="number">0</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            	<span class="comment">// Yeah, it's single click</span></span><br><span class="line">                self.itemClicked(context, record, item, index, el);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, <span class="number">200</span>);</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">itemClicked: <span class="function"><span class="keyword">function</span>(<span class="params">context, record, item, index, el</span>) </span>&#123;</span><br><span class="line">	<span class="comment">// It still has unprocessed single click events</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">this</span>.getSingleClickedTimes() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">this</span>.getGridDemoPanelLabel().setText(<span class="string">"Single clicked.  \n\r"</span> + record.data.email);</span><br><span class="line">        <span class="keyword">this</span>.setSingleClickedTimes(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">onCelldblclick: <span class="function"><span class="keyword">function</span>(<span class="params">context, td, cellIndex, record, tr, rowIndex, e, eOpts</span>) </span>&#123;</span><br><span class="line">	<span class="comment">// Tell controller that it's double click event</span></span><br><span class="line">    <span class="keyword">this</span>.setCelldblclicked(<span class="literal">true</span>);</span><br><span class="line">    <span class="keyword">this</span>.getGridDemoPanelLabel().setText(<span class="string">"Double clicked.  \n\r"</span> + record.data.email);</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">onEditorCelldblclick: <span class="function"><span class="keyword">function</span>(<span class="params">context, td, cellIndex, record, tr, rowIndex, e, eOpts</span>) </span>&#123;</span><br><span class="line">	<span class="comment">// Tell controller that it's double click event</span></span><br><span class="line">    <span class="keyword">this</span>.setEditorCelldblclicked(<span class="literal">true</span>);</span><br><span class="line">    <span class="keyword">this</span>.getGridEditorDemoPanelLabel().setText(<span class="string">"Double clicked.  \n\r"</span> + record.data.email);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在ExtJS中，Grid应当是频繁使用的控件之一，而且Grid表格和用户交互的方式有很多种，包括单击、双击单元格，单击、双击一整行，右键上下文菜单，长按某行，鼠标选中平移某行，单选、多选行等等。。。</p>
+<p>但在实际的应用中，发现了一个问题，当Grid中对单元格同时监听了单击和双击事件的话，那么这个双击事件永远也没办法被触发到，因为始终会被单击事件先截获。</p>
+<p>解决方法得分两种情况分析：</p>
+<ol>
+<li>普通的Grid</li>
+</ol>
+<p>这里的普通Grid是指没有使用任何插件，所以它不具备行编辑等高级功能，在这边，我们有非常非常多的事件，例如cellclick和celldblclick，itemclick和itemdblclick，举例来讲，如果你在同一个grid上同时添加了单击和双击的监听事件，那么，你将始终无法正确获取到单击和双击事件，因为这两个会相互干扰和影响，导致程序出错。</p>
+<ol>
+<li>具备行编辑的Grid（RowEditor Plugin）</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Ext.create(<span class="string">'Ext.grid.plugin.RowEditing'</span>, &#123;</span><br><span class="line">    clicksToEdit: <span class="number">1</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>这种模式下的Grid，又多了不少状态，尤其是在处理单双击事件时，有一个 beforeedit 是值得关注的，因为任何的在每一行上的单击都会唤起编辑器。<br>所以在这种情况下，想要区分处理单击和双击变的愈加困难。</p>]]>
+    
+    </summary>
+    
+      <category term="Click Event" scheme="http://blog.staydan.com/tags/Click-Event/"/>
+    
+      <category term="JavaScript" scheme="http://blog.staydan.com/categories/JavaScript/"/>
+    
+      <category term="ExtJS" scheme="http://blog.staydan.com/categories/JavaScript/ExtJS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[蜂巢图 —— 四维互动]]></title>
+    <link href="http://blog.staydan.com/2014/10/01/2014-10-01-hive-plots-with-node-link-diagram-in-four-dimension/"/>
+    <id>http://blog.staydan.com/2014/10/01/2014-10-01-hive-plots-with-node-link-diagram-in-four-dimension/</id>
+    <published>2014-09-30T16:47:49.000Z</published>
+    <updated>2015-06-19T01:57:18.000Z</updated>
+    <content type="html"><![CDATA[<p>Hive Plot，又叫蜂巢图，主要用来可视化节点和它们之间的各种联系。</p>
+<p>这边有个例子，关系：<br>A1 &lt;—&gt; B, B &lt;—&gt; D, A1 &lt;—&gt; C, A2 &lt;—&gt; C</p>
+<p>由于只高亮发散关系，所有当鼠标悬停于A1点之上时，C点和A2的关系并不会高亮<br><iframe width="100%" height="300" src="http://jsfiddle.net/93da8pgx/embedded/js,resources,html,css,result/light" frameborder="0" allowfullscreen></iframe></p>
+<a id="more"></a>
+<p>在技术领域，虽然我在Cloud，Big Data领域并不熟悉，但是可想而知，众多的服务器、服务组件、软件、维护人员配置、机房设施加上众多的权限控制。<br>所有的数据叠加在一起，就会变的庞大不少，光凭阅读数据已经难以满足业务需求，所以需要借助可视化（Data Visualization）来更直观的将数据呈现出来。</p>
+<p>在<a href="http://d3js.org/" target="_blank" rel="external">D3官网</a>上有个蜂巢的<a href="http://bost.ocks.org/mike/hive/" target="_blank" rel="external">例子S</a>，但无论是数据模型还是最后的效果图都稍显复杂，于是选择了个<a href="http://bl.ocks.org/mbostock/2066415" target="_blank" rel="external">简单的例子B</a>进行学习。</p>
+<p>最后要的蜂巢图是</p>
+<ol>
+<li>能显示四维数据</li>
+<li>连上所有有联系的节点，灰色线</li>
+<li>悬浮于一个节点，能高亮任何和它存在关系的点线，但仅应用于发散出去的关系</li>
+</ol>
+<p>数据模型，引擎都有了。。。（暂时就这么叫着。。。哈哈）</p>
+<p>现在就应用到复杂点的数据上，效果如下图：</p>
+<iframe width="100%" height="300" src="http://jsfiddle.net/u5w3d8jg/embedded/js,resources,html,css,result/light" frameborder="0" allowfullscreen></iframe>
+<p>原本打算在各个节点上添加上对应的名称，便于理解，但貌似因为是由D3的hive库来驱动的，所有要计算坐标什么的貌似有点难度</p>
+<hr>
+<p>追加更新于10/12,</p>
+<p>花了1个小时将文字标签补上，并且跟随所有highlight的点和线联动。效果如下：</p>
+<iframe width="100%" height="300" src="http://jsfiddle.net/xy0ybLgs/embedded/js,resources,html,css,result/light" frameborder="0" allowfullscreen></iframe>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Hive Plot，又叫蜂巢图，主要用来可视化节点和它们之间的各种联系。</p>
+<p>这边有个例子，关系：<br>A1 &lt;—&gt; B, B &lt;—&gt; D, A1 &lt;—&gt; C, A2 &lt;—&gt; C</p>
+<p>由于只高亮发散关系，所有当鼠标悬停于A1点之上时，C点和A2的关系并不会高亮<br><iframe width="100%" height="300" src="http://jsfiddle.net/93da8pgx/embedded/js,resources,html,css,result/light" frameborder="0" allowfullscreen></iframe></p>]]>
+    
+    </summary>
+    
+      <category term="Data Visualization" scheme="http://blog.staydan.com/tags/Data-Visualization/"/>
+    
+      <category term="Hive Plot" scheme="http://blog.staydan.com/tags/Hive-Plot/"/>
+    
+      <category term="JavaScript" scheme="http://blog.staydan.com/categories/JavaScript/"/>
+    
+      <category term="D3JS" scheme="http://blog.staydan.com/categories/JavaScript/D3JS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Customized Pull To Refresh List Using iScroll]]></title>
+    <link href="http://blog.staydan.com/2014/07/31/2014-07-31-customized-pull-to-refresh-list-using-iscroll/"/>
+    <id>http://blog.staydan.com/2014/07/31/2014-07-31-customized-pull-to-refresh-list-using-iscroll/</id>
+    <published>2014-07-31T05:54:33.000Z</published>
+    <updated>2015-06-19T01:57:18.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="VVebo">VVebo</h4><p>用了几个月的<a href="https://vvebo.me/" target="_blank" rel="external">VVebo</a>，这款第三方的sina微博客户端，不得不说它在当时那个时候相比同类软件来讲绝对拥有了无与伦比的视觉享受。</p>
+<p>所有界面融合贯通、一气呵成，让人没有突兀的感觉，在触摸和滑动的处理上，我想作者是花了很多心思去研究用户的使用习惯的。</p>
+<p>印象深刻的一点是它的Loading界面，列表头尾都会有上下两个圆形，往下拉列表的同时，圆A逐渐靠近圆B，随后合体，自然而然的动画也感觉loading的时间没那么漫长了。在配合了音效之后，效果甚佳，此处必须给作者无数个赞。</p>
+<h4 id="iScroll_-_Pull_to_Refresh">iScroll - Pull to Refresh</h4><p>同事最近在一个项目中使用iScroll，就如我上篇post中提到的那样。</p>
+<p>其中在iScroll4（5开始没有了pull to refresh 控件）中，其中的Pull To Refresh<br>就是模拟实现了现在最流行的下拉刷新和上拉加载更多。但说实话，那个最原始的提示已经看腻掉了，加上VVebo的出现，我就想重新做个加载动画。。。</p>
+<p>首先上Demo，请随意把玩。。。</p>
+<iframe width="100%" height="300" src="http://jsfiddle.net/6gRDL/embedded/js,resources,html,css,result/light" frameborder="0" allowfullscreen></iframe>
+<a id="more"></a>
+<h4 id="思路">思路</h4><ul>
+<li><h5 id="动画部分">动画部分</h5></li>
+</ul>
+<p>最初的设想是，利用3个横向的填充矩形，同时从左右两个方向朝中间回合，然后重叠，因为颜色的不同加上透明度数，可以合成不同的颜色，上下两个矩形向中间那个靠拢后消失，最后一个细矩形绕中心点自转。<br>整个动画结束。</p>
+<p>关于动画部分的Demo在一开始也做了出来，为了证明它的可行性。<br><iframe width="100%" height="300" src="http://jsfiddle.net/jgcxtysn/embedded/js,resources,html,css,result/light" frameborder="0" allowfullscreen></iframe><br><em>将焦点定在进度条上，然后用键盘左右方向键控制动画即可</em></p>
+<ul>
+<li>逻辑部分  </li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下拉的最大距离</span></span><br><span class="line">pullDownMaxValue = pullDownOffset;</span><br><span class="line"><span class="comment">// 左边矩形体的左间距</span></span><br><span class="line">pullDownLeftRectMarginLeft = <span class="built_in">parseFloat</span>($(<span class="string">'.pullDown-left'</span>).css(<span class="string">'margin-left'</span>)),</span><br><span class="line"><span class="comment">// 右边矩形体的右间距</span></span><br><span class="line">pullDownRightRectMarginRight = <span class="built_in">parseFloat</span>($(<span class="string">'.pullDown-right'</span>).css(<span class="string">'margin-right'</span>)),</span><br><span class="line"></span><br><span class="line"><span class="comment">// 左边矩形体的右偏移量</span></span><br><span class="line">pullDownLeftOffset = pullDownLeftRectMarginLeft,</span><br><span class="line"><span class="comment">// 右边矩形体的右偏移量</span></span><br><span class="line">pullDownRightOffset = <span class="built_in">window</span>.innerWidth - pullDownLeftOffset - $(<span class="string">'.pullDown-right'</span>).width(),</span><br><span class="line"><span class="comment">// 两边矩形体到重合的总移动距离</span></span><br><span class="line">pullDownDistance = <span class="built_in">parseFloat</span>((pullDownRightOffset - pullDownLeftOffset) / <span class="number">2</span>),</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据下拉的最大距离来计算每像素对应的矩形体的移动量</span></span><br><span class="line">pullDownMoveStepDis = <span class="built_in">parseFloat</span>(pullDownDistance / pullDownMaxValue);</span><br></pre></td></tr></table></figure>
+<p>观察iScroll的pullToRefresh控件即可清晰的知道，想要完成自己的加载动画，只需要重写以下3个方法：</p>
+<ul>
+<li><strong>onRefresh</strong><br>重置动画主体的初始状态</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 如果在释放时已满足refresh条件，在700ms后重置所有矩形体恢复到最初</span></span><br><span class="line"><span class="keyword">if</span> (pullDownFit) &#123;</span><br><span class="line">	setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	  $(<span class="string">'.pullDown-left-top, .pullDown-right-top'</span>).css(<span class="string">'visibility'</span>, <span class="string">'visible'</span>);</span><br><span class="line">	  $(<span class="string">'.pullDown-left-bottom, .pullDown-right-bottom'</span>).css(<span class="string">'visibility'</span>, <span class="string">'visible'</span>);</span><br><span class="line"></span><br><span class="line">	  $(<span class="string">'.pullDown-left-middle'</span>).removeClass(<span class="string">'rotating'</span>);</span><br><span class="line">	  $(<span class="string">'.pullDown-right-middle'</span>).removeClass(<span class="string">'rotating'</span>);</span><br><span class="line">	&#125;, <span class="number">700</span>);</span><br><span class="line">	pullDownFit = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>onScrollMove</strong><br>监听滚动事件，所有的动画过程都是在这里监听完成，并且重置各种标志位</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 计算下拉的幅度（即百分比）</span></span><br><span class="line"><span class="keyword">var</span> pullDownProgress = <span class="number">1</span> - <span class="built_in">parseFloat</span>(<span class="keyword">this</span>.y /  (- pullDownOffset));</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (pullDownProgress &lt; <span class="number">1</span>) &#123;</span><br><span class="line">	<span class="comment">// 未达到100%， 继续移动</span></span><br><span class="line">	<span class="keyword">var</span> pullDownMoveDis = pullDownMoveStepDis * pullDownProgress * pullDownMaxValue;</span><br><span class="line">	resetPullDownPos(pullDownLeftRectMarginLeft + pullDownMoveDis, pullDownRightRectMarginRight + pullDownMoveDis);</span><br><span class="line">	pullDownFit = <span class="literal">false</span>;</span><br><span class="line">	<span class="keyword">this</span>.minScrollY = -pullDownOffset;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	<span class="comment">// 移动矩形体到最大位置</span></span><br><span class="line">	resetPullDownPos(pullDownLeftRectMarginLeft + pullDownDistance, pullDownRightRectMarginRight + pullDownDistance);</span><br><span class="line">	<span class="comment">// 设置标志位为True</span></span><br><span class="line">	pullDownFit = <span class="literal">true</span>;</span><br><span class="line">	<span class="comment">// 将最大下拉距离设为0，即能把动画完整的显示在屏幕上，否则会被吸回顶部以内</span></span><br><span class="line">	<span class="keyword">this</span>.minScrollY = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据标志位移动上下矩形</span></span><br><span class="line">$(<span class="string">'.pullDown-left-top, .pullDown-right-top'</span>).toggleClass(<span class="string">'rect-pullDown-top-disappear'</span>, pullDownFit);</span><br><span class="line">$(<span class="string">'.pullDown-left-bottom, .pullDown-right-bottom'</span>).toggleClass(<span class="string">'rect-pullDown-bottom-disappear'</span>, pullDownFit);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>onScrollEnd</strong><br>滚动结束后的操作。通过标志位来判断是否需要进入旋转动画</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (pullDownFit) &#123;</span><br><span class="line">	<span class="comment">// 更新动画</span></span><br><span class="line">	$(<span class="string">'.pullDown-left-top, .pullDown-right-top'</span>).removeClass(<span class="string">'rect-pullDown-top-disappear'</span>);</span><br><span class="line">	$(<span class="string">'.pullDown-left-bottom, .pullDown-right-bottom'</span>).removeClass(<span class="string">'rect-pullDown-bottom-disappear'</span>);</span><br><span class="line">	$(<span class="string">'.pullDown-left-top, .pullDown-right-top'</span>).css(<span class="string">'visibility'</span>, <span class="string">'hidden'</span>);</span><br><span class="line">	$(<span class="string">'.pullDown-left-bottom, .pullDown-right-bottom'</span>).css(<span class="string">'visibility'</span>, <span class="string">'hidden'</span>);</span><br><span class="line"></span><br><span class="line">	$(<span class="string">'.pullDown-left-middle'</span>).addClass(<span class="string">'rotating'</span>);</span><br><span class="line">	$(<span class="string">'.pullDown-right-middle'</span>).addClass(<span class="string">'rotating'</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 触发刷新动作</span></span><br><span class="line">	pullDownAction(); <span class="comment">// Execute custom function (ajax call?)</span></span><br><span class="line"></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	<span class="comment">// 未达到终点，继续移动</span></span><br><span class="line">	resetPullDownPos(marginWidth, marginWidth);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样，就完成了最核心的部分，剩下的就看看jsFiddle中的完整Demo代码吧，相信没难度了。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h4 id="VVebo">VVebo</h4><p>用了几个月的<a href="https://vvebo.me/">VVebo</a>，这款第三方的sina微博客户端，不得不说它在当时那个时候相比同类软件来讲绝对拥有了无与伦比的视觉享受。</p>
+<p>所有界面融合贯通、一气呵成，让人没有突兀的感觉，在触摸和滑动的处理上，我想作者是花了很多心思去研究用户的使用习惯的。</p>
+<p>印象深刻的一点是它的Loading界面，列表头尾都会有上下两个圆形，往下拉列表的同时，圆A逐渐靠近圆B，随后合体，自然而然的动画也感觉loading的时间没那么漫长了。在配合了音效之后，效果甚佳，此处必须给作者无数个赞。</p>
+<h4 id="iScroll_-_Pull_to_Refresh">iScroll - Pull to Refresh</h4><p>同事最近在一个项目中使用iScroll，就如我上篇post中提到的那样。</p>
+<p>其中在iScroll4（5开始没有了pull to refresh 控件）中，其中的Pull To Refresh<br>就是模拟实现了现在最流行的下拉刷新和上拉加载更多。但说实话，那个最原始的提示已经看腻掉了，加上VVebo的出现，我就想重新做个加载动画。。。</p>
+<p>首先上Demo，请随意把玩。。。</p>
+<iframe width="100%" height="300" src="http://jsfiddle.net/6gRDL/embedded/js,resources,html,css,result/light" frameborder="0" allowfullscreen></iframe>]]>
+    
+    </summary>
+    
+      <category term="Pull to refresh" scheme="http://blog.staydan.com/tags/Pull-to-refresh/"/>
+    
+      <category term="CSS3" scheme="http://blog.staydan.com/categories/CSS3/"/>
+    
+      <category term="Animation" scheme="http://blog.staydan.com/categories/CSS3/Animation/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[在AngularJs的项目中使用iScroll控件碰到的问题集合]]></title>
+    <link href="http://blog.staydan.com/2014/07/29/2014-07-29-using-iscroll-in-angularjs/"/>
+    <id>http://blog.staydan.com/2014/07/29/2014-07-29-using-iscroll-in-angularjs/</id>
+    <published>2014-07-29T14:11:31.000Z</published>
+    <updated>2015-06-19T01:57:18.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="背景">背景</h2><p>这两天有在帮忙看一个项目，期间我们有碰到一个滚动列表的问题，还真有不少问题。</p>
+<h3 id="问题清单">问题清单</h3><ol>
+<li>列表初始化加载后，鼠标拖着它向上滚动，松开鼠标后，列表自动滚回到第一条，即无法滚动列表，并且不显示垂直滚动条。</li>
+<li>拖动列表向上滚动，底部的“继续上拉刷新”和“松开加载更多”的提示语显示时机不正确。</li>
+<li>在列表任意位置托拖动向上，都会去加载更多项目累加在最后，不符合逻辑。</li>
+</ol>
+<h3 id="调查解决">调查解决</h3><p>作为被使用灰常广泛的iScroll列表滚动插件，没想到被整合进来后悔遇到这么多问题</p>
+<ul>
+<li>第一个问题  <strong>加载时机</strong></li>
+</ul>
+<a id="more"></a>
+<blockquote>
+<p>The iScroll needs to be initiated when the DOM is ready. The safest bet is to start it on window onload event. DOMContentLoaded or inline initialization are also fine but remember that the script needs to know the height/width of the scrolling area. If you have images that don’t have explicit width/height declaration, iScroll will most likely end up with a wrong scroller size.<br>  在iScroll 5的官网上，作者有提到使用iScroll的前提是在Dom全部加载完成后，而我们遇到的问题正是因为没有做到这一点，所以修复的方法得在Dom加载完成后初始化iScroll。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">angular.element(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="comment">// Set 200 delay to make sure Dom is ready</span></span><br><span class="line">	setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    initScroll();</span><br><span class="line">	&#125;, <span class="number">200</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>第二个问题 <strong>初始化错误</strong></p>
+<p>  在<a href="iscroll-website">官网</a>上寻找了下iScoll实例化后各个属性的含义，可惜没找到，所以只能在实际项目和例子中摸索他们所代表的含义。</p>
+<p>  <em>maxScrollY</em>: 可以垂直滚动的最大距离<br>  <em>minScrollY</em>: 可以垂直滚动的最小距离<br>  <em>startX</em>: 滚动条滚动的起始X坐标值<br>  <em>startY</em>: 滚动条滚动的起始Y坐标值<br>  <em>x</em>: 当前滚动条的x坐标<br>  <em>y</em>: 当前滚动条的y坐标</p>
+<p>  在经过调试后，发现 <figure class="highlight"><figcaption><span>在鼠标拖动列表上拉到显示出刷新提示语后，数值不正确。导致显示“继续上拉刷新”和“松开加载更多”的显示时机错乱，几乎看不到前面那条提示语出现。</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;&#9;&#27880;&#37322;&#25481; ```this.maxScrollY = pullUpOffset``` &#21518;&#65292;&#19968;&#20999;&#24674;&#22797;&#27491;&#24120;&#12290;&#10;&#10;- &#31532;&#19977;&#20010;&#38382;&#39064; **iScroll&#24037;&#20316;&#26426;&#21046;**&#10;&#10;&#9;&#25105;&#20204;&#30340;&#20363;&#23376;&#20013;&#65292;&#22312;&#19978;&#25289;&#21518;&#37322;&#25918;&#65292;&#31243;&#24207;&#20250;&#21435;&#36828;&#31243;&#25289;&#21462;&#26032;&#25968;&#25454;&#65292;&#28982;&#21518;&#32047;&#21152;&#22312;&#21015;&#34920;&#23614;&#37096;&#26174;&#31034;&#65292;&#21516;&#26102;&#26356;&#26032;&#28378;&#21160;&#26465;&#65292;&#20294;&#26159;&#65281;&#65281;&#65281;&#65281;&#20854;&#20182;&#37117;&#27491;&#24120;&#65292;&#21807;&#29420;&#28378;&#21160;&#26465;&#19981;&#26356;&#26032;&#65292;&#25152;&#20197;&#23548;&#33268;&#20102;&#19968;&#27425;&#19978;&#25289;&#26356;&#26032;&#21518;&#65292;&#20877;&#20063;&#19981;&#33021;&#32487;&#32493;&#24448;&#19978;&#25289;&#20102;&#12290;&#10;&#10;&#9;iScroll&#20316;&#32773;&#24314;&#35758;&#22312;&#27599;&#27425;&#26356;&#26032;&#25968;&#25454;&#21518;&#65292;&#35201;&#35843;&#29992; ```refresh()``` &#26041;&#27861;&#26469;&#21047;&#26032;&#21015;&#34920;&#65292;&#31561;&#21516;&#20110;&#35753;iScroll&#33258;&#36523;&#37325;&#26032;&#35745;&#31639;&#21508;&#39033;&#25968;&#20540;&#12290;&#10;&#9;&#10;&#9;&#25152;&#20197;&#22312;&#25105;&#20204;&#30340;&#20363;&#23376;&#20013;&#65292;&#35843;&#29992; ```refresh()``` &#30340;&#26102;&#26426;&#19981;&#23545;&#65292;&#22240;&#20026; ```getListData()``` &#23646;&#20110;&#24322;&#27493;&#26041;&#27861;&#65292;&#25152;&#20197;&#24517;&#39035;&#35201;&#22312;&#22238;&#35843;&#26041;&#27861;&#37324;&#25191;&#34892; ```refresh()```&#12290;&#10;&#10;``` JavaScript&#10;function pullDownAction () &#123;&#10;  setTimeout(function () &#123;  // &#60;-- Simulate network congestion, remove setTimeout from production!&#10;    getListData(0, 10);&#10;    console.log(&#34;pullDownAction is called...&#34;);&#10;    &#10;    myScroll.refresh();   // Remember to refresh when contents are loaded (ie: on ajax completion)&#10;  &#125;, 1000); // &#60;-- Simulate network congestion, remove setTimeout from production!&#10;&#125;&#10;&#10;function pullUpAction () &#123;&#10;  setTimeout(function () &#123;  // &#60;-- Simulate network congestion, remove setTimeout from production!&#10;    getListData(start, end);&#10;    console.log(&#34;pullUpAction is called...&#34;);&#10;    &#10;    myScroll.refresh();   // Remember to refresh when contents are loaded (ie: on ajax completion)&#10;  &#125;, 1000); // &#60;-- Simulate network congestion, remove setTimeout from production!&#10;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>  所以最后能正常工作的版本如下：</p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Define the scroll first</span></span><br><span class="line"><span class="keyword">var</span> myScroll = <span class="literal">null</span>,</span><br><span class="line">     pullDownEl, pullDownOffset,</span><br><span class="line">     pullUpEl, pullUpOffset,</span><br><span class="line">     generatedCount = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"> <span class="comment">// Retrieve the list as soon as the Dom ready</span></span><br><span class="line"> angular.element(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">   setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">       getListData(start, end);</span><br><span class="line">   &#125;, <span class="number">200</span>);</span><br><span class="line"> &#125;);</span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">getListData</span>(<span class="params">start, end</span>) </span>&#123;</span><br><span class="line">   $scope.activities = [];</span><br><span class="line">   demoService.filterListData(start, end)</span><br><span class="line">     .then(<span class="function"><span class="keyword">function</span> (<span class="params">response</span>) </span>&#123;</span><br><span class="line">       $scope.list = response;</span><br><span class="line"></span><br><span class="line">       <span class="comment">// In the callback, create the iScroll if it's null</span></span><br><span class="line">       <span class="keyword">if</span> (myScroll === <span class="literal">null</span>) &#123;</span><br><span class="line">         createScroll();</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment">// Remember to refresh when contents are loaded (ie: on ajax completion)</span></span><br><span class="line">       <span class="comment">// After pull down of pull up the list, it should do refresh after the content has been displayed on the view.</span></span><br><span class="line">       <span class="comment">// Otherwise, the maxScrollY will be wrong within the iscroll.</span></span><br><span class="line">       setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;myScroll.refresh()&#125;, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">   &#125;);</span><br><span class="line"> &#125;;</span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">createScroll</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">   pullDownEl = <span class="built_in">document</span>.getElementById(<span class="string">'pullDown'</span>);</span><br><span class="line">   pullDownOffset = pullDownEl.offsetHeight;</span><br><span class="line">   pullUpEl = <span class="built_in">document</span>.getElementById(<span class="string">'pullUp'</span>); </span><br><span class="line">   pullUpOffset = pullUpEl.offsetHeight;</span><br><span class="line">   </span><br><span class="line">   myScroll = <span class="keyword">new</span> iScroll(<span class="string">'wrapper'</span>, &#123;</span><br><span class="line">     useTransition: <span class="literal">true</span>,</span><br><span class="line">     topOffset: pullDownOffset,</span><br><span class="line">     vScrollbar: <span class="literal">true</span>,</span><br><span class="line">     onRefresh: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (pullDownEl.className.match(<span class="string">'loading'</span>)) &#123;</span><br><span class="line">         pullDownEl.className = <span class="string">''</span>;</span><br><span class="line">         pullDownEl.querySelector(<span class="string">'.pullDownLabel'</span>).innerHTML = <span class="string">'Pull down to refresh...'</span>;</span><br><span class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (pullUpEl.className.match(<span class="string">'loading'</span>)) &#123;</span><br><span class="line">         pullUpEl.className = <span class="string">''</span>;</span><br><span class="line">         pullUpEl.querySelector(<span class="string">'.pullUpLabel'</span>).innerHTML = <span class="string">'Pull up to load more...'</span>;</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;,</span><br><span class="line">     onScrollMove: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (<span class="keyword">this</span>.y &gt; <span class="number">20</span> &amp;&amp; !pullDownEl.className.match(<span class="string">'flip'</span>)) &#123;</span><br><span class="line">         pullDownEl.className = <span class="string">'flip'</span>;</span><br><span class="line">         pullDownEl.querySelector(<span class="string">'.pullDownLabel'</span>).innerHTML = <span class="string">'Release to refresh...'</span>;</span><br><span class="line">         <span class="keyword">this</span>.minScrollY = <span class="number">0</span>;</span><br><span class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">this</span>.y &lt; <span class="number">20</span> &amp;&amp; pullDownEl.className.match(<span class="string">'flip'</span>)) &#123;</span><br><span class="line">         pullDownEl.className = <span class="string">''</span>;</span><br><span class="line">         pullDownEl.querySelector(<span class="string">'.pullDownLabel'</span>).innerHTML = <span class="string">'Pull down to refresh...'</span>;</span><br><span class="line">         <span class="keyword">this</span>.minScrollY = -pullDownOffset;</span><br><span class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">this</span>.y &lt; (<span class="keyword">this</span>.maxScrollY - <span class="number">5</span>) &amp;&amp; !pullUpEl.className.match(<span class="string">'flip'</span>)) &#123;</span><br><span class="line">         pullUpEl.className = <span class="string">'flip'</span>;</span><br><span class="line">         pullUpEl.querySelector(<span class="string">'.pullUpLabel'</span>).innerHTML = <span class="string">'Release to refresh...'</span>;</span><br><span class="line">         <span class="keyword">this</span>.maxScrollY = <span class="keyword">this</span>.maxScrollY;</span><br><span class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">this</span>.y &gt; (<span class="keyword">this</span>.maxScrollY + <span class="number">5</span>) &amp;&amp; pullUpEl.className.match(<span class="string">'flip'</span>)) &#123;</span><br><span class="line">         pullUpEl.className = <span class="string">''</span>;</span><br><span class="line">         pullUpEl.querySelector(<span class="string">'.pullUpLabel'</span>).innerHTML = <span class="string">'Pull up to load more...'</span>;</span><br><span class="line">         <span class="comment">// this.maxScrollY = pullUpOffset;</span></span><br><span class="line">       &#125;</span><br><span class="line">     &#125;,</span><br><span class="line">     onScrollEnd: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (pullDownEl.className.match(<span class="string">'flip'</span>)) &#123;</span><br><span class="line">         pullDownEl.className = <span class="string">'loading'</span>;</span><br><span class="line">         pullDownEl.querySelector(<span class="string">'.pullDownLabel'</span>).innerHTML = <span class="string">'Loading...'</span>;        </span><br><span class="line">         pullDownAction(); <span class="comment">// Execute custom function (ajax call?)</span></span><br><span class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (pullUpEl.className.match(<span class="string">'flip'</span>)) &#123;</span><br><span class="line">         pullUpEl.className = <span class="string">'loading'</span>;</span><br><span class="line">         pullUpEl.querySelector(<span class="string">'.pullUpLabel'</span>).innerHTML = <span class="string">'Loading...'</span>;        </span><br><span class="line">         pullUpAction(); <span class="comment">// Execute custom function (ajax call?)</span></span><br><span class="line">       &#125;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;);</span><br><span class="line">   </span><br><span class="line">   setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="built_in">document</span>.getElementById(<span class="string">'wrapper'</span>).style.left = <span class="string">'0'</span>; &#125;, <span class="number">800</span>);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">pullDownAction</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;  <span class="comment">// &lt;-- Simulate network congestion, remove setTimeout from production!</span></span><br><span class="line">    getListData(<span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"pullDownAction is called..."</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// myScroll.refresh();   // Remember to refresh when contents are loaded (ie: on ajax completion)</span></span><br><span class="line">  &#125;, <span class="number">1000</span>); <span class="comment">// &lt;-- Simulate network congestion, remove setTimeout from production!</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">pullUpAction</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;  <span class="comment">// &lt;-- Simulate network congestion, remove setTimeout from production!</span></span><br><span class="line">    getListData(start, end);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"pullUpAction is called..."</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// myScroll.refresh();   // Remember to refresh when contents are loaded (ie: on ajax completion)</span></span><br><span class="line">  &#125;, <span class="number">1000</span>); <span class="comment">// &lt;-- Simulate network congestion, remove setTimeout from production!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="背景">背景</h2><p>这两天有在帮忙看一个项目，期间我们有碰到一个滚动列表的问题，还真有不少问题。</p>
+<h3 id="问题清单">问题清单</h3><ol>
+<li>列表初始化加载后，鼠标拖着它向上滚动，松开鼠标后，列表自动滚回到第一条，即无法滚动列表，并且不显示垂直滚动条。</li>
+<li>拖动列表向上滚动，底部的“继续上拉刷新”和“松开加载更多”的提示语显示时机不正确。</li>
+<li>在列表任意位置托拖动向上，都会去加载更多项目累加在最后，不符合逻辑。</li>
+</ol>
+<h3 id="调查解决">调查解决</h3><p>作为被使用灰常广泛的iScroll列表滚动插件，没想到被整合进来后悔遇到这么多问题</p>
+<ul>
+<li>第一个问题  <strong>加载时机</strong></li>
+</ul>]]>
+    
+    </summary>
+    
+      <category term="iScrollJs" scheme="http://blog.staydan.com/tags/iScrollJs/"/>
+    
+      <category term="JavaScript" scheme="http://blog.staydan.com/categories/JavaScript/"/>
+    
+      <category term="AngularJS" scheme="http://blog.staydan.com/categories/JavaScript/AngularJS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Docing - A new document generator for all programming languages]]></title>
+    <link href="http://blog.staydan.com/2014/07/19/2014-07-19-docing-a-new-document-generator-for-all-programming-languages/"/>
+    <id>http://blog.staydan.com/2014/07/19/2014-07-19-docing-a-new-document-generator-for-all-programming-languages/</id>
+    <published>2014-07-19T02:10:07.000Z</published>
+    <updated>2015-06-19T01:57:18.000Z</updated>
+    <content type="html"><![CDATA[<p>fs.CreateReadStream()<br>Each time it can read 65536 bytes from a file.<br>So it’s not fitable for Docing. I need to read the whole file, not a part after a part.<br><figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ node --debug-brk libs/main.js</span><br><span class="line">debugger listening on port <span class="number">5858</span></span><br><span class="line"><span class="variable">DEBUG</span>: <span class="variable">Starting</span> ...</span><br><span class="line">null</span><br><span class="line">null</span><br><span class="line">[<span class="string">"docs"</span>,<span class="string">"jquery-2.0.3.js"</span>]</span><br><span class="line">got <span class="number">65536</span> bytes <span class="keyword">of</span> data</span><br><span class="line">split<span class="variable">OutSrc</span> start...</span><br><span class="line">split<span class="variable">OutSrc</span> <span class="keyword">end</span>...</span><br><span class="line">got <span class="number">65536</span> bytes <span class="keyword">of</span> data</span><br><span class="line">split<span class="variable">OutSrc</span> start...</span><br><span class="line">split<span class="variable">OutSrc</span> <span class="keyword">end</span>...</span><br><span class="line">got <span class="number">65536</span> bytes <span class="keyword">of</span> data</span><br><span class="line">split<span class="variable">OutSrc</span> start...</span><br></pre></td></tr></table></figure></p>
+<p>Thanks to this article, help me to solve the time issue.<br><a href="http://www.richardrodger.com/2011/04/21/node-js-how-to-write-a-for-loop-with-callbacks/#.U8yEw_mSzsC" target="_blank" rel="external">http://www.richardrodger.com/2011/04/21/node-js-how-to-write-a-for-loop-with-callbacks/#.U8yEw_mSzsC</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>fs.CreateReadStream()<br>Each time it can read 65536 bytes from a file.<br>So it’s not fitable for Docing. I need to read the whole file,]]>
+    </summary>
+    
+      <category term="docing" scheme="http://blog.staydan.com/tags/docing/"/>
+    
+      <category term="document" scheme="http://blog.staydan.com/tags/document/"/>
+    
+      <category term="JavaScript" scheme="http://blog.staydan.com/categories/JavaScript/"/>
+    
+      <category term="NodeJs" scheme="http://blog.staydan.com/categories/JavaScript/NodeJs/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Memory Card Flip Using HTML5 & CSS3]]></title>
+    <link href="http://blog.staydan.com/2014/07/17/2014-07-17-memory-card-flip/"/>
+    <id>http://blog.staydan.com/2014/07/17/2014-07-17-memory-card-flip/</id>
+    <published>2014-07-17T09:47:09.000Z</published>
+    <updated>2015-06-19T01:57:18.000Z</updated>
+    <content type="html"></content>
+    <summary type="html">
+    
+    </summary>
+    
+      <category term="CSS3" scheme="http://blog.staydan.com/tags/CSS3/"/>
+    
+      <category term="HTML5" scheme="http://blog.staydan.com/tags/HTML5/"/>
+    
+      <category term="Game" scheme="http://blog.staydan.com/categories/Game/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[My left foot's broken when rope skipping]]></title>
+    <link href="http://blog.staydan.com/2014/05/26/2014-05-26-my-left-foots-broken-when-rope-skipping/"/>
+    <id>http://blog.staydan.com/2014/05/26/2014-05-26-my-left-foots-broken-when-rope-skipping/</id>
+    <published>2014-05-26T09:22:20.000Z</published>
+    <updated>2015-06-19T01:57:18.000Z</updated>
+    <content type="html"><![CDATA[<blockquote>
+<p><strong>声明：</strong> 这篇是流水账，用来记录我左脚踝的现状和进展。</p>
+</blockquote>
+<h2 id="5月25日">5月25日</h2><p>晚上8点50分多，拿着绳子准备下楼去跳绳，然后找了个稍微空旷的地方，练了练手后，还没跳几下就在落地时左脚很严重的扭了下，期间还听到了几声从里面发出来的‘嗝嗝嗝’的响声，太吓人了。赶紧跳回了家里，然后被陪着去了曙光医院。</p>
+<p>跳着进了急诊，跳着去了护士台，拿着预检小票跳着去挂号，然后跳着去急诊室看病，因为正好碰到医院有人过世，医生大概去照料了，也就等了会才等来医生，接着就又跳着去拍片子，这一路真是太漫长了，曙光医院急诊到超声部特别远，脚的部位拍了4种姿势的x ray，医生说拍完马上过去，可以马上看到片子。</p>
+<p>不知道是急诊的缘故，还是我看上去比较严重的缘故，没有把x光的片子打印出来，直接在医生办公室看完后，说骨头没问题，估计是韧带伤掉了，结论毫无疑问就是绑石膏了。现在只绑一侧了，记得小学的时候右手手腕骨裂的时候是360°无死角全绑的，根不就无法动弹。</p>
+<p>石膏凝固的时候会发热，有种脚在蒸桑拿的错觉，5分钟后，就开了假单回家了，没有敷药。</p>
+<p>熟石膏加水后调制成的浆状物会逐渐凝固成硬块，CaSO4 • H2O =&gt; CaSO4•2H2O + 大量热量，使CaSO4•2H2O互相连结成一块多孔的固体，又长知识了。</p>
+<a id="more"></a>
+<p><img src="https://farm4.staticflickr.com/3830/14250072726_730881d2d0_o.jpg" alt="臭脚"><br><img src="https://farm4.staticflickr.com/3703/14271119552_42b69d8892_o.jpg" alt="臭脚"></p>
+<h2 id="5月26日">5月26日</h2><p>第一天静养开始，脚已经开始发痒，由于肿的地方肯定没有消退，估计是顶到石膏了，所以总感觉有东西黏在上面。一绑上石膏后，行动超级不便。。。<br>干什么在家里都是跳过来跳过去的，下午开始头晕，一看电脑就更晕了，难道是吃药的副作用，诶。。。要熬3个礼拜呢。。。</p>
+<h2 id="5月27日">5月27日</h2><p>第二天静养，有人服侍的感觉真好啊，不过那人马上就要上班去了，要自食其力了，还没告诉老妈，等稍微好点再告诉好了。。。<br>晚上把工作上的代码commit后，躺床上，头那个叫晕啊。。。赶紧睡过去了。。。</p>
+<h2 id="5月28日">5月28日</h2><p>跳绳搞残左脚后，又认真工作了一天后，晚上和老美开了一小时的会后，状态还可以，头晕现象稍微缓解，尝试着左脚开始支撑身体，但石膏总摩擦着脚突出的骨头。。。还有啊。。。这才第三天。。。不能洗脚。。。怎么办啊。。。我都无法想象拆了石膏后脚的味道。。。。会是咋样。。。</p>
+<h2 id="5月29日">5月29日</h2><h2 id="6月18日">6月18日</h2><p>上周六去医院复诊拆掉了石膏，可惜没有给它留个影，这漫长的3个礼拜，简直就是无比的折磨，像兔子般跳着移动，完全依赖着没受伤的右腿，真是辛苦它了。<br>医生让我在诊室里尝试双脚直立、受伤脚的单腿直立、行走、按压受伤部位，都尝试过后，由于脚腕还不能很顺利的往上弯，导致我走路时左脚无法用力<br>但在医生看来，大家懂的，这些都是小事，配了点云南白药喷雾剂和膏药就结束了这次复诊。</p>
+<p>医生说差不多还要1-2个礼拜恢复，但今天已经是复诊后第4天了，我仍然没有感觉到有任何的恢复迹象，依旧无法往上弯，走路痛。</p>
+<p>伤筋动骨100天，才过了1/5，让我看到一点曙光吧。。。赶紧好起来，我要出门开荤，我要去办公室上班，我要过正常的生活呢。。。</p>
+<h2 id="6月25日">6月25日</h2><p>还是没忍住去了仁济医院，又拍了张X光，结论还是骨头没损伤，依旧是继续静养骨头，让其自然好。。。配了发热膏药和一点中成药，心里还是没底</p>
+<h2 id="7月17日">7月17日</h2><p>已经超过50天了，100天过半了，走路稍微正常了点，左脚能稍稍往前发力了，走多了会非常疲惫，带点酸痛。。。<br>现状就是，能慢慢走路，不能原地蹲下，不能跑和跳。。。脚腕依旧不能往上弯动。。。</p>
+<p>伤在自己身上，还是会时不时的担心这样下去究竟能不能恢复原样，会不会延误了最佳治疗时间，过了100天还不好怎么办。。。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<blockquote>
+<p><strong>声明：</strong> 这篇是流水账，用来记录我左脚踝的现状和进展。</p>
+</blockquote>
+<h2 id="5月25日">5月25日</h2><p>晚上8点50分多，拿着绳子准备下楼去跳绳，然后找了个稍微空旷的地方，练了练手后，还没跳几下就在落地时左脚很严重的扭了下，期间还听到了几声从里面发出来的‘嗝嗝嗝’的响声，太吓人了。赶紧跳回了家里，然后被陪着去了曙光医院。</p>
+<p>跳着进了急诊，跳着去了护士台，拿着预检小票跳着去挂号，然后跳着去急诊室看病，因为正好碰到医院有人过世，医生大概去照料了，也就等了会才等来医生，接着就又跳着去拍片子，这一路真是太漫长了，曙光医院急诊到超声部特别远，脚的部位拍了4种姿势的x ray，医生说拍完马上过去，可以马上看到片子。</p>
+<p>不知道是急诊的缘故，还是我看上去比较严重的缘故，没有把x光的片子打印出来，直接在医生办公室看完后，说骨头没问题，估计是韧带伤掉了，结论毫无疑问就是绑石膏了。现在只绑一侧了，记得小学的时候右手手腕骨裂的时候是360°无死角全绑的，根不就无法动弹。</p>
+<p>石膏凝固的时候会发热，有种脚在蒸桑拿的错觉，5分钟后，就开了假单回家了，没有敷药。</p>
+<p>熟石膏加水后调制成的浆状物会逐渐凝固成硬块，CaSO4 • H2O =&gt; CaSO4•2H2O + 大量热量，使CaSO4•2H2O互相连结成一块多孔的固体，又长知识了。</p>]]>
+    
+    </summary>
+    
+      <category term="噗" scheme="http://blog.staydan.com/tags/%E5%99%97/"/>
+    
+      <category term="Life" scheme="http://blog.staydan.com/categories/Life/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Create 2048 using HTML5 Canvas(Play)]]></title>
+    <link href="http://blog.staydan.com/2014/05/15/2014-05-15-create-2048-using-html5-canvas-play/"/>
+    <id>http://blog.staydan.com/2014/05/15/2014-05-15-create-2048-using-html5-canvas-play/</id>
+    <published>2014-05-15T03:13:08.000Z</published>
+    <updated>2015-06-19T01:57:18.000Z</updated>
+    <content type="html"><![CDATA[<blockquote>
+<p>这一年多都在前端这块努力着，随着时间被吞噬的速度越来越快，总有更酷更炫的东西浮现在眼前，一直有个想法，想做点什么算是作品的作品，能拿得出手的东西。<br>最后选择了2048这个游戏，起初打算实现这个游戏只是因为兴趣爱好，正好这段时间对小projec感兴趣，加上之前写了一个排序的可视化程序，然后就继续沿用了Canvas来构建这个流行的2048。</p>
+<hr>
+<h2 id="游戏地址_·_Play_Game_Link(http://game2048-staydan-com)">游戏地址 · Play Game Link(<a href="http://game2048.staydan.com" target="_blank" rel="external">http://game2048.staydan.com</a>)</h2><hr>
+<h2 id="游戏源码_·_Game_Source_Code_on_Github">游戏源码 · Game Source Code on <a href="https://github.com/DanielZhu/game-2048" target="_blank" rel="external">Github</a></h2></blockquote>
+<h2 id="前言（大家看书都喜欢认真看前言，那我就认真写前言）">前言（大家看书都喜欢认真看前言，那我就认真写前言）</h2><p>没游戏开发经验，头一回开发网页智力游戏，那叫一个激动啊，虽然游戏的主意是网上现成的，但是呢，在coding这个2048的过程中，没去参考任何的开源代码，坚持自己写完主体逻辑。</p>
+<p>因为从来没看过任何这方面的书籍，就凭着一腔热血来啦，脑子里想着这东西蛮简单的，不就是4×4的栅格嘛，不就是合并和移动方块嘛，加上一些些的动画点缀，有什么难的对不对？？？想着想着各种case对应的solution就在脑海中飘来飘去了，跃跃欲试啊。。。</p>
+<a id="more"></a>
+<h2 id="构思">构思</h2><p>玩过2048的孩纸们，肯定都对这个界面印象深刻，我们来把它拆分成几个部分。</p>
+<ol>
+<li>一个暖色调纯色背景的墙纸</li>
+<li>4×4 的栅格，共16个圆角矩形依次每行4个，总共4行排列</li>
+<li>根据游戏进度，在游戏区域显示对应的数字卡片</li>
+<li>根据卡片的数值，显示对应的卡片背景色</li>
+<li>使用方向键玩游戏，4个方向（上，下，左，右）移动卡片</li>
+<li>如果在移动方向上发现有相同的紧邻着的两个数字，即将该两个卡片合并</li>
+<li>如果在移动方向上发现有空的卡片，移动所有有数值的卡片至移动方向的顶端（比如：向右移动，将所有行上的数字移动至右边，填补空卡片）</li>
+<li>在一次完整的移动完成后，如果没有空位，并且没有任何紧邻的相同数字存在可以合并，那判断该游戏就结束了</li>
+<li>游戏的分数计算：S = S + 2^n (n &gt;= 1, n为2的幂指数)，说白了就是累加所有合成后的数值就是总分了</li>
+</ol>
+<h2 id="分析">分析</h2><p>小丹我呢定了这个2048定的基调是：模仿为主，微创新辅之。<br>主要使用HTML5 的 Canvas 进行游戏画布绘制，动画绘制。没很高强度的用过Canvas，料想开发过程肯定会遇到各种问题，不过没事，肯定都会迎刃而解的。</p>
+<ol>
+<li>游戏画布中大量用到了圆角矩形，但Canvas原生没有提供圆角矩形的API，所以得扩展下。</li>
+<li>在本子上草拟画布的草稿版本，当然是要算各种间隔，宽度，高度等</li>
+<li>建立两个canvas层，一层绘制所有背景，包括大小格子，另一层负责绘制数字</li>
+<li>监听键盘的方向键，并且要组织在键盘操作时滚动画面</li>
+<li>合并算法，移动填补空位算法</li>
+<li>计算得分</li>
+</ol>
+<h2 id="关键分步实现">关键分步实现</h2><h3 id="绘制圆角矩形">绘制圆角矩形</h3><p>通过扩展CanvasRenderingContext2D来实现，形式参照<code>fillRect()</code>，四个角分别预留出radius的宽度和高度，先绘制出4条线段，然后利用二次方程曲线<code>quadraticCurveTo()</code>补足4个圆弧。</p>
+<script src="//gist.github.com/39749849e3cbbc7fef1c.js"></script>
+<p>参考: <a href="http://blog.csdn.net/jia20003/article/details/9356383" target="_blank" rel="external">http://blog.csdn.net/jia20003/article/details/9356383</a></p>
+<h3 id="绘制游戏画布">绘制游戏画布</h3><p>两个独立并且重叠的Canvas，游戏init的时候，下层绘制背景和所有各自的空白色，上层绘制初始化的两个数字卡片，所有的数字都是Photoshop出来的透明图片<br>只要你提前做好坐标的计算，这个相对就比较简单了，就循环matrixArr数组。</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>两边与边框间隔</td>
+<td>20 px</td>
+</tr>
+<tr>
+<td>卡片与卡片间隔</td>
+<td>10 px</td>
+</tr>
+<tr>
+<td>卡片高宽</td>
+<td>根据总长动态计算</td>
+</tr>
+<tr>
+<td>动画速度</td>
+<td>10 （100/10 = 10次）</td>
+</tr>
+<tr>
+<td>动画每次执行间隔</td>
+<td>7 ms</td>
+</tr>
+</tbody>
+</table>
+<h3 id="键盘键使用">键盘键使用</h3><p><strong>左，上，右, 下</strong> or <strong>A, W, D, S</strong><br>这两组其实都是常见的，只需要把对应的key code写上即可，例如第一组：<strong>37 - 40</strong><br>对应每一个方向监听事件，我们都要做相同的几件事，<code>移动方向上行合并两个相同的数</code>，<code>移动方向上用有数字的卡片补上空位</code>, <code>随机生成一位数字显示在画布上</code></p>
+<h3 id="合并算法">合并算法</h3><p><strong>向左：</strong></p>
+<p>从每一行(k=0)最左边的第二位开始，每一位都与第一位比较，每进行到新卡片(j)时，当首次遇到一个非空卡片(新 j)，与下标为k的卡片进行比较，如果相同，则下标为k的卡片乘以2，将新j位置的卡片置为空（-1），并且将j累加1后跳出while循环，继续执行外循环；如果不相同，同时该新j位置卡片为非空，则也跳出循环，反之继续，直到这一行所有的数字都两两比较过。<br>由于这样的算法，合并完的卡片中间有时会有空位，所以还需要一次移位算法，请参考下面的分析。</p>
+<h3 id="移位算法">移位算法</h3><p><strong>向左：</strong></p>
+<p>有一个队列来维护空卡片，从每一行的第一位开始为外循环，内循环为遍历该行所有元素，遇到空位则将该卡片下标push到队列中，当遇到非空卡片时，将队列中的第一个元素裁取出来，与非空卡片呼唤位置，并且将互换后成为空卡片的下标push到队列中待用，直到两个循环结束，正行的非空卡片就移位完成了。</p>
+<p>每一次的移位最终完成后，需要给画布添加一个随机卡片在一个随机的空位上。</p>
+<h3 id="如果判断游戏结束">如果判断游戏结束</h3><p>本人不才，还是采取了最笨的方法，在添加新卡片结束后，模拟四个方向在后台默默的走一遍，如果判断是有可合并或者可移位的卡片，就认为游戏仍然没有结束，可以继续玩。</p>
+<p>在每次移位后，如果有任何的合并或者移位发生，则加一位卡片在随机空位，然后进行判断游戏是否已经GameOver。</p>
+<h2 id="其他用户输入方式">其他用户输入方式</h2><h3 id="手指触摸">手指触摸</h3><p>在对应要监听触摸事件的Canvas元素上加上以下代码即可。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">canvasEle.addEventListener(<span class="string">'touchstart'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;$scope.touchStartHandle(event)&#125;);</span><br><span class="line">canvasEle.addEventListener(<span class="string">'touchend'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;$scope.touchEndHandle(event)&#125;);</span><br><span class="line">canvasEle.addEventListener(<span class="string">'touchmove'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;event.preventDefault();&#125;);</span><br></pre></td></tr></table></figure>
+<p>每次touch start后，记录开始的Pos，在touch end发生后，拿到最后的Pos，比较前后Pos的touchX，touchY坐标, 如果差值的绝对值大于设定的长度（50px），即触发对应方向逻辑。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="built_in">Math</span>.abs(touchEndClientX - touchStartPos[<span class="number">0</span>]) &gt; <span class="number">100</span>) &#123;</span><br><span class="line">  key = (touchEndClientX - touchStartPos[<span class="number">0</span>] &gt; <span class="number">0</span> ? <span class="number">39</span> : <span class="number">37</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">Math</span>.abs(touchEndClientY - touchStartPos[<span class="number">1</span>]) &gt; <span class="number">100</span>) &#123;</span><br><span class="line">  key = (touchEndClientY - touchStartPos[<span class="number">1</span>] &gt; <span class="number">0</span> ? <span class="number">40</span> : <span class="number">38</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="鼠标点击滑动">鼠标点击滑动</h3><p>类似Touch事件处理，对mouseDownHandle, mouseUpHandle做同样的监听即可。</p>
+<h3 id="动画">动画</h3><p>游戏设定为每个完整的动画分为10帧，每帧间隔7ms，所以每次动画都需要延迟执行，然后Javascript的执行效率可能大多数达不到我们的预期结果，所以就必须维护一个队列（先进先出），队列是每次延迟后需要执行的function，所以在最后执行队列里的function时，是连续的，不会造成阻塞。</p>
+<script src="//gist.github.com/87bc46e23c654af22d55.js"></script>
+<p>来谈谈HTML5的Canvas，利用Canvas绘制动画，需要反复的擦除和绘制，这无数次的画和擦加上位移才构成了视觉上的一个动画效果。</p>
+<p>在实际应用中，这样的处理在PC浏览器没有问题，然后在iPad上，问题还是非常严重的，尤其是在擦除时，会留有残留，还没深究其原因。</p>
+<p>下面贴出代码，其中含有大量在所在js文件里的变量和运算，如果无法理解，请refer to github.</p>
+<script src="//gist.github.com/192709553dcacbb0db7e.js"></script>
+<h2 id="其他功能">其他功能</h2><h3 id="悔步">悔步</h3><p>玩了一盘很好的局，突然发现马上要到2048前好像要挂了额，怎么办，怎么办，悔步理所当然是最好的办法啦。</p>
+<p>在写完游戏的90%的功能后，为了多点娱乐性，就加上此项功能，每局允许玩家返回一定的步数。</p>
+<p>其实实现起来非常简单，在每局的游戏中</p>
+<ul>
+<li>维护了一个历史步伐的数组，记录了每次走完后最后的矩阵状态</li>
+<li>维护一个记录当前剩余悔步总数的变量</li>
+<li>每次悔步，都将在历史步伐数组中pop一个出来重回画布即可</li>
+<li>新建游戏后，重置所有数据</li>
+</ul>
+<h3 id="游戏数据实时存储">游戏数据实时存储</h3><p>游戏过程中，虽然我们没有用户session过期等概念，但也不可避免的会遇到浏览器无故奔溃等的意外情况，当重新打开游戏首页时，如果能还原奔溃前所有的状态那肯定是完美的。</p>
+<p>所以，小丹把游戏中的关键数据保存到了localstorage中，当游戏加载初始化时，会优先使用本地保存的数据，如果没发现数据，随后才会全部重置。</p>
+<h3 id="总得分，历史最高分">总得分，历史最高分</h3><p>历史最高得分对于自己来说，必然是一个有历史意义的东西，俗话怎么说的来着：只有自己才能打败自己，并超越自己。</p>
+<p>每次都是为了那个目标奋斗，也是游戏娱乐性的一大乐趣和吸引点。</p>
+<p>当然功能的实现是依靠localstorage，每次的分数和其作比较，只要大于等于最高分，就会同步更新。</p>
+<h3 id="卡片预加载">卡片预加载</h3><p>由于小丹这个版本是通过Canvas加上透明数组图片来实现的，所以在游戏过程中，如果合成16、32、64…等靠后的数字，会有一定的延迟时间显示，因为他要加载。这会导致用户以为游戏bug了，因为这个本该出现数字的卡片上一片空白。</p>
+<p>为了解决这个问题，在游戏初始化时，把常用的数字通过new image的方式预先加载。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">preloadResources = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// preload image</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">12</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">new</span> Image().src = <span class="string">'images/card_'</span> + zeroPad(i, <span class="number">4</span>) + <span class="string">'_'</span> + <span class="built_in">Math</span>.pow(<span class="number">2</span>, i + <span class="number">1</span>) + <span class="string">'.png'</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那为什么又要把图片的文件名命名成这样呢，这是因为在Photoshop中，每个数字是一个图层，在export所有卡片是，photoshop有它自己的命名方式，所以为了节省时间，我就让代码靠拢它既可。</p>
+<h3 id="全球排名显示_Top_20">全球排名显示 Top 20</h3><p>除了个人Best Score之外，排名是绝对能推动玩家疯狂沉迷的手段之一。</p>
+<p>小丹2048将上传分数、拉取排名信息默默的放在用户感知不到的时候执行，一局游戏结束，分数和昵称和邮箱呗打包上传到远程数据库存档。排名数据时每隔一定时间获取的。</p>
+<p>小丹的Web Service是用PHP实现，非常之简单，就一个 POST 写入，加上一个 GET 读取。</p>
+<h2 id="将来">将来</h2><p>最初计划写这个游戏时，也有plan是学习学习AI算法，让机器自主思考和选择最优步骤达到最高的数字，可渐渐的发现，这并没有想象中的简单。</p>
+<p>这不是穷举，这不能靠暴力，路还没走完，继续向前吧，少年！</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<blockquote>
+<p>这一年多都在前端这块努力着，随着时间被吞噬的速度越来越快，总有更酷更炫的东西浮现在眼前，一直有个想法，想做点什么算是作品的作品，能拿得出手的东西。<br>最后选择了2048这个游戏，起初打算实现这个游戏只是因为兴趣爱好，正好这段时间对小projec感兴趣，加上之前写了一个排序的可视化程序，然后就继续沿用了Canvas来构建这个流行的2048。</p>
+<hr>
+<h2 id="游戏地址_·_Play_Game_Link(http://game2048-staydan-com)">游戏地址 · Play Game Link(<a href="http://game2048.staydan.com">http://game2048.staydan.com</a>)</h2><hr>
+<h2 id="游戏源码_·_Game_Source_Code_on_Github">游戏源码 · Game Source Code on <a href="https://github.com/DanielZhu/game-2048">Github</a></h2></blockquote>
+<h2 id="前言（大家看书都喜欢认真看前言，那我就认真写前言）">前言（大家看书都喜欢认真看前言，那我就认真写前言）</h2><p>没游戏开发经验，头一回开发网页智力游戏，那叫一个激动啊，虽然游戏的主意是网上现成的，但是呢，在coding这个2048的过程中，没去参考任何的开源代码，坚持自己写完主体逻辑。</p>
+<p>因为从来没看过任何这方面的书籍，就凭着一腔热血来啦，脑子里想着这东西蛮简单的，不就是4×4的栅格嘛，不就是合并和移动方块嘛，加上一些些的动画点缀，有什么难的对不对？？？想着想着各种case对应的solution就在脑海中飘来飘去了，跃跃欲试啊。。。</p>]]>
+    
+    </summary>
+    
+      <category term="2048" scheme="http://blog.staydan.com/tags/2048/"/>
+    
+      <category term="Canvas" scheme="http://blog.staydan.com/tags/Canvas/"/>
+    
+      <category term="HTML5" scheme="http://blog.staydan.com/tags/HTML5/"/>
+    
+      <category term="Game" scheme="http://blog.staydan.com/categories/Game/"/>
+    
+      <category term="Canvas" scheme="http://blog.staydan.com/categories/Game/Canvas/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[How to handle the loading mask automatically in ExtJS]]></title>
+    <link href="http://blog.staydan.com/2014/05/03/2014-05-03-how-to-handle-the-loading-mask-automatically-in-extjs/"/>
+    <id>http://blog.staydan.com/2014/05/03/2014-05-03-how-to-handle-the-loading-mask-automatically-in-extjs/</id>
+    <published>2014-05-03T13:12:54.000Z</published>
+    <updated>2015-06-19T01:57:18.000Z</updated>
+    <content type="html"><![CDATA[<blockquote>
+<p>We know that ajax asynchronous request is being used everywhere in most of the website.<br>But in some situations, other operations are not allowed to create before all the current requests finished.<br>So, if we send out at least 2 ajax requests at the same time.<br>How can we handle this mask layer in these mulit-requests situation?<br>Like show mask on time, hide the mask after all the requests finish</p>
+</blockquote>
+<h3 id="API_Document">API Document</h3><p>ExtJS has the existing Ajax class, usually, we can find some useful guide there, such as method, attribute, event…</p>
+<p>After read the docs, three useful event listeners attracted our eyes. They are</p>
+<ul>
+<li>beforerequest</li>
+<li>requestcomplete</li>
+<li>requestexception</li>
+</ul>
+<p>In the entry of your web app, we should create one global variable (<strong>ajaxProcessingCount</strong>) to count the the total times of ajax request.<br>The counter plus one in the beforerequest event, minus one in the requestcomplete and requestexception event.<br>We should check the result of the counter whether it is 0 or not.</p>
+<p>Well, here’s the source codes, we can add this code snippet to your entry file of the web site.<br><a id="more"></a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">ajaxProcessingCount = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">handleRequestError = <span class="function"><span class="keyword">function</span> (<span class="params">errorMessage</span>) </span>&#123;</span><br><span class="line">    Ext.getBody().unmask();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (Ext.Msg.isVisible()) &#123;</span><br><span class="line">        Ext.Msg.hide();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Ext.Ajax.on(<span class="string">'beforerequest'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">conn, options, eOpts</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> message = <span class="string">'Loading...'</span>;</span><br><span class="line"></span><br><span class="line">    ajaxProcessingCount += <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (Ext.getBody()) &#123;</span><br><span class="line">        Ext.getBody().mask(message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Ext.Ajax.on(<span class="string">'requestcomplete'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">conn, response, options, eOpts</span>) </span>&#123;</span><br><span class="line">    ajaxProcessingCount -= <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Your code here...</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (ajaxProcessingCount === <span class="number">0</span> &amp;&amp; Ext.getBody()) &#123;</span><br><span class="line">        Ext.getBody().unmask();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Ext.Ajax.on(<span class="string">'requestexception'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">conn, response, options, eOpts</span>) </span>&#123;</span><br><span class="line">    ajaxProcessingCount -= <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Your code here...</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (ajaxProcessingCount === <span class="number">0</span> &amp;&amp; Ext.getBody()) &#123;</span><br><span class="line">        Ext.getBody().unmask();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>]]></content>
+    <summary type="html">
+    <![CDATA[<blockquote>
+<p>We know that ajax asynchronous request is being used everywhere in most of the website.<br>But in some situations, other operations are not allowed to create before all the current requests finished.<br>So, if we send out at least 2 ajax requests at the same time.<br>How can we handle this mask layer in these mulit-requests situation?<br>Like show mask on time, hide the mask after all the requests finish</p>
+</blockquote>
+<h3 id="API_Document">API Document</h3><p>ExtJS has the existing Ajax class, usually, we can find some useful guide there, such as method, attribute, event…</p>
+<p>After read the docs, three useful event listeners attracted our eyes. They are</p>
+<ul>
+<li>beforerequest</li>
+<li>requestcomplete</li>
+<li>requestexception</li>
+</ul>
+<p>In the entry of your web app, we should create one global variable (<strong>ajaxProcessingCount</strong>) to count the the total times of ajax request.<br>The counter plus one in the beforerequest event, minus one in the requestcomplete and requestexception event.<br>We should check the result of the counter whether it is 0 or not.</p>
+<p>Well, here’s the source codes, we can add this code snippet to your entry file of the web site.<br>]]>
+    
+    </summary>
+    
+      <category term="Mask" scheme="http://blog.staydan.com/tags/Mask/"/>
+    
+      <category term="JavaScript" scheme="http://blog.staydan.com/categories/JavaScript/"/>
+    
+      <category term="ExtJS" scheme="http://blog.staydan.com/categories/JavaScript/ExtJS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Sorting Visualization using JavaScript]]></title>
+    <link href="http://blog.staydan.com/2014/04/30/2014-04-30-sorting-visualization-using-javascript/"/>
+    <id>http://blog.staydan.com/2014/04/30/2014-04-30-sorting-visualization-using-javascript/</id>
+    <published>2014-04-30T02:18:58.000Z</published>
+    <updated>2015-06-19T01:57:18.000Z</updated>
+    <content type="html"><![CDATA[<p><a href="http://www.sorting-algorithms.com/static/QuicksortIsOptimal.pdf" target="_blank" rel="external">http://www.sorting-algorithms.com/static/QuicksortIsOptimal.pdf</a><br><a href="http://www.sorting-algorithms.com/" target="_blank" rel="external">http://www.sorting-algorithms.com/</a><br><a href="http://stackoverflow.com/questions/22815790/set-a-delay-timeout-inside-a-double-nested-loop?answertab=oldest#tab-top" target="_blank" rel="external">http://stackoverflow.com/questions/22815790/set-a-delay-timeout-inside-a-double-nested-loop?answertab=oldest#tab-top</a><br><a href="http://stackoverflow.com/questions/16150289/angularjs-running-initialization-code-when-view-is-loaded" target="_blank" rel="external">http://stackoverflow.com/questions/16150289/angularjs-running-initialization-code-when-view-is-loaded</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p><a href="http://www.sorting-algorithms.com/static/QuicksortIsOptimal.pdf" target="_blank" rel="external">http://www.sorting-algorithms.co]]>
+    </summary>
+    
+      <category term="Algorithm" scheme="http://blog.staydan.com/tags/Algorithm/"/>
+    
+      <category term="Sort" scheme="http://blog.staydan.com/tags/Sort/"/>
+    
+      <category term="JavaScript" scheme="http://blog.staydan.com/categories/JavaScript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Team building at Xi-Lai-Chun from Hewlett Packard]]></title>
+    <link href="http://blog.staydan.com/2014/04/26/2014-04-26-team-building-at-xi-lai-chun-from-hewlett-packard/"/>
+    <id>http://blog.staydan.com/2014/04/26/2014-04-26-team-building-at-xi-lai-chun-from-hewlett-packard/</id>
+    <published>2014-04-26T10:44:19.000Z</published>
+    <updated>2015-06-19T01:57:18.000Z</updated>
+    <content type="html"><![CDATA[<blockquote>
+<p>自从上次10月12号的TB后，等了半年多，终于迎来新一次的Team Building<br>短短半年，就已经走了3个人，但及时的补位让团队依旧不减<br>5辆车，20多人，晴转晚上中雨的天气，工作日星期五一天</p>
+</blockquote>
+<h4 id="活动安排">活动安排</h4><p>我们这次的目的地是在为数不多的选项中得出的：<a href="http://www.dianping.com/shop/4045630" target="_blank" rel="external">喜来春农业观光旅游</a>，位于川沙，靠近浦东机场，所以一整天每隔几分钟就可以看到飞机降落。顿时感叹飞机的失事率还是非常低的。</p>
+<p>同事Qian帮忙联系了喜来春，购买的大众点评的团购票，每人88元，可以玩6个项目；联系了午饭，那边平时工作日厨师还不上班的，这厨师烧完就走了。霸气哦！！</p>
+<h4 id="出发">出发</h4><p>作为5位司机之一，接上搭车同事后，驱车经中环抵达目的地，在中环上总感觉车有点向左恍，但等抵达停下后，查看轮胎却没问题，还是小心为上，毕竟安全第一。</p>
+<h4 id="游玩">游玩</h4><ol>
+<li>射箭</li>
+</ol>
+<p>总共6个靶子，我们20几号人，就玩了大概4轮，小丹我头一回玩射箭，感受到就一句话：硬件条件非常重要。</p>
+<p>射箭处离靶位大概8米，靶子比较破旧，也就将就将就吧，不远处还在焚烧着类似树叶的垃圾。最好的成绩就是7环，箭的质量相对太差，只拿了一把新箭。而且玩久了，手指肋着弦的部位比较痛。<br><a id="more"></a></p>
+<p><img src="https://farm8.staticflickr.com/7302/14037275903_89b95c4fb4_o.jpg" alt="箭靶"><br><img src="https://farm3.staticflickr.com/2930/14017276575_4d3fa19261_o.jpg" alt="Tingk耍帅"><br><img src="https://farm8.staticflickr.com/7145/14037277683_bbc82bfe54_o.jpg" alt="Ziv接着耍帅"></p>
+<p>接下来就是各种射箭Pose秀，还有两位射的最准的和靶子的合影。</p>
+<p><img src="https://farm8.staticflickr.com/7458/14017278155_8f4a6f9797_o.jpg" alt="出租车司机射箭，哈哈"><br><img src="https://farm8.staticflickr.com/7122/14037279023_2ca497e4f6_o.jpg" alt="Bruce"><br><img src="https://farm8.staticflickr.com/7446/13994161146_614cb09a71_o.jpg" alt="老大"><br><img src="https://farm8.staticflickr.com/7355/14037292743_a488e194a8_o.jpg" alt="神射手1"><br><img src="https://farm6.staticflickr.com/5506/14017291195_88a537fd22_o.jpg" alt="神射手2"></p>
+<ol>
+<li>午饭</li>
+</ol>
+<p>上面提到过，厨师还是临时被拉过来加班的呢，除了鱼不太好吃之外，其他都还可以，饮料是我们自己带过去的，米饭也比较松软，是我爱的类型。</p>
+<p><img src="https://farm8.staticflickr.com/7219/13994162066_985166e652_o.jpg" alt="农家乐的午饭"></p>
+<ol>
+<li>沙滩车</li>
+</ol>
+<p>这喜来春的硬件条件都不行，沙滩车推过来两辆，不是坏的就是会熄火，还会中途掉链条，这还怎么顺利的玩嘛。</p>
+<p>沙滩车的项目，也只是在普通的带有水坑的路上开，其实不过瘾，但也无可奈何，小丹开了一圈，如果开的很猛，会溅起很多泥水到身上，然后很多女生就放弃了，只有霸气的Lance玩了一圈。</p>
+<p><img src="https://farm3.staticflickr.com/2898/14037289433_8d97fa800e_o.jpg" alt="开的最爽的Jie，翻了几次车，爬了几次坡"><br>开到还剩下最后8个人的时候，两辆车子都坏了，无奈我们去玩隔壁的真人CS</p>
+<ol>
+<li>真人CS</li>
+</ol>
+<p>衣服居然还有一个个激活的，不是靠电脑批量处理的，然后这还不算，衣服里面还有好多都是无敌状态的，打不死的。。。这还怎么玩嘛，玩个氛围么。。。刚好特别热的时间段，都出汗了，枪太大了，玩起来不方便。评价就是不推荐。</p>
+<p><img src="https://farm3.staticflickr.com/2928/13994161566_3f0ebd7777_o.jpg" alt="在自卑的伞下看着小说，真是最惬意的啊"></p>
+<ol>
+<li>划船</li>
+</ol>
+<p>由于当天风特别大，为了安全考虑，我们选了相对安全的脚踏船，可是没想到居然就这么容易就搁浅了。</p>
+<p><img src="https://farm8.staticflickr.com/7091/14017746204_28bc1afd9f_o.jpg" alt="刚出发，就搁浅在岸边"><br><img src="https://farm8.staticflickr.com/7178/13994166136_92232661cc_o.jpg" alt="搁浅着，有伙伴来陪我们了，可是他们最后居然还自救出去了"><br><img src="https://farm8.staticflickr.com/7226/14014087992_c4530c87fd_o.jpg" alt="教练扔了根竹竿，然后我们开始自救，终于靠它回到了出发点"></p>
+<p>回到原位后，鉴于不过瘾，又玩了4人划船项目。就划了没多久，就感觉到手酸和腰酸了，尤其还要为了考虑方向两边轮着划。回想起我大学上海海事大学的龙舟队，他们每次在学校的海面上训练的时候，那个速度和那个气势，专业！霸气！</p>
+<p><img src="https://farm6.staticflickr.com/5056/14014093111_36a56449ca_o.jpg" alt="船头位置，出发"><br><img src="https://farm6.staticflickr.com/5193/13994168746_8726e9de95_o.jpg" alt="有一组不认识的人划了好久却还在原地打转，我们顺利远航"></p>
+<ol>
+<li>双人老爷车</li>
+</ol>
+<p><img src="https://farm3.staticflickr.com/2907/14014086452_c1e3b50507_o.jpg" alt="骑老爷车没什么，但是在途中偶遇一只过马路的小螃蟹"></p>
+<ol>
+<li>休闲高尔夫</li>
+</ol>
+<p>教练支起一小帐篷，高尔夫打起来，显然大家都是新手，我愣是全称没参与，感觉没什么兴趣，而且到现在还没完全理解高尔夫这项运动的乐趣在哪里。就给大家拍拍照吧还是。</p>
+<p>来秀几张同事的照片吧<br><img src="https://farm6.staticflickr.com/5210/14037284963_5e542e3baa_o.jpg" alt="Elvis 尝试。。。"><br><img src="https://farm8.staticflickr.com/7342/14014090821_d5de1987af_o.jpg" alt="出租车司机 尝试。。。"></p>
+<p>然后我们感谢全称拍照的Bruce，晒</p>
+<p><img src="https://farm6.staticflickr.com/5256/14014089382_a432a552b1_o.jpg" alt="帅气的Bruce，新购入的Canon 700D，配上18-135mm的镜头，弄的我也想买新镜头了"></p>
+<p>最后，还是要感谢Lance同学辛勤地为这次活动付出，帮忙联系喜来春的工作人员，分配车位。TB圆满结束，不知道下次要等到什么时候了，下次还是推荐来个住一晚上的上海周边省份的。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<blockquote>
+<p>自从上次10月12号的TB后，等了半年多，终于迎来新一次的Team Building<br>短短半年，就已经走了3个人，但及时的补位让团队依旧不减<br>5辆车，20多人，晴转晚上中雨的天气，工作日星期五一天</p>
+</blockquote>
+<h4 id="活动安排">活动安排</h4><p>我们这次的目的地是在为数不多的选项中得出的：<a href="http://www.dianping.com/shop/4045630">喜来春农业观光旅游</a>，位于川沙，靠近浦东机场，所以一整天每隔几分钟就可以看到飞机降落。顿时感叹飞机的失事率还是非常低的。</p>
+<p>同事Qian帮忙联系了喜来春，购买的大众点评的团购票，每人88元，可以玩6个项目；联系了午饭，那边平时工作日厨师还不上班的，这厨师烧完就走了。霸气哦！！</p>
+<h4 id="出发">出发</h4><p>作为5位司机之一，接上搭车同事后，驱车经中环抵达目的地，在中环上总感觉车有点向左恍，但等抵达停下后，查看轮胎却没问题，还是小心为上，毕竟安全第一。</p>
+<h4 id="游玩">游玩</h4><ol>
+<li>射箭</li>
+</ol>
+<p>总共6个靶子，我们20几号人，就玩了大概4轮，小丹我头一回玩射箭，感受到就一句话：硬件条件非常重要。</p>
+<p>射箭处离靶位大概8米，靶子比较破旧，也就将就将就吧，不远处还在焚烧着类似树叶的垃圾。最好的成绩就是7环，箭的质量相对太差，只拿了一把新箭。而且玩久了，手指肋着弦的部位比较痛。<br>]]>
+    
+    </summary>
+    
+      <category term="Team Building" scheme="http://blog.staydan.com/tags/Team-Building/"/>
+    
+      <category term="喜来春" scheme="http://blog.staydan.com/tags/%E5%96%9C%E6%9D%A5%E6%98%A5/"/>
+    
+      <category term="Travel" scheme="http://blog.staydan.com/categories/Travel/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[韩国济州岛-兄弟姐妹游 Travelling in Jeju korea]]></title>
+    <link href="http://blog.staydan.com/2014/04/21/2014-04-21-travelling-in-jeju-island-korea/"/>
+    <id>http://blog.staydan.com/2014/04/21/2014-04-21-travelling-in-jeju-island-korea/</id>
+    <published>2014-04-21T09:52:46.000Z</published>
+    <updated>2015-06-19T01:57:18.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="前期准备">前期准备</h2><p>由于这次旅行算是女人家里兄弟姐妹出游（不过我貌似不是自己人嘛，挖鼻屎）<br>所以各自都有了分工，查攻略，和旅行社沟通，兑换韩币，租用随身wifi，联系机场停车等。。。<br>而我呢，仅仅负责了最后一项最easy的啦，所以整个前期准备过程我是相当的轻松啊。。。有人弄这么一大堆事真开心<br>提前请了两天假，算上双休日，所以是 济州岛4天3夜游（一天自由行）</p>
+<h2 id="第一天">第一天</h2><h3 id="出发篇">出发篇</h3><p>第一天的行程很简短，一早4点多就起来了，4点半就在小区附近接上了两位弟弟，暂时称为李某和徐某，然后诸司机驱车前往机场外3km的熙门连胜停车场</p>
+<p>大家如果有购买平安车险的，应该都会有送一次免费的机场停车，地点就是在这里了，总共为5天，网上查，如果你没挺满的话，会把剩余天数折换成兑换券给你使用（我没拿到）<br>其实从浦东开过去很近，半小时不到的时间，那地方第一次去比较难找，问了那边3个岗亭才找到。<br>记录完车子的信息后，给了一张单子，回来时凭上面的编号就能来机场接我们了，当然你也可以选择把车钥匙留在他们这里保管。</p>
+<p>往返停车场和机场的接送车是奔驰黑色面包车，比较宽敞。无论什么时间点，他们都会服务</p>
+<p>机场等候了1小时左右，中国籍导游出现了，带领我们托运行李和领取机票，真的好困啊！！！<br>乘坐的航班是Jinair LJ102，机组人员都是韩国人，空姐都好瘦的，穿着浅绿色衬衣+牛仔裤+马尾，说着别扭的中文。<br>可惜没看到飞机师的影子，上次去厦门还看到过坐在里面的飞机师呢<br>在经过了1小时多的飞行后，穿越了大海抵达济州岛国际机场，其实从天空看下去，排除掉美丽的海滩外，这地方还真是和南汇长的差不多</p>
+<p>整个飞行过程中就提供了一杯饮料，填写健康状况，入境表格。</p>
+<p>哈哈，landing到地面，终于又要在诸游客的新护照上盖章了，顺利入关，名正言顺的踏上了韩国的国土。</p>
+<h3 id="跟团游玩篇">跟团游玩篇</h3><p>出了机场后，有当地韩国籍导游 小安 全程带领我们，抹了很多发蜡的大背头，背着MCM的方方的包（反正诸游客是不爱），真的是大韩民国的子民太爱国了，机场停车场上停的车全是现代、起亚和只有在本国卖的三星车，导致整个行程后半部分已经审美疲劳了</p>
+<ul>
+<li><h5 id="自然史博物馆">自然史博物馆</h5><p>  第一个景点就是博物馆，介绍韩国生活上的历史和习俗，刚好有两位老师带着一群小朋友来这里参观，老师也涂的白花花和红红的唇膏，小朋友太可爱了，不是做鬼脸就是死命的逃。</p>
+<a id="more"></a>
+<p><img src="https://farm3.staticflickr.com/2933/13996245285_3a6312f2b0_o.jpg" alt="自然博物馆，小朋友很可爱，老师也都是化妆了的"></p>
+</li>
+<li><h5 id="龙头岩">龙头岩</h5><p>  第二个景点是龙头岩，其实就是有一个海边的石头长的像龙抬头，于是就成为了景点，海风还是满刺骨的冷，然后在照片里诸摄像变的好丑啊！！！第一次用韩元消费哦，买了个包了香肠的炸的东西吃，2000韩元，没啥好吃的，只是饿了。<br><img src="https://farm6.staticflickr.com/5034/13996244465_786cc925a2_o.jpg" alt="刚下飞机就去的景点，好大的风"></p>
+</li>
+<li><h5 id="午饭">午饭</h5><p>  诸吃客都不知道如何形容这里吃到的东西了，里面有土豆 骨头 白菜什么 味道淡淡的不怎么好吃 泡菜和酸萝卜我也不爱吃，午饭就被这样糟蹋了，肯定是没吃饱啊。此时此刻，李某吃了3碗饭，和徐某和两位不认识的美眉做在一桌<br><img src="https://farm3.staticflickr.com/2906/13993036892_217410c49d_o.jpg" alt="这个午饭一点都不好吃，超级不好次"></p>
+</li>
+<li><h5 id="泡菜学校">泡菜学校</h5><p>  哇，好“大”的学校哦，不就是带上一次性手套，把酱料涂在那泡菜上么，真是太无聊了啦这里，我就没玩，诸摄像拍了几张照片次次玩的照片和一点都不和蔼的老师，这里肯定是个骗钱的地方。<br>出来后，蔡家的果然是一家的，开始换装门口的免费韩服，诸摄像自觉给他们拍照啦<br><img src="https://farm6.staticflickr.com/5174/14016232703_7407360e37_o.jpg" alt="就这么个傻地方哦，居然也能称为学校"></p>
+</li>
+<li><h5 id="紫菜博物馆">紫菜博物馆</h5><p>  为什么什么都要弄个博物馆结尾呢，参观参观简陋的展厅，那个那么薄的紫菜能在机器里做出来真是太神奇了，然后就是推销紫菜了，有试吃，好多口味，原味、烤肉、芥末等，然后我们几个都买了几包海苔，买5送一，平均下来1w韩币1包，我们买了烤肉味和芥末味，那几包紫菜在回到上海后被次次消灭的非常迅速。<br><img src="https://farm8.staticflickr.com/7355/14016232093_2e0312ac16_o.jpg" alt="确实不错，值得推荐"><br><img src="https://farm8.staticflickr.com/7159/14016231473_9e17126e9a_o.jpg" alt="PPLL的Cici"></p>
+</li>
+</ul>
+<ul>
+<li><h5 id="香格里拉酒店">香格里拉酒店</h5>  随后小安宣布第一天的安排全部结束了，送我们入住酒店，虽然不是上海的香格里拉的档次，但印象还是蛮不错的，有热乎乎的地暖（真的事能热死，进入房内需要脱掉鞋子换拖鞋才能进入，尊重当地习俗嘛），还有会自动锁门的房门，带冷藏和冷冻的小冰箱，遮光超级好的窗帘，自动感应的灯，超级清晰的电视机，非常精致的广告，看都看不完当然也看不懂的韩剧。<br>  唯一的不足就是酒店离市中心还有段较长的距离。诸房客终于可以躺下来休息休息了，太累了。<br><img src="https://farm8.staticflickr.com/7087/13996235445_d4ca26bdb2_o.jpg" alt="超级超级清晰的韩国电视节目"></li>
+</ul>
+<h3 id="自由游玩篇">自由游玩篇</h3><ul>
+<li><h5 id="CU便利店">CU便利店</h5><p>  带上了必须的随身物品后，开始寻觅何处吃晚饭，之前提过酒店太偏僻，附近没啥吃的。<br>不懂韩语太让人心力憔悴了，在CU便利店里跟大妈说要买交通卡，大妈不懂英语，李某和徐某尝试了肢体语言，各种失败后，最终终于在大家和大妈莫名的默契下搞定了一张交通卡（Bus Card），当时诸路人已经放弃了。</p>
+</li>
+<li><h5 id="韩国小吃店（名字打不来）">韩国小吃店（名字打不来）</h5><p>  走了很久之后，大家大概都饿了，在一家路边的店里驻足吃了点东西，这里只要指着图片跟他们说要哪个就行了，都是以粉丝为主的吃的。<br><img src="https://farm8.staticflickr.com/7063/14016702813_59bc0e82b7_o.jpg" alt="一家在新济州路附近的小吃店，粉丝为主，推荐"></p>
+</li>
+<li><h5 id="Chocolate_shop">Chocolate shop</h5><p>  营业员是一个会讲中文但不是很流利的韩国大姐，有好多好多巧克力，特色还是当地的柑橘巧克力啦，因为是第一天在济州岛，不知道这个东西到处都有，所以当时就买了5盒吧好像，然后还送了一盒，外加一个大袋子。后来我们徒步有走回了这里，想问她哪里吃烤肉比较正宗，结果没想到她已经下班换了个人了。</p>
+</li>
+<li><h5 id="大超市（Not_eMart）">大超市（Not eMart）</h5><p>  在异国他乡逛超市也是种奇怪的感受，几个人买了好多的香蕉牛奶，但个人感受没那么好喝，也不解渴。还有人买了泡面带给朋友。银联还是覆盖的挺广泛的，许多地方基本都能用银联结账。<br><img src="https://farm3.staticflickr.com/2925/13993029772_22a5420db9_o.jpg" alt="帅气的弟弟，唱歌超级好听"></p>
+</li>
+<li><h5 id="晚餐">晚餐</h5><p>  然后在公交车站又研究了很久，来了辆车，李某拿着小安微信发给他的韩语目的地上车问司机，这景象你想象下在上海众多KFC店里有大妈拿着一张名片到你跟前，装聋作哑点点名片，示意让你看，然后让你施舍点钱。李某当时就跟这差不多意境。我们选择一站人相对多的一站下了车，可是对于吃那家店这个问题上，6个人傻乎乎的愣是徒步了1个多小时才最后决定在新济州步行街的烤肉店吃解决，店由唯一的一位中国女性在门外拉客，“烤肉，烤肉”。肉很少啊，不过用湿漉漉的看上很新鲜的菜包着烤好的肉和配菜的吃法真的不错，解了肉的油腻，就是肉太少了。6个人6w韩元不到点。<br><img src="https://farm6.staticflickr.com/5309/13996652474_5e78d31928_o.jpg" alt="韩国烤肉店最大的特色就是那菜叶看着好新鲜的，上面还有露珠"></p>
+</li>
+<li><h5 id="济州柑橘">济州柑橘</h5><p>  吃完晚饭来聊聊橘子，济州岛是盛产柑橘的地方，整个韩国的橘子供应都是来自济州岛。小安说这里的橘子是一个个卖的，不像中国是称重卖的，但李某在我们晚上徒步找吃的途中在路边店里买了一个橘子，店家也是称重的啊，一个橘子换算过来要25人民币！！！天价橘子有木有！！！诸路人表示吃不起。小安有提醒我们不要去摘农民种的橘子。<br><img src="https://farm6.staticflickr.com/5045/13996675264_bd84730e42_o.jpg" alt="高富帅的橘子"></p>
+</li>
+<li><h5 id="炸鸡">炸鸡</h5><p>  去的时候刚好《来自星星的你》这部剧非常的火，抵挡不住炸鸡的诱惑，让酒店前台帮忙叫了外卖。。。洗好澡，，吃个炸鸡和冰饮料。。真是太满足了，店名叫什么《Checken the home》，详细的记不清了。。依稀记得是这个，网站是<a href="http://www.checkenthehome.co.kr/" target="_blank" rel="external">点此前往</a>（虽然打不开，呵呵），它这个炸鸡很特别，是一个个盒子包好的，不像中国的KFC全家桶什么的，它是一整只小鸡炸好了切块放在里面，尤其是那个黄色的蘸酱特别好吃（关于这个蘸酱，后面还有故事），泡菜味的炸鸡也挺不错的。反正就是给炸鸡点赞！</p>
+</li>
+</ul>
+<h3 id="小结">小结</h3><p>回到酒店，除了累还是累，为了个晚饭走了那么多路，终于可以在床上坐下躺着了，洗完澡，舒舒服服的看着看不懂的电视。旅行社给我们定的都是双床房标准间。。。晚安！！</p>
+<h2 id="第二天">第二天</h2><h3 id="跟团游玩篇-1">跟团游玩篇</h3><p>第二天的行程相对就比较局促了，因为整个一天都是跟着旅行团大巴走走停停的走马观花，实在是太累了，有点记不太清行程，就把记得的写下来</p>
+<ul>
+<li><h5 id="独立岩">独立岩</h5><p>  位于断崖绝壁林立、美丽岛屿众多的西归浦沿岸地区。亦被称为将军岩或孤石浦。 《大长今》中长今与韩尚宫被流放的场景、 长今孤身一人站在绝壁上决心从医的场面拍摄与此就是以此作为背景拍摄地。</p>
+<p>  没看过大长今，估计也不会有兴趣去看了，山上面就放了个人形的纸膜，然后脸部被挖去了供游客摆拍留念的，因为济州岛是四面环海，所以只要有海水的地方都非常的漂亮，独立岩也不例外，这个景点给的时间不多，我们就在那个大平台上合了个影，还在草地上跳起来拍了几张2B照，土豪永远在摆Pose，然后等我来拍。</p>
+<p>  来这里玩的韩国人也非常多，可见这里还是相当不错的。<br><img src="https://farm6.staticflickr.com/5036/13993055841_de98dc0050_o.jpg" alt="独立岩"><br><img src="https://farm6.staticflickr.com/5303/13993028042_3ebd4f8406_o.jpg" alt="独立岩"></p>
+</li>
+<li><h5 id="药泉寺">药泉寺</h5><p>  是个不大的寺庙，大殿还是蛮宏伟的，去的时候刚好有几个看似是和尚的人在里面诵经，主颂人还拿着个麦克风，当然啦，我们是听不懂他们在念什么的，只好默默的脱了鞋进去参观下，从楼梯上到二楼后，整个二楼墙壁上方都放着很多金色的物件，依稀记得是小佛像。为了表示尊敬，我们没有拍照，正对着大殿的二楼区域天花板上挂着许许多多的卡（许愿卡？不得而知了）。</p>
+<p>  然后传说中的药泉寺有名的地方是门口的两口大水缸，里面的水是可以直接饮用的，但总觉得旁边的水勺也不是很干净，想想那么多人用哪个勺子在缸里面舀水喝，能干净么。。。无奈，既然来了就喝一小口，为了不留遗憾。摆拍的几张照片也不理想。<br><img src="https://farm8.staticflickr.com/7101/13993054391_28afd50d07_o.jpg" alt="这里的感觉很大，很有食欲，导游告诉我们不要去摘"></p>
+</li>
+</ul>
+<ul>
+<li><h5 id="乐天免税店">乐天免税店</h5></li>
+<li><h5 id="午饭-1">午饭</h5><p>  午饭去了一个长得像饭堂一样的地方，菜单式：人参鸡汤。</p>
+<p>  简单的说就是鸡肚子里面被掏空后，里面塞了米饭和人参，然后一整只小童子鸡放在大碗里蒸熟后就可以食用了。肚子饿了，所以味道还不错，就是鸡肉太老了，没吃完。</p>
+</li>
+<li><h5 id="朝安泰迪熊博物馆">朝安泰迪熊博物馆</h5><p>  第一次参观泰迪熊博物馆，给我印象最深的其实是每只泰迪熊身上穿的衣服，每一件衣服都是根据对应的场景度身打造的，还是蛮有趣的，这里拍了好多照片，悲剧的是相机从这站开始一直报警电池电量低。逛到最后就是小卖部了，里面放着好多可爱的泰迪，要是钱多或者是脑残粉，可以买几个带回去，真的是在是贵。真的好想把那一整套米白色的泰迪熊抱回家。。。一定会非常幸福！<br><img src="https://farm8.staticflickr.com/7151/13993025582_c723b1dcdf_o.jpg" alt="最喜欢着一组泰迪，好想抱回家"></p>
+</li>
+<li><h5 id="汽车博物馆">汽车博物馆</h5><p>  这站是非常无聊的，我对车没研究，而且这里放的也不是韩国本土品牌的车，都是欧美为主的。但以前的车子真的都好大啊，整个车身在宽度比现在的大多了，要是放在现在，那估计很多停车场是停不进去的了，哈哈（我一定是像太多了）。出来的门口有个厕所，然后傻Cici让我把标示男女的娃娃给拍下来，你的兴趣点也很异样啊。</p>
+</li>
+<li><h5 id="思索之苑">思索之苑</h5><p>  韩国的花卉盆栽专门公园，素有“遐想的庭院”之称，这里为生活在烦嚣都市中的人们提供了一片休息的净土。里面可以自己喂鱼。</p>
+<p>  让我想到了我们之前在苏州各个园林逛的时候的场景，济州岛这个绝对没有苏州的那些好，建议大家去苏州园林游玩下。</p>
+<p>  然后我相机就没电了。。。悲剧。。。</p>
+</li>
+<li><h5 id="绿茶博物馆">绿茶博物馆</h5><p>韩国是没有茶文化的，这里的茶加工好后估计是出口到中国，商店里面有许多和绿茶相关的商品。</p>
+</li>
+<li><h5 id="神秘山坡道路">神秘山坡道路</h5><p>一条神秘的小路，充满着魔力，这明明是上坡，车子熄火停住后，居然还能自己往前前行，这真的事一条神秘的小路。</p>
+</li>
+</ul>
+<h3 id="自由游玩篇-1">自由游玩篇</h3><ul>
+<li><h5 id="晚饭">晚饭</h5><p>  晚饭注定又是纠结的，本来是想吃石锅饭的，因为想试下韩国正宗的石锅饭嘛，结果又是走了好久好久，一小时的犹豫来犹豫去，最后在一家名不见经传的牛肉大火锅店里解决了，当时已经晚上8点半了。</p>
+<p>  我们点了两锅，一个是牛肉，一个是别的啥不记得了。牛肉锅的味道绝对一流（也有可能是我们大家都饿坏了）</p>
+<p>  期间，在旁边桌偶遇了在韩国工作的中国人，更巧的是他们开的是TOYOTA，日本车哦。他们帮我们去询问第三天目的地牛岛的包车价格，虽然最后由于价格还是太高我们没有采用他们给的建议，但还是要灰常灰常的感谢这几位在异国他乡的中国同胞。他乡遇故知的感觉太好了！</p>
+<p>  老板娘还会拿着三星的智能手机用翻译软件询问我们从哪里来，东西好不好吃什么的，特别和蔼哦。。这店里有一半是有座椅的，另一半是没有座椅，直接就盘坐在地板上的。</p>
+</li>
+<li><h5 id="回酒店">回酒店</h5><p>  吃饱喝足后，又随便逛了逛，在CU的便利店里，买了点口粮，弟弟们买了超大号的棒棒糖，又是香蕉牛奶，我们就买了一个长的跟吃炸鸡蘸酱一样包装的东西（回到上海后，发现里面是腌萝卜），一根饼干模样的冰淇淋（味道超赞，回到上海后，在浦东嘉里城地下一楼的超市里也发现了这个冰淇淋，但是好贵好贵啊，吃不起了）。</p>
+<p>  在想扔冰淇淋外包装的时候，始终都找不到附近有什么垃圾桶，最后发现，原来垃圾桶是在便利店里的平时让我们吃泡面吃东西的桌子下面，而且是严格分类的。在中国没这习惯果然不适应。</p>
+<p>  吸取了第一天的教训之后，我们直接打了两辆taxi回到酒店，我们那辆车的司机没有打表，经过询问，原来他说是跟前面那辆车一样价格就行了，然后我们就开始瞎想，我靠。。。他们的技术这么高端，还可以云端同步查询其他车辆的载客价格，到下车的时候我们满怀着期待的等待着他的操作，结果他就打开车门，跑到前面那辆车看了一眼后回来告诉我们，真是大跌眼镜啊。司机大叔在接过我递给他的酒店名片后，他找出副超细的眼镜戴上，还强调是Made In China. 其实我心里想，Made in China的东西一般质量都不怎么样啊。</p>
+<p>  晚上大家齐聚在一个房间里继续清算白天的账目，算清后滚回房间洗洗睡了。第二天结束鸟。</p>
+</li>
+</ul>
+<h2 id="第三天">第三天</h2><h3 id="自由行的一天（U-DO）">自由行的一天（U-DO）</h3><p><br><br>在驴妈妈上买的团是带一天自由行的，所以呢，今天的行程就是自由行去牛岛，位于济州岛边上的一个小岛，本人吧，这次旅游从头至尾都没有做过功课，原本以为这会是一次最轻松的一次旅行，此处必须有个但是，但是没想到是非常累啊！！！</p>
+<p>因为昨儿个晚上跟酒店前台商量好了，一早弟弟姐姐们就去叫车了，本人和女朋友就在餐厅里淡定的吃早饭，早上准时坐上两辆黑色VIP出租车出发去长途汽车总站，在路上，本人坐的那辆的司机真是时髦和多动症，也不考虑我们的人生安全，一直在用手机上的翻译软件跟我们聊，真心讲，这类的软件完全就是鸡肋，关键时候是派不上用处的，很多都是翻译的要么对方不明白，要么就是我们不明白，从酒店到汽车站总共花费7500韩元。<br><img src="https://farm3.staticflickr.com/2921/13993008812_6f25d85029_o.jpg" alt="前天晚上打的出taxi，他们的设备都很齐全的"></p>
+<p>汽车总站买到牛岛的长途车票，每人3000韩元，经过了一小时的车程后，抵达码头，再买船票，每人5500韩元，还算售票员会点英文，一切顺利，十几分钟的漂泊后抵达了牛岛码头，兴奋之心难以掩盖啊，途中当心要躲避跟着船飞的奇怪的海鸥，因为它们会不分时间不分地点的拉屎！！！<br><img src="https://farm3.staticflickr.com/2936/14016222493_afc4db940c_o.jpg" alt="永远有海鸥跟着我们的渡船，犹如他们在护送着我们"><br><img src="https://farm8.staticflickr.com/7231/13993024182_86de2162a1_o.jpg" alt="看，牛岛在欢迎我们呢"></p>
+<p>刚上到就能看到位于正当中的“牛岛海女抗日运动纪念碑”，有一块碑和几个海女的石像组成，当时对海女的概念还不是很熟悉，直到第四天参观海女博物馆的时候才知道，后悔当时没仔细观察海上的海女啊。<br><img src="https://farm8.staticflickr.com/7158/13993050581_d1a51d8be5_o.jpg" alt="让人尊敬的海女"></p>
+<p>原本计划的是，大家租摩托、电瓶车或者带电的自行车环岛游览一圈，结果被告知<strong>中国驾照不能在岛上使用</strong>，无奈之下，先填饱肚子再说，也当作是午饭了，这家店下了船走进岛内就能立马看到，该店专注做两种产品，都是炸酱面，里面有个员工师傅是中国人，交流起来又顺畅了，炸酱面的量非常足，上面还放了一点点海鲜，绝对入味！一碗海鲜炸酱面8000韩元。值得推荐！！<br><img src="https://farm8.staticflickr.com/7006/13996657454_3a37002624_o.jpg" alt="可爱"><br>吃饱喝足后，只好在隔壁租了6辆自行车（一人3小时10000韩币），正式踏上咱们的环岛骑行之旅，整个岛为了方便环岛的旅行者，发现道路基本和海平面的高度差不了太多，这样骑起来不会太费力，而且关键是这样就能欣赏到牛岛美丽的海面沙滩的景色了。骑行途中，才发现牛岛上的旅行团特别少，只看到2、3个，大概因为岛上没有什么购物商店的关系吧，真为那些跟团的人觉得可惜，那么好的风景他们错过了。<br><img src="https://farm8.staticflickr.com/7202/13996665484_0cd9a709bf_o.jpg" alt="看，美女"></p>
+<p>我们每到一个有人的地方都会停留下拍拍照，尤其是遇到的第一个沙滩，脚下是颗粒感十足的小石子铺成的沙滩，水清澈无比，作为6人中的兼职摄像师，拍了几张照之后，终于没忍住，脱掉了鞋子和袜子，能双脚踏进这美丽的海，瞬间冰冷刺骨的水吞噬了双脚，终于弥补了上次在厦门鼓浪屿海滩边上为了看包没有赤脚淌水的遗憾。海岸上海有很多韩国人全家来这里玩的。</p>
+<p>姐夫倒是一个人一个劲的享受着骑自行车带来的乐趣，人都找不到了，不合群啊不合群。<br><img src="https://farm8.staticflickr.com/7342/13993017042_8cb2038dbf_o.jpg" alt="美到无法用言语来形容的海，这颜色在上海是永远看不到的了"><br>此时那种和大自然融为一体的感受特别深刻，岛上环岛骑行的话，一半距离的时候能看到有一处用石头围起来的不太高的地，里面养了好多好多乌鸦，韩国人和中国人是相反的，看到乌鸦是代表有好运到来。可是黑压压的一片感觉就不怎么样啊。<br><img src="https://farm6.staticflickr.com/5557/13996664764_88c04db9b0_o.jpg" alt="挺喜欢这张的"><br><img src="https://farm3.staticflickr.com/2905/14016217333_f047998181_o.jpg" alt="这家开在牛岛的小快餐店，里面居然有大蒜味的冰淇淋"></p>
+<p>我们足足骑了3个小时，刚刚好用满了租车的钱的最大价值，最后一段是上坡，非常非常累，实在是骑不动了，推着车上去的。中途开了咕咚运动来跟踪骑行路径。当最后一个下坡后看到我们租车的店，真是解脱了，看到希望。<br><img src="https://farm3.staticflickr.com/2899/13993048311_115c427273_o.jpg" alt="来张和美景的合影"><br><img src="https://farm6.staticflickr.com/5109/13973115506_917c0b7f05_o.jpg" alt="好多小石头"><br><img src="https://farm6.staticflickr.com/5113/13996222305_a8b5f63d47_o.jpg" alt="自然的美"></p>
+<p>骑到后半程又会遇到一个更美丽的海滩，游客也稀少，在这咱拍了一次集体照。<br><img src="https://farm6.staticflickr.com/5226/13993015762_f210a0d59a_o.jpg" alt="我们真的拍了好多合影呢，要感谢那些好心人"></p>
+<p>双脚下来后，整个软掉了，到了附近的一家咖啡店驻足停留休整，坐了会恢复体力后，坐船（船的班次还是蛮密的，10分钟一次）回济州岛主岛，一路上依旧是海鸥的伴随。</p>
+<p>打的到新罗免税店，买了点烟给老爸和舅舅，然后就是女人们的天堂了，但两个傻女人没怎么买东西，反而土豪买了一个和背包同系列的钱包，2k多人民币。晚饭在新济州路的一家海鲜店吃了。味道真心一般，还遇到个撒酒疯的东北男人，受不了啊。。。海鲜锅、石锅饭、饼，都很一般。不明白在这里打工的中国人的想法是什么。</p>
+<p>又去7-11买了几包单独的烟给老爸，然后就打的回了酒店，再次叫了炸鸡，美味啊！然后就是算账清帐的时间段。</p>
+<h2 id="第四天">第四天</h2><h3 id="跟团游玩篇-2">跟团游玩篇</h3><ul>
+<li><h5 id="海女博物馆">海女博物馆</h5><p>  这里值得参观下，介绍了海女的历史和现状，最年轻的是50多岁，最年长的是83岁好像，海女都是从小开始培养下水，直到老了后开始正式成为海女。对于这些从业者，我表示非常尊敬。</p>
+</li>
+<li><h5 id="成山日出峰">成山日出峰</h5><p>  一座死火山，火山口已经被封起来了，所以当我们辛辛苦苦爬上去的时候，发现居然已经是一片荒地，但浪费感情了啦，日出峰山脚下有座屋子，海女出海工作时会从这里出发，所以如果你没去牛岛却来到了这里，运气好的话会这这里碰到海女哦。<br>  <img src="https://farm8.staticflickr.com/7249/13973109916_5b285ff892_o.jpg" alt="时常有海女出没的房子"></p>
+</li>
+<li><h5 id="涉地岬">涉地岬</h5><p>  这里其实已经真的玩不动了，就下车随处走了走，没有走远，一是风实在是太大了，二是肚子也开始饿了。有了牛岛的经历，这边就真的没什么特色了。</p>
+</li>
+<li><h5 id="桔园">桔园</h5><p>  导游小安一直念念叨叨着他们公司多大多牛逼，就带我们来了他们公司的桔园，可这桔园也太破了，地上都是烂橘子，树上的橘子叶特别小，也还有很多没有成熟的，失望啊，接着就又是一个卖巧克力的店。</p>
+</li>
+<li><h5 id="城邑民俗村">城邑民俗村</h5><p>  这个民俗村，传说就是这里是海女的生活村落，原始、封建、落伍，一开始的当地导游解锁还是讲的挺有一次的，但最后一进小房间后，性质就变了，开始推销了各种当地特色东西了，反正我是全称玩手机。</p>
+</li>
+<li><h5 id="土特产店">土特产店</h5><p>  驴妈妈的行程安排里是没有，反正去就去呗，也实在是没撒要买的，就出来等出发了。</p>
+</li>
+<li><h5 id="新罗免税店">新罗免税店</h5><p>  去机场前的最后一站，导游把我们放在这里shopping，然后到点来接我们去机场，我们6个买完后，就去对面的甜品店坐了会吃了点东西，都是以年糕为特色的东西。</p>
+</li>
+</ul>
+<h3 id="返程篇">返程篇</h3><p>机场里，等待托运行李拿飞机票，居然还会碰到有中国人插队，真是太丢脸了。</p>
+<p>早早的就候机了，然后傻等，期间在免税店看了看手表，还是贵。。。</p>
+<p>终于在济州岛当地时间22点15分顺利起飞了，因为时差的关系，到上海也就10点半左右，然后逛了日上免税店（24小时的），熙门连胜停车场还是满给力的，我们打电话的时候他们已经有车子在出发层等候我们了，比姐姐姐夫停的停车场好，懂得根据航班信息预判，节省客户的时间，顺利拿到车子，停车场送了张贴纸，以后凭贴纸享受折扣优惠（具体折扣我忘了），送弟弟们回家，终于旅行结束了。</p>
+<p>刚出浦东国际机场，就看到了熟悉的雾霾天气，风景真是太不好了。之后的几天时间里，我都有感到胸口闷，不时的回抽痛下，一直认为是因为一下子从济州岛优质的空气质量转换到上海的差空气质量，不适应的结果。</p>
+<p><em>如果是自由行，懂得韩语并且能正常沟通的话，如此美的济州岛，我相信一定在某个景点驻足停留许久许久不愿离去，在匆忙的跟团游行程中，忽略了不少的美景，我们需要的应该是躺在独立岩的草地上，看着湛蓝的天空，抛开一切尘世烦恼，享受着这人世间的美好。</em></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="前期准备">前期准备</h2><p>由于这次旅行算是女人家里兄弟姐妹出游（不过我貌似不是自己人嘛，挖鼻屎）<br>所以各自都有了分工，查攻略，和旅行社沟通，兑换韩币，租用随身wifi，联系机场停车等。。。<br>而我呢，仅仅负责了最后一项最easy的啦，所以整个前期准备过程我是相当的轻松啊。。。有人弄这么一大堆事真开心<br>提前请了两天假，算上双休日，所以是 济州岛4天3夜游（一天自由行）</p>
+<h2 id="第一天">第一天</h2><h3 id="出发篇">出发篇</h3><p>第一天的行程很简短，一早4点多就起来了，4点半就在小区附近接上了两位弟弟，暂时称为李某和徐某，然后诸司机驱车前往机场外3km的熙门连胜停车场</p>
+<p>大家如果有购买平安车险的，应该都会有送一次免费的机场停车，地点就是在这里了，总共为5天，网上查，如果你没挺满的话，会把剩余天数折换成兑换券给你使用（我没拿到）<br>其实从浦东开过去很近，半小时不到的时间，那地方第一次去比较难找，问了那边3个岗亭才找到。<br>记录完车子的信息后，给了一张单子，回来时凭上面的编号就能来机场接我们了，当然你也可以选择把车钥匙留在他们这里保管。</p>
+<p>往返停车场和机场的接送车是奔驰黑色面包车，比较宽敞。无论什么时间点，他们都会服务</p>
+<p>机场等候了1小时左右，中国籍导游出现了，带领我们托运行李和领取机票，真的好困啊！！！<br>乘坐的航班是Jinair LJ102，机组人员都是韩国人，空姐都好瘦的，穿着浅绿色衬衣+牛仔裤+马尾，说着别扭的中文。<br>可惜没看到飞机师的影子，上次去厦门还看到过坐在里面的飞机师呢<br>在经过了1小时多的飞行后，穿越了大海抵达济州岛国际机场，其实从天空看下去，排除掉美丽的海滩外，这地方还真是和南汇长的差不多</p>
+<p>整个飞行过程中就提供了一杯饮料，填写健康状况，入境表格。</p>
+<p>哈哈，landing到地面，终于又要在诸游客的新护照上盖章了，顺利入关，名正言顺的踏上了韩国的国土。</p>
+<h3 id="跟团游玩篇">跟团游玩篇</h3><p>出了机场后，有当地韩国籍导游 小安 全程带领我们，抹了很多发蜡的大背头，背着MCM的方方的包（反正诸游客是不爱），真的是大韩民国的子民太爱国了，机场停车场上停的车全是现代、起亚和只有在本国卖的三星车，导致整个行程后半部分已经审美疲劳了</p>
+<ul>
+<li><h5 id="自然史博物馆">自然史博物馆</h5><p>  第一个景点就是博物馆，介绍韩国生活上的历史和习俗，刚好有两位老师带着一群小朋友来这里参观，老师也涂的白花花和红红的唇膏，小朋友太可爱了，不是做鬼脸就是死命的逃。</p>]]>
+    
+    </summary>
+    
+      <category term="Jeju" scheme="http://blog.staydan.com/tags/Jeju/"/>
+    
+      <category term="济州岛" scheme="http://blog.staydan.com/tags/%E6%B5%8E%E5%B7%9E%E5%B2%9B/"/>
+    
+      <category term="Travel" scheme="http://blog.staydan.com/categories/Travel/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[如何将没有无线网卡的台式机连上Wifi呢？]]></title>
+    <link href="http://blog.staydan.com/2014/03/31/2014-03-31-how-to-connect-to-wifi-without-wireless-adpater-for-pc/"/>
+    <id>http://blog.staydan.com/2014/03/31/2014-03-31-how-to-connect-to-wifi-without-wireless-adpater-for-pc/</id>
+    <published>2014-03-30T16:00:00.000Z</published>
+    <updated>2015-06-19T01:57:18.000Z</updated>
+    <content type="html"><![CDATA[<p>前几天把家里的台式机搬到了女朋友家，然后兴奋的她可以每晚都玩网游了呢。。。哈哈</p>
+<p>可是，当全部接好线后，发现，没有足够长的网线连接在飘窗的台式机和在储藏室的电信猫。</p>
+<p>背景就是以上描述的，经过尝试证实了一个解决方案是可行的。<a id="more"></a></p>
+<p><strong>准备：</strong>   </p>
+<ol>
+<li>一台正常可运行的没有无线网卡的台式机PC</li>
+<li>一台可以连上Wifi的笔记本</li>
+<li>一根1-2米长的网线</li>
+</ol>
+<p><strong>操作步骤：</strong></p>
+<ol>
+<li>笔记本连接上Wifi网络，并且确认已经有网络可以访问</li>
+<li>将网线连接起台式机和笔记本的网口（由于笔记本连接的事Wifi，所以会有一个网口可用）</li>
+<li>打开控制面板-&gt;网络连接</li>
+<li>按住Ctrl键 选中 “本地连接” 和 当前已连接上的Wifi网络</li>
+<li>鼠标右键其中任一一个，选择 “网络桥接”</li>
+</ol>
+<p>随后剩下的工作就留给系统来完成吧，过不了几分钟，就能看到台式机上的网络状态已经变成 有网络了。</p>
+<p>笔记本上的状态截图如下图，成功桥接后，会自动新建出一个新的网络连接类型，当你取消桥接的时候，这些都会复原成原本的连接类型。</p>
+<p><a href="https://www.flickr.com/photos/123460474@N06/13943133542" target="_blank" rel="external"><img src="https://farm3.staticflickr.com/2917/13943133542_cb17659f9c_c.jpg" alt="bridge-connection picture" title="Bridge Connection"></a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>前几天把家里的台式机搬到了女朋友家，然后兴奋的她可以每晚都玩网游了呢。。。哈哈</p>
+<p>可是，当全部接好线后，发现，没有足够长的网线连接在飘窗的台式机和在储藏室的电信猫。</p>
+<p>背景就是以上描述的，经过尝试证实了一个解决方案是可行的。]]>
+    
+    </summary>
+    
+      <category term="Network" scheme="http://blog.staydan.com/tags/Network/"/>
+    
+      <category term="PC" scheme="http://blog.staydan.com/tags/PC/"/>
+    
+      <category term="laptop" scheme="http://blog.staydan.com/tags/laptop/"/>
+    
+      <category term="Operations" scheme="http://blog.staydan.com/categories/Operations/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Add tooltips to Textfield in ExtJS]]></title>
+    <link href="http://blog.staydan.com/2014/02/27/2014-02-27-add-tooltips-to-textfield-in-extjs/"/>
+    <id>http://blog.staydan.com/2014/02/27/2014-02-27-add-tooltips-to-textfield-in-extjs/</id>
+    <published>2014-02-26T16:00:00.000Z</published>
+    <updated>2015-06-19T01:57:18.000Z</updated>
+    <content type="html"><![CDATA[<p>We know Tooltips is very useful in ExtJS, it will help user to understand what it is and often give some guidance information to them from developers.</p>
+<p>Because when this app is being developed, they always think those people who gonna to use it are foolish, so they need to spend time to think out the tips for every confusing components.</p>
+<p>Here is the basic example for Ext.tip.ToolTip, just do things like this.</p>
+<p><a href="https://www.flickr.com/photos/123460474@N06/13943132722" title="tip-basic-example by Mengdan zhu, on Flickr" target="_blank" rel="external"><img src="https://farm6.staticflickr.com/5028/13943132722_419c2b9244_z.jpg" alt="tip-basic-example picture" title="tip-basic-example"></a><br><a id="more"></a></p>
+<p>So, if we look up the tooltips config in <a href="http://localhost/extjs421/docs/index.html#" target="_blank" rel="external">Ext.button.Button</a>, we will easily find it, as a result, it’s easy for us to add this text to this button. But how can we add this feature to textfield while ExtJS doesn’t provide this for textfield. Here’s the config screenshot for textfield.</p>
+<p><a href="https://www.flickr.com/photos/123460474@N06/13943142392" title="config-ext-form-field-text by Mengdan zhu, on Flickr" target="_blank" rel="external"><img src="https://farm8.staticflickr.com/7001/13943142392_6b6c7472ac_o.jpg" alt="config-ext-form-field-text" title="config-ext-form-field-text"></a></p>
+<p>So, I think about one solution which can works maybe.</p>
+<p>Create my own component, I named it tiptextfield. It just extend Ext.form.field.Text class, and add only one feature to it: tooltips.</p>
+<p>And finally, follow these two steps, you will see the tooltips running well on textfield.</p>
+<ol>
+<li>Include my tiptextfield js file to your project</li>
+<li>Use ‘xtype: tiptextfield’ instead of ‘xtype: textfield’</li>
+<li>Add a new config -&gt; tooltip: {text: ‘Your tips info here’, title: ‘Tips’}</li>
+</ol>
+<p>Here’s the source codes of tiptextfield.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> *</span><br><span class="line"> * @Author: Daniel(staydan.com)</span><br><span class="line"> * @Date  : Feb 14th, 2014</span><br><span class="line"> *</span><br><span class="line"> */</span></span><br><span class="line"><span class="comment">/*global Ext:false */</span></span><br><span class="line">Ext.define(<span class="string">'Staydan.view.component.TipsTextField'</span>, &#123;</span><br><span class="line">    requires: [ <span class="string">'Ext.form.field.Text'</span> ],</span><br><span class="line">    extend: <span class="string">'Ext.form.field.Text'</span>,</span><br><span class="line"></span><br><span class="line">    alias: <span class="string">'widget.tipstextfield'</span>,</span><br><span class="line">    alternateClassName: <span class="string">'Ext.form.TipsTextField'</span>,</span><br><span class="line">    tooltip : &#123;&#125;,</span><br><span class="line"></span><br><span class="line">    afterRender: <span class="function"><span class="keyword">function</span> (<span class="params">ct, position</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">        me.callParent(<span class="built_in">arguments</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.tooltip.text) &#123;</span><br><span class="line">            <span class="keyword">new</span> Ext.ToolTip(&#123;</span><br><span class="line">                target : <span class="keyword">this</span>.id,</span><br><span class="line">                trackMouse : <span class="literal">false</span>,</span><br><span class="line">                maxWidth : <span class="number">250</span>,</span><br><span class="line">                minWidth : <span class="number">100</span>,</span><br><span class="line">                html : <span class="keyword">this</span>.tooltip.text</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    initComponent: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.callParent(<span class="built_in">arguments</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>JS File Link: <a href="http://staydan.com/blog/wp-content/uploads/2014/02/TipsTextField.js" target="_blank" rel="external">TipsTextField in ExtJS</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>We know Tooltips is very useful in ExtJS, it will help user to understand what it is and often give some guidance information to them from developers.</p>
+<p>Because when this app is being developed, they always think those people who gonna to use it are foolish, so they need to spend time to think out the tips for every confusing components.</p>
+<p>Here is the basic example for Ext.tip.ToolTip, just do things like this.</p>
+<p><a href="https://www.flickr.com/photos/123460474@N06/13943132722" title="tip-basic-example by Mengdan zhu, on Flickr"><img src="https://farm6.staticflickr.com/5028/13943132722_419c2b9244_z.jpg" alt="tip-basic-example picture" title="tip-basic-example"></a><br>]]>
+    
+    </summary>
+    
+      <category term="Textfield" scheme="http://blog.staydan.com/tags/Textfield/"/>
+    
+      <category term="Tooltips" scheme="http://blog.staydan.com/tags/Tooltips/"/>
+    
+      <category term="JavaScript" scheme="http://blog.staydan.com/categories/JavaScript/"/>
+    
+      <category term="ExtJS" scheme="http://blog.staydan.com/categories/JavaScript/ExtJS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Ghost issue in Enyo.Scroller]]></title>
+    <link href="http://blog.staydan.com/2014/02/23/2014-02-23-ghost-issue-in-enyo-scroller/"/>
+    <id>http://blog.staydan.com/2014/02/23/2014-02-23-ghost-issue-in-enyo-scroller/</id>
+    <published>2014-02-22T16:00:00.000Z</published>
+    <updated>2015-06-19T01:57:18.000Z</updated>
+    <content type="html"><![CDATA[<p>先描述下问题的背景</p>
+<p>同事有一个用EnyoJS写的手机app，用PhoneGap打包在Android和iOS下，在iOS升级7.0.*新版本后，许多用户都开发反应，在该新版本下的iPhone5中会出现诡异的现象。</p>
+<p>具体表现为：</p>
+<ol>
+<li>登录后进入Level 1画面，点击某一条数据进入Level 2画面，接下来level 3/4/5都是有用Enyo.Scroller构件的画面，当用户使用搭载着iOS 7.0.*版本的iPhone5时，从Lv2到之后的画面时，所有用Scroller包含的内容都显示空白，但用手指随便在空白处一划，内容就显示了。</li>
+<li>显示为白色的部分，其实内容已经加载到页面里，只是未显示出来。<a id="more"></a>
+</li>
+</ol>
+<p>公司有两个用相同技术打造的app，一个行，一个不行。由于运行平台比较特殊，是公司自己打造的跨平台的，所以调试等等都非常困难，无法看log。。。</p>
+<p>周五协助同事对比了下code，还跟我之前做的项目对比了下，最终一个方案解决了我们的问题</p>
+<p>在Enyo.panel切换画面时，必须调用this.render()来重绘画面，</p>
+<p>随后在所有出问题view的最顶层画面的js文件中加上一个重写的rendered 方法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">rendered: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.inherited(<span class="built_in">arguments</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// we call our enyo.scroller scroller.</span></span><br><span class="line">    <span class="comment">// To simulate the operation from user</span></span><br><span class="line">    <span class="comment">// just scrolle some pixels on y-axis</span></span><br><span class="line">    <span class="keyword">this</span>.scroller.scrolleTo(<span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>重新部署项目后，记得，这里必须完全全新的重新部署，不然将会有缓存影响到app运行的结果。</p>
+<p>First of all, let’s describe the background of this issue.</p>
+<p>My colleague has an mobile app running on Android and iOS platform, developed by EnyoJS and packaged by PhoneGap, We have our own big platform, many small app can run on it, we got problems after Apple published iOS 7.0.*, many users sent reports to tell us the issue just on iPhone 5+.</p>
+<p>It shows like this:</p>
+<ol>
+<li>User will be transferred to the view I call it Level 1 after login, Go into lv2 after clicking item. In the following lv3/4/5 views, they are all constructed by Enyo.Scroller, when user go into these views, the content wrapped by scroller is blank, however, it will show up as soon as user swap anywhere in the blank area.</li>
+<li>We proved that those elements which should be displayed in this scroller have been loaded successfully, just only not show up.</li>
+</ol>
+<p>We have two similar apps build by the same techniques. One can, the other can’t. Because the situation is special, the platform is very difficult to debug and print logs when using iPhone.</p>
+<p>I assisted my colleague to compare the codes with the correct project and my previous projects. And finally we work out the solution.</p>
+<p>It should call this.render() to re-draw the whole view when we change the view in Enyo.panel.</p>
+<p>Next step, add one function which can overwrite the existing method ‘rendered’ in ExtJS to the top level one of all the incorrect views:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">rendered: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.inherited(<span class="built_in">arguments</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// we call our enyo.scroller scroller.</span></span><br><span class="line">    <span class="comment">// To simulate the operation from user</span></span><br><span class="line">    <span class="comment">// just scrolle some pixels on y-axis</span></span><br><span class="line">    <span class="keyword">this</span>.scroller.scrolleTo(<span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>P.S. Remember one thing, each time you should clear the cache and rebuild all the project, otherwise, it will have an effect on the app.</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>先描述下问题的背景</p>
+<p>同事有一个用EnyoJS写的手机app，用PhoneGap打包在Android和iOS下，在iOS升级7.0.*新版本后，许多用户都开发反应，在该新版本下的iPhone5中会出现诡异的现象。</p>
+<p>具体表现为：</p>
+<ol>
+<li>登录后进入Level 1画面，点击某一条数据进入Level 2画面，接下来level 3/4/5都是有用Enyo.Scroller构件的画面，当用户使用搭载着iOS 7.0.*版本的iPhone5时，从Lv2到之后的画面时，所有用Scroller包含的内容都显示空白，但用手指随便在空白处一划，内容就显示了。</li>
+<li>显示为白色的部分，其实内容已经加载到页面里，只是未显示出来。]]>
+    
+    </summary>
+    
+      <category term="Render" scheme="http://blog.staydan.com/tags/Render/"/>
+    
+      <category term="JavaScript" scheme="http://blog.staydan.com/categories/JavaScript/"/>
+    
+      <category term="EnyoJS" scheme="http://blog.staydan.com/categories/JavaScript/EnyoJS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Selection & Paging Error caused by ExtJS ID Generation]]></title>
+    <link href="http://blog.staydan.com/2014/02/23/2014-02-17-selection-paging-error-caused-by-extjs-id-generation/"/>
+    <id>http://blog.staydan.com/2014/02/23/2014-02-17-selection-paging-error-caused-by-extjs-id-generation/</id>
+    <published>2014-02-22T16:00:00.000Z</published>
+    <updated>2015-06-19T01:57:18.000Z</updated>
+    <content type="html"><![CDATA[<p>ExtJS中，Ext.data.Store是用来进行数据交换和交互的Standard Middleware，无论是Grid还是ComboBox，都是通过它实现数据读取、类型转换、排序分页和搜索等操作的。<br>Ext.data.Store中有一个Ext.data.Record数组，所有数据都存放在这些Ext.data. Record实例中，为后面的读取和修改操作做准备。</p>
+<p>在实际使用过程中，发现了一个问题，由于每个Record都会有一个唯一特定的id，并且如果每个Record的data中有一个属性为id，那这个Record就会取data中的id作为它的id，问题在于，如果data中的id是object类型，所有的这一切在ExtJS默认的逻辑中就会导致问题，无论这个object类型的id属性中有什么值，无论多么复杂，对应的Record都会生成一个包含[object Object]的id，而默认的前缀都是相同的，所以最后整个Store的record都是相同的id。<br><a id="more"></a><br>后果是什么。。。后果是如果你将这个Store绑定到某个Grid，你将永远无法选中你点的那一行，焦点永远会移动到第一行，原因就是出在那一模一样的id上。。。<br>具体的错误store请看下图：</p>
+<p><a href="https://www.flickr.com/photos/123460474@N06/13943147482" title="grid-item-id-error-blur by Mengdan zhu, on Flickr" target="_blank" rel="external"><img src="https://farm3.staticflickr.com/2925/13943147482_b5017a659a_o.png" alt="grid-item-id-error-blur" title="grid-item-id-error-blur"></a></p>
+<p>那解决这个问题的办法就显而易见，只要找到能给Store中的每个Record生成唯一id的方法就搞定了。</p>
+<ol>
+<li>在Model中定义 YourId</li>
+<li>在第一步的Model中定义一个idgen来生成id</li>
+</ol>
+<p>如果正确使用idgen请参考官方的docs：</p>
+<p><a href="http://docs-origin.sencha.com/extjs/4.2.2/#!/api/Ext.data.Model-cfg-idgen" target="_blank" rel="external">http://docs-origin.sencha.com/extjs/4.2.2/#!/api/Ext.data.Model-cfg-idgen</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>ExtJS中，Ext.data.Store是用来进行数据交换和交互的Standard Middleware，无论是Grid还是ComboBox，都是通过它实现数据读取、类型转换、排序分页和搜索等操作的。<br>Ext.data.Store中有一个Ext.data.Record数组，所有数据都存放在这些Ext.data. Record实例中，为后面的读取和修改操作做准备。</p>
+<p>在实际使用过程中，发现了一个问题，由于每个Record都会有一个唯一特定的id，并且如果每个Record的data中有一个属性为id，那这个Record就会取data中的id作为它的id，问题在于，如果data中的id是object类型，所有的这一切在ExtJS默认的逻辑中就会导致问题，无论这个object类型的id属性中有什么值，无论多么复杂，对应的Record都会生成一个包含[object Object]的id，而默认的前缀都是相同的，所以最后整个Store的record都是相同的id。<br>]]>
+    
+    </summary>
+    
+      <category term="Paging" scheme="http://blog.staydan.com/tags/Paging/"/>
+    
+      <category term="Selection" scheme="http://blog.staydan.com/tags/Selection/"/>
+    
+      <category term="JavaScript" scheme="http://blog.staydan.com/categories/JavaScript/"/>
+    
+      <category term="ExtJS" scheme="http://blog.staydan.com/categories/JavaScript/ExtJS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Date format in ExtJS]]></title>
+    <link href="http://blog.staydan.com/2014/02/17/2014-02-17-date-format-in-extjs/"/>
+    <id>http://blog.staydan.com/2014/02/17/2014-02-17-date-format-in-extjs/</id>
+    <published>2014-02-16T16:00:00.000Z</published>
+    <updated>2015-06-19T01:57:18.000Z</updated>
+    <content type="html"><![CDATA[<p>如今写代码基本都要靠Google一下，记不住咯，这脑袋瓜装的东西太少了。。。</p>
+<p>这大半年多一直在用ExtJS</p>
+<p>前不久遇到一个简单的时间转换，看了之前同事写的</p>
+<p>觉得不大合理，就想全部换掉</p>
+<p>原本打算是把以前项目中的一个时间的库拿过来直接用，简单省事</p>
+<p>可套进当前Project的format始终会碰到点问题（因为写法不大一样）</p>
+<p>刚巧在看ExtJS一个源码时，发现ExtJS它自带一个Date的库，好啦。。。更简单省事</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line"><span class="built_in">document</span>.write(Ext.Date.format(date, <span class="string">'Y-m-d'</span>))  </span><br><span class="line">Output:  <span class="number">2014</span>-<span class="number">02</span>-<span class="number">17</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p><table width="618" border="1" cellspacing="0" cellpadding="0"></table></p>
+<p><tbody></tbody></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">format</td></p>
+<p><td valign="top" width="329">Description</td></p>
+<p><td valign="top" width="210">Example returned values</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">d</td></p>
+<p><td valign="top" width="329">Day of the month, 2 digits with leading zeros</td></p>
+<p><td valign="top" width="210">01 to 31</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">D</td></p>
+<p><td valign="top" width="329">A short textual representation of the day of the week</td></p>
+<p><td valign="top" width="210">Mon to Sun</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">j</td></p>
+<p><td valign="top" width="329">Day of the month without leading zeros</td></p>
+<p><td valign="top" width="210">1 to 31</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">l</td></p>
+<p><td valign="top" width="329">A full textual representation of the day of the week</td></p>
+<p><td valign="top" width="210">Sunday to Saturday</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">N</td></p>
+<p><td valign="top" width="329">ISO-8601 numeric representation of the day of the week</td></p>
+<p><td valign="top" width="210">1 (for Monday) through 7 (for Sunday)</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">S</td></p>
+<p><td valign="top" width="329">English ordinal suffix for the day of the month, 2 characters</td></p>
+<p><td valign="top" width="210">st, nd, rd or th. Works well with j</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">w</td></p>
+<p><td valign="top" width="329">Numeric representation of the day of the week</td></p>
+<p><td valign="top" width="210">0 (for Sunday) to 6 (for Saturday)</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">z</td></p>
+<p><td valign="top" width="329">The day of the year (starting from 0)</td></p>
+<p><td valign="top" width="210">0 to 364 (365 in leap years)</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">W</td></p>
+<p><td valign="top" width="329">ISO-8601 week number of year, weeks starting on Monday</td></p>
+<p><td valign="top" width="210">01 to 53</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">F</td></p>
+<p><td valign="top" width="329">A full textual representation of a month, such as January or March</td></p>
+<p><td valign="top" width="210">January to December</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">m</td></p>
+<p><td valign="top" width="329">Numeric representation of a month, with leading zeros</td></p>
+<p><td valign="top" width="210">01 to 12</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">M</td></p>
+<p><td valign="top" width="329">A short textual representation of a month</td></p>
+<p><td valign="top" width="210">Jan to Dec</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">n</td></p>
+<p><td valign="top" width="329">Numeric representation of a month, without leading zeros</td></p>
+<p><td valign="top" width="210">1 to 12</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">t</td></p>
+<p><td valign="top" width="329">Number of days in the given month</td></p>
+<p><td valign="top" width="210">28 to 31</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">L</td></p>
+<p><td valign="top" width="329">Whether it&amp;#39;s a leap year</td></p>
+<p><td valign="top" width="210">1 if it is a leap year, 0 otherwise.</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">O</td></p>
+<p><td valign="top" width="329">ISO-8601 year number (identical to (Y), but if the ISO week number (W) belongs to the previous or next year, that year is used instead)</td></p>
+<p><td valign="top" width="210">1998 or 2004</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">Y</td></p>
+<p><td valign="top" width="329">A full numeric representation of a year, 4 digits</td></p>
+<p><td valign="top" width="210">1999 or 2003</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">y</td></p>
+<p><td valign="top" width="329">A two digit representation of a year</td></p>
+<p><td valign="top" width="210">99 or 03</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">a</td></p>
+<p><td valign="top" width="329">Lowercase Ante meridiem and Post meridiem</td></p>
+<p><td valign="top" width="210">am or pm</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">A</td></p>
+<p><td valign="top" width="329">Uppercase Ante meridiem and Post meridiem</td></p>
+<p><td valign="top" width="210">AM or PM</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">g</td></p>
+<p><td valign="top" width="329">12-hour format of an hour without leading zeros</td></p>
+<p><td valign="top" width="210">1 to 12</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">G</td></p>
+<p><td valign="top" width="329">24-hour format of an hour without leading zeros</td></p>
+<p><td valign="top" width="210">0 to 23</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">h</td></p>
+<p><td valign="top" width="329">12-hour format of an hour with leading zeros</td></p>
+<p><td valign="top" width="210">01 to 12</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">H</td></p>
+<p><td valign="top" width="329">24-hour format of an hour with leading zeros</td></p>
+<p><td valign="top" width="210">00 to 23</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">i</td></p>
+<p><td valign="top" width="329">Minutes, with leading zeros</td></p>
+<p><td valign="top" width="210">00 to 59</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">s</td></p>
+<p><td valign="top" width="329">Seconds, with leading zeros</td></p>
+<p><td valign="top" width="210">00 to 59</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">u</td></p>
+<p><td valign="top" width="329">Decimal fraction of a second (minimum 1 digit, arbitrary number of digits allowed)</td></p>
+<p><td valign="top" width="210">001 (i.e. 0.001s) or100 (i.e. 0.100s) or</td></p>
+<p>999 (i.e. 0.999s) or</p>
+<p>999876543210 (i.e. 0.999876543210s)<br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">O</td></p>
+<p><td valign="top" width="329">Difference to Greenwich time (GMT) in hours and minutes</td></p>
+<p><td valign="top" width="210">+1030</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">P</td></p>
+<p><td valign="top" width="329">Difference to Greenwich time (GMT) with colon between hours and minutes</td></p>
+<p><td valign="top" width="210">-08:00</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">T</td></p>
+<p><td valign="top" width="329">Timezone abbreviation of the machine running the code</td></p>
+<p><td valign="top" width="210">EST, MDT, PDT …</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">Z</td></p>
+<p><td valign="top" width="329">Timezone offset in seconds (negative if west of UTC, positive if east)</td></p>
+<p><td valign="top" width="210">-43200 to 50400</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">c</td></p>
+<p><td valign="top" width="329">ISO 8601 dateNotes:</td></p>
+<ol>
+<li><p>If unspecified, the month / day defaults to the current month / day, the time defaults to midnight, while the timezone defaults to the browser’s timezone. If a time is specified, it must include both hours and minutes. The “T” delimiter, seconds, milliseconds and timezone are optional.</p>
+</li>
+<li><p>The decimal fraction of a second, if specified, must contain at least 1 digit (there is no limit to the maximum number of digits allowed), and may be delimited by either a ‘.’ or a ‘,’</p>
+</li>
+</ol>
+<p>Refer to the examples on the right for the various levels of date-time granularity which are supported, or see</p>
+<p><a href="http://www.w3.org/TR/NOTE-datetime" target="_blank" rel="external">http://www.w3.org/TR/NOTE-datetime</a> for more info.</p>
+<p><td valign="top" width="210">1991 or1992-10 or</td></p>
+<p>1993-09-20 or</p>
+<p>1994-08-19T16:20+01:00 or</p>
+<p>1995-07-18T17:21:28-02:00 or</p>
+<p>1996-06-17T18:22:29.98765+03:00 or</p>
+<p>1997-05-16T19:23:30,12345-0400 or</p>
+<p>1998-04-15T20:24:31.2468Z or</p>
+<p>1999-03-14T20:24:32Z or</p>
+<p>2000-02-13T21:25:33</p>
+<p>2001-01-12 22:26:34<br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">U</td></p>
+<p><td valign="top" width="329">Seconds since the Unix Epoch (January 1 1970 00:00:00 GMT)</td></p>
+<p><td valign="top" width="210">1193432466 or -2138434463</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">MS</td></p>
+<p><td valign="top" width="329">Microsoft AJAX serialized dates</td></p>
+<p><td valign="top" width="210">\/Date(1238606590509)\/ (i.e. UTC milliseconds since epoch) or \/Date(1238606590509+0800)\/</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">time</td></p>
+<p><td valign="top" width="329">A javascript millisecond timestamp</td></p>
+<p><td valign="top" width="210">1350024476440</td><br></p>
+<p><tr></tr></p>
+<p><td valign="top" width="79">  timestamp</td></p>
+<p><td valign="top" width="329">A UNIX timestamp (same as U)</td></p>
+<p><td valign="top" width="210">1350024866</td><br><br><br><br>The excellent work of Baron Schwartz, his blog below:</p>
+<p><a href="http://www.xaprb.com/blog/2005/12/12/javascript-closures-for-runtime-efficiency/" target="_blank" rel="external">http://www.xaprb.com/blog/2005/12/12/javascript-closures-for-runtime-efficiency/</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>如今写代码基本都要靠Google一下，记不住咯，这脑袋瓜装的东西太少了。。。</p>
+<p>这大半年多一直在用ExtJS</p>
+<p>前不久遇到一个简单的时间转换，看了之前同事写的</p>
+<p>觉得不大合理，就想全部换掉</p>
+<p>原本打算是把以前项目中的一个时间的库拿过来直接用，简单省事</p>
+<p>可套进当前Project的format始终会碰到点问题（因为写法不大一样）</p>
+<p>刚巧在看ExtJS一个源码时，发现ExtJS它自带一个Date的库，好啦。。。更简单省事</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line"><span class="built_in">document</span>.write(Ext.Date.format(date, <span class="string">'Y-m-d'</span>))  </span><br><span class="line">Output:  <span class="number">2014</span>-<span class="number">02</span>-<span class="number">17</span></span><br></pre></td></tr></table></figure>]]>
+    
+    </summary>
+    
+      <category term="DateFormat" scheme="http://blog.staydan.com/tags/DateFormat/"/>
+    
+      <category term="JavaScript" scheme="http://blog.staydan.com/categories/JavaScript/"/>
+    
+      <category term="ExtJS" scheme="http://blog.staydan.com/categories/JavaScript/ExtJS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Radio Grouped Buttons Control with Knockout & Bootstrap]]></title>
+    <link href="http://blog.staydan.com/2013/12/12/2013-12-12-radio-grouped-buttons-control-with-knockout-bootstrap/"/>
+    <id>http://blog.staydan.com/2013/12/12/2013-12-12-radio-grouped-buttons-control-with-knockout-bootstrap/</id>
+    <published>2013-12-11T16:00:00.000Z</published>
+    <updated>2015-06-19T01:57:18.000Z</updated>
+    <content type="html"><![CDATA[<p>用JavaScript写代码也有一年多了，其实也算积累了蛮多东西了，该写下来存存档~</p>
+<iframe width="100%" height="300" src="http://jsfiddle.net/w6wwq/embedded/js,resources,html,css,result/light" frameborder="0" allowfullscreen></iframe>
+<p>这次是一个结合了knockout和bootstrap的一个小控件，虽然也不是很美观，但也凑合吧<br><a id="more"></a><br>Knockout 负责该控件中的数据耦合，Bootstrap负责用户界面。<br>这边想要实现的功能是，在这种表现良好的单选框控件上通过knockout来同步上下两个控件的值，具体为：</p>
+<ol>
+<li>勾选单选框任意一项，下面文本框随之更新激活的单选框值；</li>
+<li>更改文本框的值，上面单选框也随之更改激活项；</li>
+</ol>
+<p>用Bootstrap把radio Button Group实现后，由于knockout自身提供的radiobox的demo是基于checked这种最原始的方式，而Bootstrap对radiobox进行了一些小装饰，使得在每个input外层都套了一层label，而仅用active的css类附加在对应label上来表示激活项。<br>如此一来，knockout那一套就必须稍作修改，参考该文顶部附上的JSFiddle代码块</p>
+<p>监听radioValue的值，并设默认值为1，即选中第一项</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.radioValue = ko.observable(<span class="string">"1"</span>);</span><br></pre></td></tr></table></figure>
+<p>捕捉click事件来更改radioValue的值，更改后文本框也就随之被knockout更改，通过逐一判断radioValue的值是否等于当前单选框的值来修改css中active项</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">label</span> <span class="attribute">style</span>=<span class="value">"background-color: #0e9bd7;"</span><span class="value">data-bind="click:</span> <span class="attribute">function</span>()&#123;<span class="attribute">radioValue</span>(<span class="attribute">1</span>)&#125;, <span class="attribute">css:</span> &#123;<span class="attribute">active:</span> <span class="attribute">radioValue</span>() =<span class="value">=</span> <span class="attribute">1</span>&#125;"&gt;</span><span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"radio"</span> <span class="attribute">value</span>=<span class="value">"1"</span> /&gt;</span>1<span class="tag">&lt;/<span class="title">label</span>&gt;</span>`</span><br></pre></td></tr></table></figure>
+<p>如此一来，就完全不需要写单独的JavaScript来实现逻辑判断了</p>
+<p>关于css的实现大家就直接看代码吧~</p>
+<p>Worked on JavaScript for more than 1 year, so it’s the correct time to write down something.</p>
+<iframe width="100%" height="300" src="http://jsfiddle.net/w6wwq/embedded/js,resources,html,css,result/light" frameborder="0" allowfullscreen></iframe>
+<p>It’s a simple radio grouped button component made by Knockout and Bootstrap, not very beautiful, but I think it’s good.In this case, knockout is in charge of the data layer, bootstrap is in charge of implement the UI.<br>What I want to realize is that the radio grouped button and textbox will sync their data automatically by knockout’s databind.</p>
+<ol>
+<li>Active one of radio buttons, the textbox will show the value.</li>
+<li>Modify the textbox, the radio buttons will active the correct one.</li>
+</ol>
+<p>Monitoring the value of radioValue, and set the default equals to 1</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.radioValue = ko.observable(<span class="string">"1"</span>);</span><br></pre></td></tr></table></figure>
+<p>Capture click event to change the value of radioValue, and then the textbox will be change automatically. Set the active item of radio grouped buttons by css codes via the value of radioValue.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&amp;lt;label style="background-color: #0e9bd7;" data-bind="click: function()&#123;radioValue(1)&#125;, css: &#123;active: radioValue() == 1&#125;"&gt;<span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"radio"</span> <span class="attribute">value</span>=<span class="value">"1"</span> /&gt;</span>1<span class="tag">&lt;/<span class="title">label</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Thus, we don’t need JavaScript anymore to process the logic.</p>
+<p>You can read the CSS codes to understand how to implement this UI.</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>用JavaScript写代码也有一年多了，其实也算积累了蛮多东西了，该写下来存存档~</p>
+<iframe width="100%" height="300" src="http://jsfiddle.net/w6wwq/embedded/js,resources,html,css,result/light" frameborder="0" allowfullscreen></iframe>
+<p>这次是一个结合了knockout和bootstrap的一个小控件，虽然也不是很美观，但也凑合吧<br>]]>
+    
+    </summary>
+    
+      <category term="CSS" scheme="http://blog.staydan.com/tags/CSS/"/>
+    
+      <category term="RadioButton" scheme="http://blog.staydan.com/tags/RadioButton/"/>
+    
+      <category term="JavaScript" scheme="http://blog.staydan.com/categories/JavaScript/"/>
+    
+  </entry>
+  
+</feed>

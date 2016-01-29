@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>How to trigger Single Click and Double Click event in Ext.grid | Xiaodan&#39;s Everything</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在ExtJS中，Grid应当是频繁使用的控件之一，而且Grid表格和用户交互的方式有很多种，包括单击、双击单元格，单击、双击一整行，右键上下文菜单，长按某行，鼠标选中平移某行，单选、多选行等等。。。
+但在实际的应用中，发现了一个问题，当Grid中对单元格同时监听了单击和双击事件的话，那么这个双击事件永远也没办法被触发到，因为始终会被单击事件先截获。
+解决方法得分两种情况分析：
+
+普通的Grid">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to trigger Single Click and Double Click event in Ext.grid">
+<meta property="og:url" content="http://blog.staydan.com/2014/10/03/2014-10-03-how-to-trigger-single-click-and-double-click-event-in-ext-dot-grid/index.html">
+<meta property="og:site_name" content="Xiaodan's Everything">
+<meta property="og:description" content="在ExtJS中，Grid应当是频繁使用的控件之一，而且Grid表格和用户交互的方式有很多种，包括单击、双击单元格，单击、双击一整行，右键上下文菜单，长按某行，鼠标选中平移某行，单选、多选行等等。。。
+但在实际的应用中，发现了一个问题，当Grid中对单元格同时监听了单击和双击事件的话，那么这个双击事件永远也没办法被触发到，因为始终会被单击事件先截获。
+解决方法得分两种情况分析：
+
+普通的Grid">
+<meta property="og:updated_time" content="2015-06-19T01:57:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="How to trigger Single Click and Double Click event in Ext.grid">
+<meta name="twitter:description" content="在ExtJS中，Grid应当是频繁使用的控件之一，而且Grid表格和用户交互的方式有很多种，包括单击、双击单元格，单击、双击一整行，右键上下文菜单，长按某行，鼠标选中平移某行，单选、多选行等等。。。
+但在实际的应用中，发现了一个问题，当Grid中对单元格同时监听了单击和双击事件的话，那么这个双击事件永远也没办法被触发到，因为始终会被单击事件先截获。
+解决方法得分两种情况分析：
+
+普通的Grid">
+  
+  
+  <script src="http://www.staydan.com/libs/jQuery/2.0.3/jquery-2.0.3.min.js"></script>
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div class="container">
+    <div class="wrapper">
+      <header class="site-header">
+  <div id="header-title" class="inner">
+    <h1>
+      <a href="/" title="Xiaodan's Everything">Xiaodan's Everything</a>
+    </h1>
+    
+      <h4 id="subtitle-wrap">
+        <a href="/" title="A foolish Programmer from Shanghai China">A foolish Programmer from Shanghai China</a>
+      </h4>
+    
+  </div>
+  <nav id="site-navs" class="">
+	  <ul>
+      
+	      <li class="ease-animation"><a href="/" title="Home">Home</a></li>
+	    
+	      <li class="ease-animation"><a href="/archives" title="Archives">Archives</a></li>
+	    
+	      <li class="ease-animation"><a href="/about" title="About">About</a></li>
+	    
+	      <li class="ease-animation"><a href="/logs" title="Logs">Logs</a></li>
+	    
+	  </ul>
+	  <div class="clearfix"></div>
+	</nav>
+</header>
+      <div class="outer">
+        <section id="main"><section class="tags-selection">
+  <header class="tags-selection-header">
+    <div class="tags-selection-header-label"><i class="fa fa-tag"></i>Tags</div>
+  </header>
+  <div id="tags-selection-panel">
+  	<div class="tags-selection-navs" title="Sorted by the first English alphabet."><label class="tags-selection-nav active" navid="ad">A - D</label><label class="tags-selection-nav " navid="eh">E - H</label><label class="tags-selection-nav " navid="il">I - L</label><label class="tags-selection-nav " navid="mp">M - P</label><label class="tags-selection-nav " navid="qt">Q - T</label><label class="tags-selection-nav " navid="ux">U - X</label><label class="tags-selection-nav " navid="yz">Y - Z</label></div><div class="tags-selection-content"><div id="tags-selection-content-ad" class="tags-selection-content-part"><a href="/tags/Click Event"><span class="tag-instant" tagid="cijzz3wts00043jwh8lfdz1cq">Click-Event<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Data Visualization"><span class="tag-instant" tagid="cijzz3wu6000b3jwhdfthtx61">Data-Visualization<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/docing"><span class="tag-instant" tagid="cijzz3wug000w3jwhjbg77qm2">docing<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/document"><span class="tag-instant" tagid="cijzz3wug000x3jwhzbvd54qi">document<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/CSS3"><span class="tag-instant" tagid="cijzz3wuk00153jwhduo8kct8">CSS3<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Canvas"><span class="tag-instant" tagid="cijzz3wur001h3jwhan4ua501">Canvas<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Algorithm"><span class="tag-instant" tagid="cijzz3wuz001v3jwh2k1469fy">Algorithm<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/DateFormat"><span class="tag-instant" tagid="cijzz3wvk00363jwhphiej6dr">DateFormat<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/CSS"><span class="tag-instant" tagid="cijzz3wvm003c3jwhmddoenr4">CSS<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/AngularJS"><span class="tag-instant" tagid="cijzz3wvq003l3jwh2e9v6b0v">AngularJS<sup class="tag-selection-badge">0</sup></span></a><a href="/tags/Bower"><span class="tag-instant" tagid="cijzz3wvr003n3jwh6ougry63">Bower<sup class="tag-selection-badge">0</sup></span></a></div><div id="tags-selection-content-eh" class="tags-selection-content-part"><a href="/tags/Hive Plot"><span class="tag-instant" tagid="cijzz3wu7000c3jwho3kakdox">Hive-Plot<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/HTML5"><span class="tag-instant" tagid="cijzz3wuj00143jwhsym0vkao">HTML5<sup class="tag-selection-badge">2</sup></span></a><a href="/tags/History"><span class="tag-instant" tagid="cijzz3wvo003h3jwhhjz526dh">History<sup class="tag-selection-badge">0</sup></span></a><a href="/tags/Grunt"><span class="tag-instant" tagid="cijzz3wvq003m3jwhcl3ji6rs">Grunt<sup class="tag-selection-badge">0</sup></span></a></div><div id="tags-selection-content-il" class="tags-selection-content-part"><a href="/tags/iScrollJs"><span class="tag-instant" tagid="cijzz3wue000q3jwhhirw4q13">iScrollJs<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Jeju"><span class="tag-instant" tagid="cijzz3wv400273jwhzpe8bmjo">Jeju<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/laptop"><span class="tag-instant" tagid="cijzz3wv6002e3jwhu53ozaib">laptop<sup class="tag-selection-badge">1</sup></span></a></div><div id="tags-selection-content-mp" class="tags-selection-content-part"><a href="/tags/Pull to refresh"><span class="tag-instant" tagid="cijzz3wua000j3jwh0vgdjsno">Pull-to-refresh<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Mask"><span class="tag-instant" tagid="cijzz3wuv001p3jwhrzn8itqf">Mask<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Network"><span class="tag-instant" tagid="cijzz3wv6002d3jwhvrf8c1x3">Network<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/PC"><span class="tag-instant" tagid="cijzz3wv6002g3jwhda4gla0c">PC<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Paging"><span class="tag-instant" tagid="cijzz3wvf00313jwhiw0jc5yu">Paging<sup class="tag-selection-badge">1</sup></span></a></div><div id="tags-selection-content-qt" class="tags-selection-content-part"><a href="/tags/Sort"><span class="tag-instant" tagid="cijzz3wuz001u3jwhr0207rly">Sort<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Team Building"><span class="tag-instant" tagid="cijzz3wv100203jwhcqaeor5z">Team-Building<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Tooltips"><span class="tag-instant" tagid="cijzz3wva002m3jwhz1g38o5s">Tooltips<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Textfield"><span class="tag-instant" tagid="cijzz3wva002o3jwhmba5gdo5">Textfield<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Render"><span class="tag-instant" tagid="cijzz3wvc002t3jwhi4r3ahhu">Render<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Selection"><span class="tag-instant" tagid="cijzz3wvf002z3jwhd6tpny5j">Selection<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/RadioButton"><span class="tag-instant" tagid="cijzz3wvm003b3jwh9guz4huw">RadioButton<sup class="tag-selection-badge">1</sup></span></a></div><div id="tags-selection-content-ux" class="tags-selection-content-part"></div><div id="tags-selection-content-yz" class="tags-selection-content-part"></div></div>
+  </div>
+</section>
+<article id="post-2014-10-03-how-to-trigger-single-click-and-double-click-event-in-ext-dot-grid"  class=" ease-animation">
+  <header class="article-header">
+    
+        
+  
+    <div class="article-title" itemprop="name">
+      How to trigger Single Click and Double Click event in Ext.grid
+    </div>
+  
+
+    
+    <div class="article-meta sm-font">
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a><i class="fa fa-circle dot-separator"></i><a class="article-category-link" href="/categories/JavaScript/ExtJS/">ExtJS</a>
+  </div>
+
+
+      <a href="/2014/10/03/2014-10-03-how-to-trigger-single-click-and-double-click-event-in-ext-dot-grid/" class="article-updated">
+  <time datetime="2014-10-03T08:00:11.000Z" itemprop="datePublished">14/10/03 16:10</time>
+</a>
+    </div>
+  </header>
+  <div class="article-entry">
+  
+    <p>在ExtJS中，Grid应当是频繁使用的控件之一，而且Grid表格和用户交互的方式有很多种，包括单击、双击单元格，单击、双击一整行，右键上下文菜单，长按某行，鼠标选中平移某行，单选、多选行等等。。。</p>
+<p>但在实际的应用中，发现了一个问题，当Grid中对单元格同时监听了单击和双击事件的话，那么这个双击事件永远也没办法被触发到，因为始终会被单击事件先截获。</p>
+<p>解决方法得分两种情况分析：</p>
+<ol>
+<li>普通的Grid</li>
+</ol>
+<p>这里的普通Grid是指没有使用任何插件，所以它不具备行编辑等高级功能，在这边，我们有非常非常多的事件，例如cellclick和celldblclick，itemclick和itemdblclick，举例来讲，如果你在同一个grid上同时添加了单击和双击的监听事件，那么，你将始终无法正确获取到单击和双击事件，因为这两个会相互干扰和影响，导致程序出错。</p>
+<ol>
+<li>具备行编辑的Grid（RowEditor Plugin）</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Ext.create(<span class="string">'Ext.grid.plugin.RowEditing'</span>, &#123;</span><br><span class="line">    clicksToEdit: <span class="number">1</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>这种模式下的Grid，又多了不少状态，尤其是在处理单双击事件时，有一个 beforeedit 是值得关注的，因为任何的在每一行上的单击都会唤起编辑器。<br>所以在这种情况下，想要区分处理单击和双击变的愈加困难。</p>
+<a id="more"></a>
+<p>小丹<strong>解决方案</strong>如下<a href="https://github.com/Staydan/Husky/blob/master/Front_End/ExtJs/grid/extjs_grid_single_click_double_click_trigger.html" target="_blank" rel="external">源码在此</a><br><iframe src="http://www.staydan.com/sweet/Husky/Front_End/ExtJs/grid/extjs_grid_single_click_double_click_trigger.html" width="80%" height="500" frameborder="0" allowfullscreen></iframe></p>
+<p>分析：</p>
+<p>添加标志位：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Double click or not</span></span><br><span class="line">celldblclicked: <span class="literal">false</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">// Double click or not used in RowEditor plugin enabled grid</span></span><br><span class="line">editorCelldblclicked: <span class="literal">false</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">// unprocessed signle click event times</span></span><br><span class="line">singleClickedTimes: <span class="number">0</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">// Set this flag to avoid the endless loop</span></span><br><span class="line">rowEditorStarted: <span class="literal">false</span></span><br></pre></td></tr></table></figure></p>
+<p>添加充当传递作用的方法，用来判断是什么事件，确定后再调用它<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">onBeforeEdit: <span class="function"><span class="keyword">function</span> (<span class="params">grid, context, eOpts</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.setSingleClickedTimes(<span class="keyword">this</span>.getSingleClickedTimes() + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">if</span> (self.getRowEditorStarted()) &#123;</span><br><span class="line">        self.setRowEditorStarted(<span class="literal">false</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">window</span>.setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	        <span class="comment">// setTimeout method - let the grid know onBeforeEdit excuted. Hide the editor first</span></span><br><span class="line">            grid.cancelEdit();</span><br><span class="line">            <span class="built_in">window</span>.setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="keyword">if</span>(self.getSingleClickedTimes() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (self.getEditorCelldblclicked()) &#123;</span><br><span class="line">                        self.setEditorCelldblclicked(<span class="literal">false</span>);</span><br><span class="line">                        self.setSingleClickedTimes(<span class="number">0</span>);</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	                    <span class="comment">// Single click, show the editor</span></span><br><span class="line">                        self.setRowEditorStarted(<span class="literal">true</span>);</span><br><span class="line">                        grid.startEdit(context.record, context.column);</span><br><span class="line">                        self.getGridEditorDemoPanelLabel().setText(<span class="string">"Edit mode enabled."</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;, <span class="number">300</span>);</span><br><span class="line">        &#125;, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">onItemClick: <span class="function"><span class="keyword">function</span> (<span class="params">context, record, item, index, el</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.setSingleClickedTimes(<span class="keyword">this</span>.getSingleClickedTimes() + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line">    <span class="comment">// Catch up the double click event during the timeout period(200 ms)</span></span><br><span class="line">    <span class="built_in">window</span>.setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(self.getSingleClickedTimes() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">	        <span class="comment">// See if the event is double click</span></span><br><span class="line">            <span class="keyword">if</span> (self.getCelldblclicked()) &#123;</span><br><span class="line">	            <span class="comment">// Reset double click flag to false</span></span><br><span class="line">                self.setCelldblclicked(<span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// Reset the single click times to 0</span></span><br><span class="line">                self.setSingleClickedTimes(<span class="number">0</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            	<span class="comment">// Yeah, it's single click</span></span><br><span class="line">                self.itemClicked(context, record, item, index, el);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, <span class="number">200</span>);</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">itemClicked: <span class="function"><span class="keyword">function</span>(<span class="params">context, record, item, index, el</span>) </span>&#123;</span><br><span class="line">	<span class="comment">// It still has unprocessed single click events</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">this</span>.getSingleClickedTimes() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">this</span>.getGridDemoPanelLabel().setText(<span class="string">"Single clicked.  \n\r"</span> + record.data.email);</span><br><span class="line">        <span class="keyword">this</span>.setSingleClickedTimes(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">onCelldblclick: <span class="function"><span class="keyword">function</span>(<span class="params">context, td, cellIndex, record, tr, rowIndex, e, eOpts</span>) </span>&#123;</span><br><span class="line">	<span class="comment">// Tell controller that it's double click event</span></span><br><span class="line">    <span class="keyword">this</span>.setCelldblclicked(<span class="literal">true</span>);</span><br><span class="line">    <span class="keyword">this</span>.getGridDemoPanelLabel().setText(<span class="string">"Double clicked.  \n\r"</span> + record.data.email);</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">onEditorCelldblclick: <span class="function"><span class="keyword">function</span>(<span class="params">context, td, cellIndex, record, tr, rowIndex, e, eOpts</span>) </span>&#123;</span><br><span class="line">	<span class="comment">// Tell controller that it's double click event</span></span><br><span class="line">    <span class="keyword">this</span>.setEditorCelldblclicked(<span class="literal">true</span>);</span><br><span class="line">    <span class="keyword">this</span>.getGridEditorDemoPanelLabel().setText(<span class="string">"Double clicked.  \n\r"</span> + record.data.email);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+  
+  </div>
+  <footer class="article-footer">
+    <div class="article-footer-left">
+      <a href="hexo_post.html#disqus" class="article-footer-left"><span class="comments"><i class="fa fa-comments"></i> 0 Comment</span></a>
+      <i class="fa fa-circle dot-separator"></i>
+    </div>
+    
+  <ul class="ease-animation sm-font tag-list"><li class="ease-animation sm-font tag-list-item"><a class="ease-animation sm-font tag-list-link" href="/tags/Click-Event/">Click Event</a></li></ul>
+
+    <div class="article-footer-right">
+    
+      <a href="hexo_post.html"><span class="save-pocket button sm-font ease-animation"><i class="fa fa-share"></i> Share</span></a>
+    </div>
+  </footer>
+</article>
+
+  
+<div class="link-to-article"> 
+  <div class="link-to-article-next">
+  
+    
+      <div class="article-nav-date">
+        2014-10-01
+      </div>
+      <div class="article-nav-title">
+        <a href="/2014/10/01/2014-10-01-hive-plots-with-node-link-diagram-in-four-dimension/" title="蜂巢图 —— 四维互动">蜂巢图 —— 四维互动</a>
+      </div>
+     
+  
+  </div>
+  <div class="link-to-article-separator">
+    <i class="fa fa-circle dot-separator"></i>
+  </div>
+  <div class="link-to-article-prev">
+  
+  </div>
+</div>
+
+
+</section>
+      </div>
+      <footer id="footer" class="site-footer">
+	&copy; 2016 Daniel Zhu<br>
+  <p>Theme by <a href="http://github.com/danielzhu" title="Line" target="_blank" rel="external">Line</a> Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="external">Hexo</a>
+</footer>
+    </div>
+    
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+<script src="/js/grouped_tag.js" type="text/javascript"></script>
+  </div>
+</body>
+</html>

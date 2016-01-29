@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Create 2048 using HTML5 Canvas(Play) | Xiaodan&#39;s Everything</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="这一年多都在前端这块努力着，随着时间被吞噬的速度越来越快，总有更酷更炫的东西浮现在眼前，一直有个想法，想做点什么算是作品的作品，能拿得出手的东西。最后选择了2048这个游戏，起初打算实现这个游戏只是因为兴趣爱好，正好这段时间对小projec感兴趣，加上之前写了一个排序的可视化程序，然后就继续沿用了Canvas来构建这个流行的2048。
+
+游戏地址 · Play Game Link(http://g">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Create 2048 using HTML5 Canvas(Play)">
+<meta property="og:url" content="http://blog.staydan.com/2014/05/15/2014-05-15-create-2048-using-html5-canvas-play/index.html">
+<meta property="og:site_name" content="Xiaodan's Everything">
+<meta property="og:description" content="这一年多都在前端这块努力着，随着时间被吞噬的速度越来越快，总有更酷更炫的东西浮现在眼前，一直有个想法，想做点什么算是作品的作品，能拿得出手的东西。最后选择了2048这个游戏，起初打算实现这个游戏只是因为兴趣爱好，正好这段时间对小projec感兴趣，加上之前写了一个排序的可视化程序，然后就继续沿用了Canvas来构建这个流行的2048。
+
+游戏地址 · Play Game Link(http://g">
+<meta property="og:updated_time" content="2015-06-19T01:57:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Create 2048 using HTML5 Canvas(Play)">
+<meta name="twitter:description" content="这一年多都在前端这块努力着，随着时间被吞噬的速度越来越快，总有更酷更炫的东西浮现在眼前，一直有个想法，想做点什么算是作品的作品，能拿得出手的东西。最后选择了2048这个游戏，起初打算实现这个游戏只是因为兴趣爱好，正好这段时间对小projec感兴趣，加上之前写了一个排序的可视化程序，然后就继续沿用了Canvas来构建这个流行的2048。
+
+游戏地址 · Play Game Link(http://g">
+  
+  
+  <script src="http://www.staydan.com/libs/jQuery/2.0.3/jquery-2.0.3.min.js"></script>
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div class="container">
+    <div class="wrapper">
+      <header class="site-header">
+  <div id="header-title" class="inner">
+    <h1>
+      <a href="/" title="Xiaodan's Everything">Xiaodan's Everything</a>
+    </h1>
+    
+      <h4 id="subtitle-wrap">
+        <a href="/" title="A foolish Programmer from Shanghai China">A foolish Programmer from Shanghai China</a>
+      </h4>
+    
+  </div>
+  <nav id="site-navs" class="">
+	  <ul>
+      
+	      <li class="ease-animation"><a href="/" title="Home">Home</a></li>
+	    
+	      <li class="ease-animation"><a href="/archives" title="Archives">Archives</a></li>
+	    
+	      <li class="ease-animation"><a href="/about" title="About">About</a></li>
+	    
+	      <li class="ease-animation"><a href="/logs" title="Logs">Logs</a></li>
+	    
+	  </ul>
+	  <div class="clearfix"></div>
+	</nav>
+</header>
+      <div class="outer">
+        <section id="main"><section class="tags-selection">
+  <header class="tags-selection-header">
+    <div class="tags-selection-header-label"><i class="fa fa-tag"></i>Tags</div>
+  </header>
+  <div id="tags-selection-panel">
+  	<div class="tags-selection-navs" title="Sorted by the first English alphabet."><label class="tags-selection-nav active" navid="ad">A - D</label><label class="tags-selection-nav " navid="eh">E - H</label><label class="tags-selection-nav " navid="il">I - L</label><label class="tags-selection-nav " navid="mp">M - P</label><label class="tags-selection-nav " navid="qt">Q - T</label><label class="tags-selection-nav " navid="ux">U - X</label><label class="tags-selection-nav " navid="yz">Y - Z</label></div><div class="tags-selection-content"><div id="tags-selection-content-ad" class="tags-selection-content-part"><a href="/tags/Click Event"><span class="tag-instant" tagid="cijzz3wts00043jwh8lfdz1cq">Click-Event<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Data Visualization"><span class="tag-instant" tagid="cijzz3wu6000b3jwhdfthtx61">Data-Visualization<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/docing"><span class="tag-instant" tagid="cijzz3wug000w3jwhjbg77qm2">docing<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/document"><span class="tag-instant" tagid="cijzz3wug000x3jwhzbvd54qi">document<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/CSS3"><span class="tag-instant" tagid="cijzz3wuk00153jwhduo8kct8">CSS3<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Canvas"><span class="tag-instant" tagid="cijzz3wur001h3jwhan4ua501">Canvas<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Algorithm"><span class="tag-instant" tagid="cijzz3wuz001v3jwh2k1469fy">Algorithm<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/DateFormat"><span class="tag-instant" tagid="cijzz3wvk00363jwhphiej6dr">DateFormat<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/CSS"><span class="tag-instant" tagid="cijzz3wvm003c3jwhmddoenr4">CSS<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/AngularJS"><span class="tag-instant" tagid="cijzz3wvq003l3jwh2e9v6b0v">AngularJS<sup class="tag-selection-badge">0</sup></span></a><a href="/tags/Bower"><span class="tag-instant" tagid="cijzz3wvr003n3jwh6ougry63">Bower<sup class="tag-selection-badge">0</sup></span></a></div><div id="tags-selection-content-eh" class="tags-selection-content-part"><a href="/tags/Hive Plot"><span class="tag-instant" tagid="cijzz3wu7000c3jwho3kakdox">Hive-Plot<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/HTML5"><span class="tag-instant" tagid="cijzz3wuj00143jwhsym0vkao">HTML5<sup class="tag-selection-badge">2</sup></span></a><a href="/tags/History"><span class="tag-instant" tagid="cijzz3wvo003h3jwhhjz526dh">History<sup class="tag-selection-badge">0</sup></span></a><a href="/tags/Grunt"><span class="tag-instant" tagid="cijzz3wvq003m3jwhcl3ji6rs">Grunt<sup class="tag-selection-badge">0</sup></span></a></div><div id="tags-selection-content-il" class="tags-selection-content-part"><a href="/tags/iScrollJs"><span class="tag-instant" tagid="cijzz3wue000q3jwhhirw4q13">iScrollJs<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Jeju"><span class="tag-instant" tagid="cijzz3wv400273jwhzpe8bmjo">Jeju<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/laptop"><span class="tag-instant" tagid="cijzz3wv6002e3jwhu53ozaib">laptop<sup class="tag-selection-badge">1</sup></span></a></div><div id="tags-selection-content-mp" class="tags-selection-content-part"><a href="/tags/Pull to refresh"><span class="tag-instant" tagid="cijzz3wua000j3jwh0vgdjsno">Pull-to-refresh<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Mask"><span class="tag-instant" tagid="cijzz3wuv001p3jwhrzn8itqf">Mask<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Network"><span class="tag-instant" tagid="cijzz3wv6002d3jwhvrf8c1x3">Network<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/PC"><span class="tag-instant" tagid="cijzz3wv6002g3jwhda4gla0c">PC<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Paging"><span class="tag-instant" tagid="cijzz3wvf00313jwhiw0jc5yu">Paging<sup class="tag-selection-badge">1</sup></span></a></div><div id="tags-selection-content-qt" class="tags-selection-content-part"><a href="/tags/Sort"><span class="tag-instant" tagid="cijzz3wuz001u3jwhr0207rly">Sort<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Team Building"><span class="tag-instant" tagid="cijzz3wv100203jwhcqaeor5z">Team-Building<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Tooltips"><span class="tag-instant" tagid="cijzz3wva002m3jwhz1g38o5s">Tooltips<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Textfield"><span class="tag-instant" tagid="cijzz3wva002o3jwhmba5gdo5">Textfield<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Render"><span class="tag-instant" tagid="cijzz3wvc002t3jwhi4r3ahhu">Render<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Selection"><span class="tag-instant" tagid="cijzz3wvf002z3jwhd6tpny5j">Selection<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/RadioButton"><span class="tag-instant" tagid="cijzz3wvm003b3jwh9guz4huw">RadioButton<sup class="tag-selection-badge">1</sup></span></a></div><div id="tags-selection-content-ux" class="tags-selection-content-part"></div><div id="tags-selection-content-yz" class="tags-selection-content-part"></div></div>
+  </div>
+</section>
+<article id="post-2014-05-15-create-2048-using-html5-canvas-play"  class=" ease-animation">
+  <header class="article-header">
+    
+        
+  
+    <div class="article-title" itemprop="name">
+      Create 2048 using HTML5 Canvas(Play)
+    </div>
+  
+
+    
+    <div class="article-meta sm-font">
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Game/">Game</a><i class="fa fa-circle dot-separator"></i><a class="article-category-link" href="/categories/Game/Canvas/">Canvas</a>
+  </div>
+
+
+      <a href="/2014/05/15/2014-05-15-create-2048-using-html5-canvas-play/" class="article-updated">
+  <time datetime="2014-05-15T03:13:08.000Z" itemprop="datePublished">14/05/15 11:05</time>
+</a>
+    </div>
+  </header>
+  <div class="article-entry">
+  
+    <blockquote>
+<p>这一年多都在前端这块努力着，随着时间被吞噬的速度越来越快，总有更酷更炫的东西浮现在眼前，一直有个想法，想做点什么算是作品的作品，能拿得出手的东西。<br>最后选择了2048这个游戏，起初打算实现这个游戏只是因为兴趣爱好，正好这段时间对小projec感兴趣，加上之前写了一个排序的可视化程序，然后就继续沿用了Canvas来构建这个流行的2048。</p>
+<hr>
+<h2 id="游戏地址_·_Play_Game_Link(http://game2048-staydan-com)">游戏地址 · Play Game Link(<a href="http://game2048.staydan.com" target="_blank" rel="external">http://game2048.staydan.com</a>)</h2><hr>
+<h2 id="游戏源码_·_Game_Source_Code_on_Github">游戏源码 · Game Source Code on <a href="https://github.com/DanielZhu/game-2048" target="_blank" rel="external">Github</a></h2></blockquote>
+<h2 id="前言（大家看书都喜欢认真看前言，那我就认真写前言）">前言（大家看书都喜欢认真看前言，那我就认真写前言）</h2><p>没游戏开发经验，头一回开发网页智力游戏，那叫一个激动啊，虽然游戏的主意是网上现成的，但是呢，在coding这个2048的过程中，没去参考任何的开源代码，坚持自己写完主体逻辑。</p>
+<p>因为从来没看过任何这方面的书籍，就凭着一腔热血来啦，脑子里想着这东西蛮简单的，不就是4×4的栅格嘛，不就是合并和移动方块嘛，加上一些些的动画点缀，有什么难的对不对？？？想着想着各种case对应的solution就在脑海中飘来飘去了，跃跃欲试啊。。。</p>
+<a id="more"></a>
+<h2 id="构思">构思</h2><p>玩过2048的孩纸们，肯定都对这个界面印象深刻，我们来把它拆分成几个部分。</p>
+<ol>
+<li>一个暖色调纯色背景的墙纸</li>
+<li>4×4 的栅格，共16个圆角矩形依次每行4个，总共4行排列</li>
+<li>根据游戏进度，在游戏区域显示对应的数字卡片</li>
+<li>根据卡片的数值，显示对应的卡片背景色</li>
+<li>使用方向键玩游戏，4个方向（上，下，左，右）移动卡片</li>
+<li>如果在移动方向上发现有相同的紧邻着的两个数字，即将该两个卡片合并</li>
+<li>如果在移动方向上发现有空的卡片，移动所有有数值的卡片至移动方向的顶端（比如：向右移动，将所有行上的数字移动至右边，填补空卡片）</li>
+<li>在一次完整的移动完成后，如果没有空位，并且没有任何紧邻的相同数字存在可以合并，那判断该游戏就结束了</li>
+<li>游戏的分数计算：S = S + 2^n (n &gt;= 1, n为2的幂指数)，说白了就是累加所有合成后的数值就是总分了</li>
+</ol>
+<h2 id="分析">分析</h2><p>小丹我呢定了这个2048定的基调是：模仿为主，微创新辅之。<br>主要使用HTML5 的 Canvas 进行游戏画布绘制，动画绘制。没很高强度的用过Canvas，料想开发过程肯定会遇到各种问题，不过没事，肯定都会迎刃而解的。</p>
+<ol>
+<li>游戏画布中大量用到了圆角矩形，但Canvas原生没有提供圆角矩形的API，所以得扩展下。</li>
+<li>在本子上草拟画布的草稿版本，当然是要算各种间隔，宽度，高度等</li>
+<li>建立两个canvas层，一层绘制所有背景，包括大小格子，另一层负责绘制数字</li>
+<li>监听键盘的方向键，并且要组织在键盘操作时滚动画面</li>
+<li>合并算法，移动填补空位算法</li>
+<li>计算得分</li>
+</ol>
+<h2 id="关键分步实现">关键分步实现</h2><h3 id="绘制圆角矩形">绘制圆角矩形</h3><p>通过扩展CanvasRenderingContext2D来实现，形式参照<code>fillRect()</code>，四个角分别预留出radius的宽度和高度，先绘制出4条线段，然后利用二次方程曲线<code>quadraticCurveTo()</code>补足4个圆弧。</p>
+<script src="//gist.github.com/39749849e3cbbc7fef1c.js"></script>
+<p>参考: <a href="http://blog.csdn.net/jia20003/article/details/9356383" target="_blank" rel="external">http://blog.csdn.net/jia20003/article/details/9356383</a></p>
+<h3 id="绘制游戏画布">绘制游戏画布</h3><p>两个独立并且重叠的Canvas，游戏init的时候，下层绘制背景和所有各自的空白色，上层绘制初始化的两个数字卡片，所有的数字都是Photoshop出来的透明图片<br>只要你提前做好坐标的计算，这个相对就比较简单了，就循环matrixArr数组。</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>两边与边框间隔</td>
+<td>20 px</td>
+</tr>
+<tr>
+<td>卡片与卡片间隔</td>
+<td>10 px</td>
+</tr>
+<tr>
+<td>卡片高宽</td>
+<td>根据总长动态计算</td>
+</tr>
+<tr>
+<td>动画速度</td>
+<td>10 （100/10 = 10次）</td>
+</tr>
+<tr>
+<td>动画每次执行间隔</td>
+<td>7 ms</td>
+</tr>
+</tbody>
+</table>
+<h3 id="键盘键使用">键盘键使用</h3><p><strong>左，上，右, 下</strong> or <strong>A, W, D, S</strong><br>这两组其实都是常见的，只需要把对应的key code写上即可，例如第一组：<strong>37 - 40</strong><br>对应每一个方向监听事件，我们都要做相同的几件事，<code>移动方向上行合并两个相同的数</code>，<code>移动方向上用有数字的卡片补上空位</code>, <code>随机生成一位数字显示在画布上</code></p>
+<h3 id="合并算法">合并算法</h3><p><strong>向左：</strong></p>
+<p>从每一行(k=0)最左边的第二位开始，每一位都与第一位比较，每进行到新卡片(j)时，当首次遇到一个非空卡片(新 j)，与下标为k的卡片进行比较，如果相同，则下标为k的卡片乘以2，将新j位置的卡片置为空（-1），并且将j累加1后跳出while循环，继续执行外循环；如果不相同，同时该新j位置卡片为非空，则也跳出循环，反之继续，直到这一行所有的数字都两两比较过。<br>由于这样的算法，合并完的卡片中间有时会有空位，所以还需要一次移位算法，请参考下面的分析。</p>
+<h3 id="移位算法">移位算法</h3><p><strong>向左：</strong></p>
+<p>有一个队列来维护空卡片，从每一行的第一位开始为外循环，内循环为遍历该行所有元素，遇到空位则将该卡片下标push到队列中，当遇到非空卡片时，将队列中的第一个元素裁取出来，与非空卡片呼唤位置，并且将互换后成为空卡片的下标push到队列中待用，直到两个循环结束，正行的非空卡片就移位完成了。</p>
+<p>每一次的移位最终完成后，需要给画布添加一个随机卡片在一个随机的空位上。</p>
+<h3 id="如果判断游戏结束">如果判断游戏结束</h3><p>本人不才，还是采取了最笨的方法，在添加新卡片结束后，模拟四个方向在后台默默的走一遍，如果判断是有可合并或者可移位的卡片，就认为游戏仍然没有结束，可以继续玩。</p>
+<p>在每次移位后，如果有任何的合并或者移位发生，则加一位卡片在随机空位，然后进行判断游戏是否已经GameOver。</p>
+<h2 id="其他用户输入方式">其他用户输入方式</h2><h3 id="手指触摸">手指触摸</h3><p>在对应要监听触摸事件的Canvas元素上加上以下代码即可。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">canvasEle.addEventListener(<span class="string">'touchstart'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;$scope.touchStartHandle(event)&#125;);</span><br><span class="line">canvasEle.addEventListener(<span class="string">'touchend'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;$scope.touchEndHandle(event)&#125;);</span><br><span class="line">canvasEle.addEventListener(<span class="string">'touchmove'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;event.preventDefault();&#125;);</span><br></pre></td></tr></table></figure>
+<p>每次touch start后，记录开始的Pos，在touch end发生后，拿到最后的Pos，比较前后Pos的touchX，touchY坐标, 如果差值的绝对值大于设定的长度（50px），即触发对应方向逻辑。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="built_in">Math</span>.abs(touchEndClientX - touchStartPos[<span class="number">0</span>]) &gt; <span class="number">100</span>) &#123;</span><br><span class="line">  key = (touchEndClientX - touchStartPos[<span class="number">0</span>] &gt; <span class="number">0</span> ? <span class="number">39</span> : <span class="number">37</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">Math</span>.abs(touchEndClientY - touchStartPos[<span class="number">1</span>]) &gt; <span class="number">100</span>) &#123;</span><br><span class="line">  key = (touchEndClientY - touchStartPos[<span class="number">1</span>] &gt; <span class="number">0</span> ? <span class="number">40</span> : <span class="number">38</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="鼠标点击滑动">鼠标点击滑动</h3><p>类似Touch事件处理，对mouseDownHandle, mouseUpHandle做同样的监听即可。</p>
+<h3 id="动画">动画</h3><p>游戏设定为每个完整的动画分为10帧，每帧间隔7ms，所以每次动画都需要延迟执行，然后Javascript的执行效率可能大多数达不到我们的预期结果，所以就必须维护一个队列（先进先出），队列是每次延迟后需要执行的function，所以在最后执行队列里的function时，是连续的，不会造成阻塞。</p>
+<script src="//gist.github.com/87bc46e23c654af22d55.js"></script>
+<p>来谈谈HTML5的Canvas，利用Canvas绘制动画，需要反复的擦除和绘制，这无数次的画和擦加上位移才构成了视觉上的一个动画效果。</p>
+<p>在实际应用中，这样的处理在PC浏览器没有问题，然后在iPad上，问题还是非常严重的，尤其是在擦除时，会留有残留，还没深究其原因。</p>
+<p>下面贴出代码，其中含有大量在所在js文件里的变量和运算，如果无法理解，请refer to github.</p>
+<script src="//gist.github.com/192709553dcacbb0db7e.js"></script>
+<h2 id="其他功能">其他功能</h2><h3 id="悔步">悔步</h3><p>玩了一盘很好的局，突然发现马上要到2048前好像要挂了额，怎么办，怎么办，悔步理所当然是最好的办法啦。</p>
+<p>在写完游戏的90%的功能后，为了多点娱乐性，就加上此项功能，每局允许玩家返回一定的步数。</p>
+<p>其实实现起来非常简单，在每局的游戏中</p>
+<ul>
+<li>维护了一个历史步伐的数组，记录了每次走完后最后的矩阵状态</li>
+<li>维护一个记录当前剩余悔步总数的变量</li>
+<li>每次悔步，都将在历史步伐数组中pop一个出来重回画布即可</li>
+<li>新建游戏后，重置所有数据</li>
+</ul>
+<h3 id="游戏数据实时存储">游戏数据实时存储</h3><p>游戏过程中，虽然我们没有用户session过期等概念，但也不可避免的会遇到浏览器无故奔溃等的意外情况，当重新打开游戏首页时，如果能还原奔溃前所有的状态那肯定是完美的。</p>
+<p>所以，小丹把游戏中的关键数据保存到了localstorage中，当游戏加载初始化时，会优先使用本地保存的数据，如果没发现数据，随后才会全部重置。</p>
+<h3 id="总得分，历史最高分">总得分，历史最高分</h3><p>历史最高得分对于自己来说，必然是一个有历史意义的东西，俗话怎么说的来着：只有自己才能打败自己，并超越自己。</p>
+<p>每次都是为了那个目标奋斗，也是游戏娱乐性的一大乐趣和吸引点。</p>
+<p>当然功能的实现是依靠localstorage，每次的分数和其作比较，只要大于等于最高分，就会同步更新。</p>
+<h3 id="卡片预加载">卡片预加载</h3><p>由于小丹这个版本是通过Canvas加上透明数组图片来实现的，所以在游戏过程中，如果合成16、32、64…等靠后的数字，会有一定的延迟时间显示，因为他要加载。这会导致用户以为游戏bug了，因为这个本该出现数字的卡片上一片空白。</p>
+<p>为了解决这个问题，在游戏初始化时，把常用的数字通过new image的方式预先加载。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">preloadResources = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// preload image</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">12</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">new</span> Image().src = <span class="string">'images/card_'</span> + zeroPad(i, <span class="number">4</span>) + <span class="string">'_'</span> + <span class="built_in">Math</span>.pow(<span class="number">2</span>, i + <span class="number">1</span>) + <span class="string">'.png'</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那为什么又要把图片的文件名命名成这样呢，这是因为在Photoshop中，每个数字是一个图层，在export所有卡片是，photoshop有它自己的命名方式，所以为了节省时间，我就让代码靠拢它既可。</p>
+<h3 id="全球排名显示_Top_20">全球排名显示 Top 20</h3><p>除了个人Best Score之外，排名是绝对能推动玩家疯狂沉迷的手段之一。</p>
+<p>小丹2048将上传分数、拉取排名信息默默的放在用户感知不到的时候执行，一局游戏结束，分数和昵称和邮箱呗打包上传到远程数据库存档。排名数据时每隔一定时间获取的。</p>
+<p>小丹的Web Service是用PHP实现，非常之简单，就一个 POST 写入，加上一个 GET 读取。</p>
+<h2 id="将来">将来</h2><p>最初计划写这个游戏时，也有plan是学习学习AI算法，让机器自主思考和选择最优步骤达到最高的数字，可渐渐的发现，这并没有想象中的简单。</p>
+<p>这不是穷举，这不能靠暴力，路还没走完，继续向前吧，少年！</p>
+
+  
+  </div>
+  <footer class="article-footer">
+    <div class="article-footer-left">
+      <a href="hexo_post.html#disqus" class="article-footer-left"><span class="comments"><i class="fa fa-comments"></i> 0 Comment</span></a>
+      <i class="fa fa-circle dot-separator"></i>
+    </div>
+    
+  <ul class="ease-animation sm-font tag-list"><li class="ease-animation sm-font tag-list-item"><a class="ease-animation sm-font tag-list-link" href="/tags/2048/">2048</a></li><li class="ease-animation sm-font tag-list-item"><a class="ease-animation sm-font tag-list-link" href="/tags/Canvas/">Canvas</a></li><li class="ease-animation sm-font tag-list-item"><a class="ease-animation sm-font tag-list-link" href="/tags/HTML5/">HTML5</a></li></ul>
+
+    <div class="article-footer-right">
+    
+      <a href="hexo_post.html"><span class="save-pocket button sm-font ease-animation"><i class="fa fa-share"></i> Share</span></a>
+    </div>
+  </footer>
+</article>
+
+  
+<div class="link-to-article"> 
+  <div class="link-to-article-next">
+  
+    
+      <div class="article-nav-date">
+        2014-05-03
+      </div>
+      <div class="article-nav-title">
+        <a href="/2014/05/03/2014-05-03-how-to-handle-the-loading-mask-automatically-in-extjs/" title="How to handle the loading mask automatically in ExtJS">How to handle the loading mask automatically in ExtJS</a>
+      </div>
+     
+  
+  </div>
+  <div class="link-to-article-separator">
+    <i class="fa fa-circle dot-separator"></i>
+  </div>
+  <div class="link-to-article-prev">
+  
+    
+      <div class="article-nav-date">
+        2014-05-26
+      </div>
+      <div class="article-nav-title">
+        <a href="/2014/05/26/2014-05-26-my-left-foots-broken-when-rope-skipping/" title="My left foot's broken when rope skipping">My left foot's broken when rope skipping</a>
+      </div>
+        
+  
+  </div>
+</div>
+
+
+</section>
+      </div>
+      <footer id="footer" class="site-footer">
+	&copy; 2016 Daniel Zhu<br>
+  <p>Theme by <a href="http://github.com/danielzhu" title="Line" target="_blank" rel="external">Line</a> Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="external">Hexo</a>
+</footer>
+    </div>
+    
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+<script src="/js/grouped_tag.js" type="text/javascript"></script>
+  </div>
+</body>
+</html>

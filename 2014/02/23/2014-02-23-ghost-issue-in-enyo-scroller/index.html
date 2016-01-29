@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Ghost issue in Enyo.Scroller | Xiaodan&#39;s Everything</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="先描述下问题的背景
+同事有一个用EnyoJS写的手机app，用PhoneGap打包在Android和iOS下，在iOS升级7.0.*新版本后，许多用户都开发反应，在该新版本下的iPhone5中会出现诡异的现象。
+具体表现为：
+
+登录后进入Level 1画面，点击某一条数据进入Level 2画面，接下来level 3/4/5都是有用Enyo.Scroller构件的画面，当用户使用搭载着iOS 7.0">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ghost issue in Enyo.Scroller">
+<meta property="og:url" content="http://blog.staydan.com/2014/02/23/2014-02-23-ghost-issue-in-enyo-scroller/index.html">
+<meta property="og:site_name" content="Xiaodan's Everything">
+<meta property="og:description" content="先描述下问题的背景
+同事有一个用EnyoJS写的手机app，用PhoneGap打包在Android和iOS下，在iOS升级7.0.*新版本后，许多用户都开发反应，在该新版本下的iPhone5中会出现诡异的现象。
+具体表现为：
+
+登录后进入Level 1画面，点击某一条数据进入Level 2画面，接下来level 3/4/5都是有用Enyo.Scroller构件的画面，当用户使用搭载着iOS 7.0">
+<meta property="og:updated_time" content="2015-06-19T01:57:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ghost issue in Enyo.Scroller">
+<meta name="twitter:description" content="先描述下问题的背景
+同事有一个用EnyoJS写的手机app，用PhoneGap打包在Android和iOS下，在iOS升级7.0.*新版本后，许多用户都开发反应，在该新版本下的iPhone5中会出现诡异的现象。
+具体表现为：
+
+登录后进入Level 1画面，点击某一条数据进入Level 2画面，接下来level 3/4/5都是有用Enyo.Scroller构件的画面，当用户使用搭载着iOS 7.0">
+  
+  
+  <script src="http://www.staydan.com/libs/jQuery/2.0.3/jquery-2.0.3.min.js"></script>
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div class="container">
+    <div class="wrapper">
+      <header class="site-header">
+  <div id="header-title" class="inner">
+    <h1>
+      <a href="/" title="Xiaodan's Everything">Xiaodan's Everything</a>
+    </h1>
+    
+      <h4 id="subtitle-wrap">
+        <a href="/" title="A foolish Programmer from Shanghai China">A foolish Programmer from Shanghai China</a>
+      </h4>
+    
+  </div>
+  <nav id="site-navs" class="">
+	  <ul>
+      
+	      <li class="ease-animation"><a href="/" title="Home">Home</a></li>
+	    
+	      <li class="ease-animation"><a href="/archives" title="Archives">Archives</a></li>
+	    
+	      <li class="ease-animation"><a href="/about" title="About">About</a></li>
+	    
+	      <li class="ease-animation"><a href="/logs" title="Logs">Logs</a></li>
+	    
+	  </ul>
+	  <div class="clearfix"></div>
+	</nav>
+</header>
+      <div class="outer">
+        <section id="main"><section class="tags-selection">
+  <header class="tags-selection-header">
+    <div class="tags-selection-header-label"><i class="fa fa-tag"></i>Tags</div>
+  </header>
+  <div id="tags-selection-panel">
+  	<div class="tags-selection-navs" title="Sorted by the first English alphabet."><label class="tags-selection-nav active" navid="ad">A - D</label><label class="tags-selection-nav " navid="eh">E - H</label><label class="tags-selection-nav " navid="il">I - L</label><label class="tags-selection-nav " navid="mp">M - P</label><label class="tags-selection-nav " navid="qt">Q - T</label><label class="tags-selection-nav " navid="ux">U - X</label><label class="tags-selection-nav " navid="yz">Y - Z</label></div><div class="tags-selection-content"><div id="tags-selection-content-ad" class="tags-selection-content-part"><a href="/tags/Click Event"><span class="tag-instant" tagid="cijzz3wts00043jwh8lfdz1cq">Click-Event<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Data Visualization"><span class="tag-instant" tagid="cijzz3wu6000b3jwhdfthtx61">Data-Visualization<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/docing"><span class="tag-instant" tagid="cijzz3wug000w3jwhjbg77qm2">docing<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/document"><span class="tag-instant" tagid="cijzz3wug000x3jwhzbvd54qi">document<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/CSS3"><span class="tag-instant" tagid="cijzz3wuk00153jwhduo8kct8">CSS3<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Canvas"><span class="tag-instant" tagid="cijzz3wur001h3jwhan4ua501">Canvas<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Algorithm"><span class="tag-instant" tagid="cijzz3wuz001v3jwh2k1469fy">Algorithm<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/DateFormat"><span class="tag-instant" tagid="cijzz3wvk00363jwhphiej6dr">DateFormat<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/CSS"><span class="tag-instant" tagid="cijzz3wvm003c3jwhmddoenr4">CSS<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/AngularJS"><span class="tag-instant" tagid="cijzz3wvq003l3jwh2e9v6b0v">AngularJS<sup class="tag-selection-badge">0</sup></span></a><a href="/tags/Bower"><span class="tag-instant" tagid="cijzz3wvr003n3jwh6ougry63">Bower<sup class="tag-selection-badge">0</sup></span></a></div><div id="tags-selection-content-eh" class="tags-selection-content-part"><a href="/tags/Hive Plot"><span class="tag-instant" tagid="cijzz3wu7000c3jwho3kakdox">Hive-Plot<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/HTML5"><span class="tag-instant" tagid="cijzz3wuj00143jwhsym0vkao">HTML5<sup class="tag-selection-badge">2</sup></span></a><a href="/tags/History"><span class="tag-instant" tagid="cijzz3wvo003h3jwhhjz526dh">History<sup class="tag-selection-badge">0</sup></span></a><a href="/tags/Grunt"><span class="tag-instant" tagid="cijzz3wvq003m3jwhcl3ji6rs">Grunt<sup class="tag-selection-badge">0</sup></span></a></div><div id="tags-selection-content-il" class="tags-selection-content-part"><a href="/tags/iScrollJs"><span class="tag-instant" tagid="cijzz3wue000q3jwhhirw4q13">iScrollJs<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Jeju"><span class="tag-instant" tagid="cijzz3wv400273jwhzpe8bmjo">Jeju<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/laptop"><span class="tag-instant" tagid="cijzz3wv6002e3jwhu53ozaib">laptop<sup class="tag-selection-badge">1</sup></span></a></div><div id="tags-selection-content-mp" class="tags-selection-content-part"><a href="/tags/Pull to refresh"><span class="tag-instant" tagid="cijzz3wua000j3jwh0vgdjsno">Pull-to-refresh<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Mask"><span class="tag-instant" tagid="cijzz3wuv001p3jwhrzn8itqf">Mask<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Network"><span class="tag-instant" tagid="cijzz3wv6002d3jwhvrf8c1x3">Network<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/PC"><span class="tag-instant" tagid="cijzz3wv6002g3jwhda4gla0c">PC<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Paging"><span class="tag-instant" tagid="cijzz3wvf00313jwhiw0jc5yu">Paging<sup class="tag-selection-badge">1</sup></span></a></div><div id="tags-selection-content-qt" class="tags-selection-content-part"><a href="/tags/Sort"><span class="tag-instant" tagid="cijzz3wuz001u3jwhr0207rly">Sort<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Team Building"><span class="tag-instant" tagid="cijzz3wv100203jwhcqaeor5z">Team-Building<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Tooltips"><span class="tag-instant" tagid="cijzz3wva002m3jwhz1g38o5s">Tooltips<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Textfield"><span class="tag-instant" tagid="cijzz3wva002o3jwhmba5gdo5">Textfield<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Render"><span class="tag-instant" tagid="cijzz3wvc002t3jwhi4r3ahhu">Render<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Selection"><span class="tag-instant" tagid="cijzz3wvf002z3jwhd6tpny5j">Selection<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/RadioButton"><span class="tag-instant" tagid="cijzz3wvm003b3jwh9guz4huw">RadioButton<sup class="tag-selection-badge">1</sup></span></a></div><div id="tags-selection-content-ux" class="tags-selection-content-part"></div><div id="tags-selection-content-yz" class="tags-selection-content-part"></div></div>
+  </div>
+</section>
+<article id="post-2014-02-23-ghost-issue-in-enyo-scroller"  class=" ease-animation">
+  <header class="article-header">
+    
+        
+  
+    <div class="article-title" itemprop="name">
+      Ghost issue in Enyo.Scroller
+    </div>
+  
+
+    
+    <div class="article-meta sm-font">
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a><i class="fa fa-circle dot-separator"></i><a class="article-category-link" href="/categories/JavaScript/EnyoJS/">EnyoJS</a>
+  </div>
+
+
+      <a href="/2014/02/23/2014-02-23-ghost-issue-in-enyo-scroller/" class="article-updated">
+  <time datetime="2014-02-22T16:00:00.000Z" itemprop="datePublished">14/02/23 00:02</time>
+</a>
+    </div>
+  </header>
+  <div class="article-entry">
+  
+    <p>先描述下问题的背景</p>
+<p>同事有一个用EnyoJS写的手机app，用PhoneGap打包在Android和iOS下，在iOS升级7.0.*新版本后，许多用户都开发反应，在该新版本下的iPhone5中会出现诡异的现象。</p>
+<p>具体表现为：</p>
+<ol>
+<li>登录后进入Level 1画面，点击某一条数据进入Level 2画面，接下来level 3/4/5都是有用Enyo.Scroller构件的画面，当用户使用搭载着iOS 7.0.*版本的iPhone5时，从Lv2到之后的画面时，所有用Scroller包含的内容都显示空白，但用手指随便在空白处一划，内容就显示了。</li>
+<li>显示为白色的部分，其实内容已经加载到页面里，只是未显示出来。<a id="more"></a>
+</li>
+</ol>
+<p>公司有两个用相同技术打造的app，一个行，一个不行。由于运行平台比较特殊，是公司自己打造的跨平台的，所以调试等等都非常困难，无法看log。。。</p>
+<p>周五协助同事对比了下code，还跟我之前做的项目对比了下，最终一个方案解决了我们的问题</p>
+<p>在Enyo.panel切换画面时，必须调用this.render()来重绘画面，</p>
+<p>随后在所有出问题view的最顶层画面的js文件中加上一个重写的rendered 方法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">rendered: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.inherited(<span class="built_in">arguments</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// we call our enyo.scroller scroller.</span></span><br><span class="line">    <span class="comment">// To simulate the operation from user</span></span><br><span class="line">    <span class="comment">// just scrolle some pixels on y-axis</span></span><br><span class="line">    <span class="keyword">this</span>.scroller.scrolleTo(<span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>重新部署项目后，记得，这里必须完全全新的重新部署，不然将会有缓存影响到app运行的结果。</p>
+<p>First of all, let’s describe the background of this issue.</p>
+<p>My colleague has an mobile app running on Android and iOS platform, developed by EnyoJS and packaged by PhoneGap, We have our own big platform, many small app can run on it, we got problems after Apple published iOS 7.0.*, many users sent reports to tell us the issue just on iPhone 5+.</p>
+<p>It shows like this:</p>
+<ol>
+<li>User will be transferred to the view I call it Level 1 after login, Go into lv2 after clicking item. In the following lv3/4/5 views, they are all constructed by Enyo.Scroller, when user go into these views, the content wrapped by scroller is blank, however, it will show up as soon as user swap anywhere in the blank area.</li>
+<li>We proved that those elements which should be displayed in this scroller have been loaded successfully, just only not show up.</li>
+</ol>
+<p>We have two similar apps build by the same techniques. One can, the other can’t. Because the situation is special, the platform is very difficult to debug and print logs when using iPhone.</p>
+<p>I assisted my colleague to compare the codes with the correct project and my previous projects. And finally we work out the solution.</p>
+<p>It should call this.render() to re-draw the whole view when we change the view in Enyo.panel.</p>
+<p>Next step, add one function which can overwrite the existing method ‘rendered’ in ExtJS to the top level one of all the incorrect views:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">rendered: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.inherited(<span class="built_in">arguments</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// we call our enyo.scroller scroller.</span></span><br><span class="line">    <span class="comment">// To simulate the operation from user</span></span><br><span class="line">    <span class="comment">// just scrolle some pixels on y-axis</span></span><br><span class="line">    <span class="keyword">this</span>.scroller.scrolleTo(<span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>P.S. Remember one thing, each time you should clear the cache and rebuild all the project, otherwise, it will have an effect on the app.</p>
+
+  
+  </div>
+  <footer class="article-footer">
+    <div class="article-footer-left">
+      <a href="hexo_post.html#disqus" class="article-footer-left"><span class="comments"><i class="fa fa-comments"></i> 0 Comment</span></a>
+      <i class="fa fa-circle dot-separator"></i>
+    </div>
+    
+  <ul class="ease-animation sm-font tag-list"><li class="ease-animation sm-font tag-list-item"><a class="ease-animation sm-font tag-list-link" href="/tags/Render/">Render</a></li></ul>
+
+    <div class="article-footer-right">
+    
+      <a href="hexo_post.html"><span class="save-pocket button sm-font ease-animation"><i class="fa fa-share"></i> Share</span></a>
+    </div>
+  </footer>
+</article>
+
+  
+<div class="link-to-article"> 
+  <div class="link-to-article-next">
+  
+    
+      <div class="article-nav-date">
+        2014-02-23
+      </div>
+      <div class="article-nav-title">
+        <a href="/2014/02/23/2014-02-17-selection-paging-error-caused-by-extjs-id-generation/" title="Selection & Paging Error caused by ExtJS ID Generation">Selection & Paging Error caused by ExtJS ID Generation</a>
+      </div>
+     
+  
+  </div>
+  <div class="link-to-article-separator">
+    <i class="fa fa-circle dot-separator"></i>
+  </div>
+  <div class="link-to-article-prev">
+  
+    
+      <div class="article-nav-date">
+        2014-02-27
+      </div>
+      <div class="article-nav-title">
+        <a href="/2014/02/27/2014-02-27-add-tooltips-to-textfield-in-extjs/" title="Add tooltips to Textfield in ExtJS">Add tooltips to Textfield in ExtJS</a>
+      </div>
+        
+  
+  </div>
+</div>
+
+
+</section>
+      </div>
+      <footer id="footer" class="site-footer">
+	&copy; 2016 Daniel Zhu<br>
+  <p>Theme by <a href="http://github.com/danielzhu" title="Line" target="_blank" rel="external">Line</a> Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="external">Hexo</a>
+</footer>
+    </div>
+    
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+<script src="/js/grouped_tag.js" type="text/javascript"></script>
+  </div>
+</body>
+</html>

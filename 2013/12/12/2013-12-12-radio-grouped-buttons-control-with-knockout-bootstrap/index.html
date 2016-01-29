@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Radio Grouped Buttons Control with Knockout &amp; Bootstrap | Xiaodan&#39;s Everything</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="用JavaScript写代码也有一年多了，其实也算积累了蛮多东西了，该写下来存存档~
+
+这次是一个结合了knockout和bootstrap的一个小控件，虽然也不是很美观，但也凑合吧">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Radio Grouped Buttons Control with Knockout & Bootstrap">
+<meta property="og:url" content="http://blog.staydan.com/2013/12/12/2013-12-12-radio-grouped-buttons-control-with-knockout-bootstrap/index.html">
+<meta property="og:site_name" content="Xiaodan's Everything">
+<meta property="og:description" content="用JavaScript写代码也有一年多了，其实也算积累了蛮多东西了，该写下来存存档~
+
+这次是一个结合了knockout和bootstrap的一个小控件，虽然也不是很美观，但也凑合吧">
+<meta property="og:updated_time" content="2015-06-19T01:57:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Radio Grouped Buttons Control with Knockout & Bootstrap">
+<meta name="twitter:description" content="用JavaScript写代码也有一年多了，其实也算积累了蛮多东西了，该写下来存存档~
+
+这次是一个结合了knockout和bootstrap的一个小控件，虽然也不是很美观，但也凑合吧">
+  
+  
+  <script src="http://www.staydan.com/libs/jQuery/2.0.3/jquery-2.0.3.min.js"></script>
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div class="container">
+    <div class="wrapper">
+      <header class="site-header">
+  <div id="header-title" class="inner">
+    <h1>
+      <a href="/" title="Xiaodan's Everything">Xiaodan's Everything</a>
+    </h1>
+    
+      <h4 id="subtitle-wrap">
+        <a href="/" title="A foolish Programmer from Shanghai China">A foolish Programmer from Shanghai China</a>
+      </h4>
+    
+  </div>
+  <nav id="site-navs" class="">
+	  <ul>
+      
+	      <li class="ease-animation"><a href="/" title="Home">Home</a></li>
+	    
+	      <li class="ease-animation"><a href="/archives" title="Archives">Archives</a></li>
+	    
+	      <li class="ease-animation"><a href="/about" title="About">About</a></li>
+	    
+	      <li class="ease-animation"><a href="/logs" title="Logs">Logs</a></li>
+	    
+	  </ul>
+	  <div class="clearfix"></div>
+	</nav>
+</header>
+      <div class="outer">
+        <section id="main"><section class="tags-selection">
+  <header class="tags-selection-header">
+    <div class="tags-selection-header-label"><i class="fa fa-tag"></i>Tags</div>
+  </header>
+  <div id="tags-selection-panel">
+  	<div class="tags-selection-navs" title="Sorted by the first English alphabet."><label class="tags-selection-nav active" navid="ad">A - D</label><label class="tags-selection-nav " navid="eh">E - H</label><label class="tags-selection-nav " navid="il">I - L</label><label class="tags-selection-nav " navid="mp">M - P</label><label class="tags-selection-nav " navid="qt">Q - T</label><label class="tags-selection-nav " navid="ux">U - X</label><label class="tags-selection-nav " navid="yz">Y - Z</label></div><div class="tags-selection-content"><div id="tags-selection-content-ad" class="tags-selection-content-part"><a href="/tags/Click Event"><span class="tag-instant" tagid="cijzz3wts00043jwh8lfdz1cq">Click-Event<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Data Visualization"><span class="tag-instant" tagid="cijzz3wu6000b3jwhdfthtx61">Data-Visualization<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/docing"><span class="tag-instant" tagid="cijzz3wug000w3jwhjbg77qm2">docing<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/document"><span class="tag-instant" tagid="cijzz3wug000x3jwhzbvd54qi">document<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/CSS3"><span class="tag-instant" tagid="cijzz3wuk00153jwhduo8kct8">CSS3<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Canvas"><span class="tag-instant" tagid="cijzz3wur001h3jwhan4ua501">Canvas<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Algorithm"><span class="tag-instant" tagid="cijzz3wuz001v3jwh2k1469fy">Algorithm<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/DateFormat"><span class="tag-instant" tagid="cijzz3wvk00363jwhphiej6dr">DateFormat<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/CSS"><span class="tag-instant" tagid="cijzz3wvm003c3jwhmddoenr4">CSS<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/AngularJS"><span class="tag-instant" tagid="cijzz3wvq003l3jwh2e9v6b0v">AngularJS<sup class="tag-selection-badge">0</sup></span></a><a href="/tags/Bower"><span class="tag-instant" tagid="cijzz3wvr003n3jwh6ougry63">Bower<sup class="tag-selection-badge">0</sup></span></a></div><div id="tags-selection-content-eh" class="tags-selection-content-part"><a href="/tags/Hive Plot"><span class="tag-instant" tagid="cijzz3wu7000c3jwho3kakdox">Hive-Plot<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/HTML5"><span class="tag-instant" tagid="cijzz3wuj00143jwhsym0vkao">HTML5<sup class="tag-selection-badge">2</sup></span></a><a href="/tags/History"><span class="tag-instant" tagid="cijzz3wvo003h3jwhhjz526dh">History<sup class="tag-selection-badge">0</sup></span></a><a href="/tags/Grunt"><span class="tag-instant" tagid="cijzz3wvq003m3jwhcl3ji6rs">Grunt<sup class="tag-selection-badge">0</sup></span></a></div><div id="tags-selection-content-il" class="tags-selection-content-part"><a href="/tags/iScrollJs"><span class="tag-instant" tagid="cijzz3wue000q3jwhhirw4q13">iScrollJs<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Jeju"><span class="tag-instant" tagid="cijzz3wv400273jwhzpe8bmjo">Jeju<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/laptop"><span class="tag-instant" tagid="cijzz3wv6002e3jwhu53ozaib">laptop<sup class="tag-selection-badge">1</sup></span></a></div><div id="tags-selection-content-mp" class="tags-selection-content-part"><a href="/tags/Pull to refresh"><span class="tag-instant" tagid="cijzz3wua000j3jwh0vgdjsno">Pull-to-refresh<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Mask"><span class="tag-instant" tagid="cijzz3wuv001p3jwhrzn8itqf">Mask<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Network"><span class="tag-instant" tagid="cijzz3wv6002d3jwhvrf8c1x3">Network<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/PC"><span class="tag-instant" tagid="cijzz3wv6002g3jwhda4gla0c">PC<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Paging"><span class="tag-instant" tagid="cijzz3wvf00313jwhiw0jc5yu">Paging<sup class="tag-selection-badge">1</sup></span></a></div><div id="tags-selection-content-qt" class="tags-selection-content-part"><a href="/tags/Sort"><span class="tag-instant" tagid="cijzz3wuz001u3jwhr0207rly">Sort<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Team Building"><span class="tag-instant" tagid="cijzz3wv100203jwhcqaeor5z">Team-Building<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Tooltips"><span class="tag-instant" tagid="cijzz3wva002m3jwhz1g38o5s">Tooltips<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Textfield"><span class="tag-instant" tagid="cijzz3wva002o3jwhmba5gdo5">Textfield<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Render"><span class="tag-instant" tagid="cijzz3wvc002t3jwhi4r3ahhu">Render<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Selection"><span class="tag-instant" tagid="cijzz3wvf002z3jwhd6tpny5j">Selection<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/RadioButton"><span class="tag-instant" tagid="cijzz3wvm003b3jwh9guz4huw">RadioButton<sup class="tag-selection-badge">1</sup></span></a></div><div id="tags-selection-content-ux" class="tags-selection-content-part"></div><div id="tags-selection-content-yz" class="tags-selection-content-part"></div></div>
+  </div>
+</section>
+<article id="post-2013-12-12-radio-grouped-buttons-control-with-knockout-bootstrap"  class=" ease-animation">
+  <header class="article-header">
+    
+        
+  
+    <div class="article-title" itemprop="name">
+      Radio Grouped Buttons Control with Knockout &amp; Bootstrap
+    </div>
+  
+
+    
+    <div class="article-meta sm-font">
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
+  </div>
+
+
+      <a href="/2013/12/12/2013-12-12-radio-grouped-buttons-control-with-knockout-bootstrap/" class="article-updated">
+  <time datetime="2013-12-11T16:00:00.000Z" itemprop="datePublished">13/12/12 00:12</time>
+</a>
+    </div>
+  </header>
+  <div class="article-entry">
+  
+    <p>用JavaScript写代码也有一年多了，其实也算积累了蛮多东西了，该写下来存存档~</p>
+<iframe width="100%" height="300" src="http://jsfiddle.net/w6wwq/embedded/js,resources,html,css,result/light" frameborder="0" allowfullscreen></iframe>
+<p>这次是一个结合了knockout和bootstrap的一个小控件，虽然也不是很美观，但也凑合吧<br><a id="more"></a><br>Knockout 负责该控件中的数据耦合，Bootstrap负责用户界面。<br>这边想要实现的功能是，在这种表现良好的单选框控件上通过knockout来同步上下两个控件的值，具体为：</p>
+<ol>
+<li>勾选单选框任意一项，下面文本框随之更新激活的单选框值；</li>
+<li>更改文本框的值，上面单选框也随之更改激活项；</li>
+</ol>
+<p>用Bootstrap把radio Button Group实现后，由于knockout自身提供的radiobox的demo是基于checked这种最原始的方式，而Bootstrap对radiobox进行了一些小装饰，使得在每个input外层都套了一层label，而仅用active的css类附加在对应label上来表示激活项。<br>如此一来，knockout那一套就必须稍作修改，参考该文顶部附上的JSFiddle代码块</p>
+<p>监听radioValue的值，并设默认值为1，即选中第一项</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.radioValue = ko.observable(<span class="string">"1"</span>);</span><br></pre></td></tr></table></figure>
+<p>捕捉click事件来更改radioValue的值，更改后文本框也就随之被knockout更改，通过逐一判断radioValue的值是否等于当前单选框的值来修改css中active项</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">label</span> <span class="attribute">style</span>=<span class="value">"background-color: #0e9bd7;"</span><span class="value">data-bind="click:</span> <span class="attribute">function</span>()&#123;<span class="attribute">radioValue</span>(<span class="attribute">1</span>)&#125;, <span class="attribute">css:</span> &#123;<span class="attribute">active:</span> <span class="attribute">radioValue</span>() =<span class="value">=</span> <span class="attribute">1</span>&#125;"&gt;</span><span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"radio"</span> <span class="attribute">value</span>=<span class="value">"1"</span> /&gt;</span>1<span class="tag">&lt;/<span class="title">label</span>&gt;</span>`</span><br></pre></td></tr></table></figure>
+<p>如此一来，就完全不需要写单独的JavaScript来实现逻辑判断了</p>
+<p>关于css的实现大家就直接看代码吧~</p>
+<p>Worked on JavaScript for more than 1 year, so it’s the correct time to write down something.</p>
+<iframe width="100%" height="300" src="http://jsfiddle.net/w6wwq/embedded/js,resources,html,css,result/light" frameborder="0" allowfullscreen></iframe>
+<p>It’s a simple radio grouped button component made by Knockout and Bootstrap, not very beautiful, but I think it’s good.In this case, knockout is in charge of the data layer, bootstrap is in charge of implement the UI.<br>What I want to realize is that the radio grouped button and textbox will sync their data automatically by knockout’s databind.</p>
+<ol>
+<li>Active one of radio buttons, the textbox will show the value.</li>
+<li>Modify the textbox, the radio buttons will active the correct one.</li>
+</ol>
+<p>Monitoring the value of radioValue, and set the default equals to 1</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.radioValue = ko.observable(<span class="string">"1"</span>);</span><br></pre></td></tr></table></figure>
+<p>Capture click event to change the value of radioValue, and then the textbox will be change automatically. Set the active item of radio grouped buttons by css codes via the value of radioValue.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&amp;lt;label style="background-color: #0e9bd7;" data-bind="click: function()&#123;radioValue(1)&#125;, css: &#123;active: radioValue() == 1&#125;"&gt;<span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"radio"</span> <span class="attribute">value</span>=<span class="value">"1"</span> /&gt;</span>1<span class="tag">&lt;/<span class="title">label</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Thus, we don’t need JavaScript anymore to process the logic.</p>
+<p>You can read the CSS codes to understand how to implement this UI.</p>
+
+  
+  </div>
+  <footer class="article-footer">
+    <div class="article-footer-left">
+      <a href="hexo_post.html#disqus" class="article-footer-left"><span class="comments"><i class="fa fa-comments"></i> 0 Comment</span></a>
+      <i class="fa fa-circle dot-separator"></i>
+    </div>
+    
+  <ul class="ease-animation sm-font tag-list"><li class="ease-animation sm-font tag-list-item"><a class="ease-animation sm-font tag-list-link" href="/tags/CSS/">CSS</a></li><li class="ease-animation sm-font tag-list-item"><a class="ease-animation sm-font tag-list-link" href="/tags/RadioButton/">RadioButton</a></li></ul>
+
+    <div class="article-footer-right">
+    
+      <a href="hexo_post.html"><span class="save-pocket button sm-font ease-animation"><i class="fa fa-share"></i> Share</span></a>
+    </div>
+  </footer>
+</article>
+
+  
+<div class="link-to-article"> 
+  <div class="link-to-article-next">
+  
+  </div>
+  <div class="link-to-article-separator">
+    <i class="fa fa-circle dot-separator"></i>
+  </div>
+  <div class="link-to-article-prev">
+  
+    
+      <div class="article-nav-date">
+        2014-02-17
+      </div>
+      <div class="article-nav-title">
+        <a href="/2014/02/17/2014-02-17-date-format-in-extjs/" title="Date format in ExtJS">Date format in ExtJS</a>
+      </div>
+        
+  
+  </div>
+</div>
+
+
+</section>
+      </div>
+      <footer id="footer" class="site-footer">
+	&copy; 2016 Daniel Zhu<br>
+  <p>Theme by <a href="http://github.com/danielzhu" title="Line" target="_blank" rel="external">Line</a> Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="external">Hexo</a>
+</footer>
+    </div>
+    
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+<script src="/js/grouped_tag.js" type="text/javascript"></script>
+  </div>
+</body>
+</html>
