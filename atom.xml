@@ -5,7 +5,7 @@
   <subtitle><![CDATA[A foolish Programmer from Shanghai China]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.staydan.com//"/>
-  <updated>2015-06-19T01:57:18.000Z</updated>
+  <updated>2016-01-30T05:29:31.000Z</updated>
   <id>http://blog.staydan.com//</id>
   
   <author>
@@ -16,9 +16,91 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[jQuery Events: Stop (Mis)Using Return False]]></title>
+    <link href="http://blog.staydan.com/2016/01/30/jQuery-Events-Stop-Mis-Using-Return-False/"/>
+    <id>http://blog.staydan.com/2016/01/30/jQuery-Events-Stop-Mis-Using-Return-False/</id>
+    <published>2016-01-30T02:30:35.000Z</published>
+    <updated>2016-01-30T05:29:31.000Z</updated>
+    <content type="html"><![CDATA[<p>也许当你刚开始学习关于 jQuery Events 的时候，第一点被提及到的核心内容就是关于如何阻止浏览器的默认行为。比如，一个初学者的click教程会包含下面的内容：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"a.toggle"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    $(<span class="string">"#mydiv"</span>).toggle();</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">// Prevent browser from visiting `#`</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>上面的函数就是隐藏和显示 <code>#mydiv</code>的元素，接着取消浏览器访问a标签超链的默认行为。</p>
+<p>在这些最初的例子中，坏习惯就潜移默化的影响着读者在任何想阻止浏览器默认行为时去使用<code>return falsee;</code>。我将在这篇文章中提到两个非常重要的关于阻止浏览器默认行为时的观点：</p>
+<ul>
+<li>使用正确的方法做事：<code>return false</code> vs. <code>preventDefault</code>, <code>stopPropagation</code>，和<code>stopImmediatePropagation</code></li>
+<li>顶部、底部或者是其它中间区域：哪些是在一些事件回调函数中应该阻止默认行为的地方？</li>
+</ul>
+<p>注：在这篇文章中当我提到事件冒泡（event bubbing）时，我的意思就是在原始DOM元素被触发事件时如何让更多事件被触发，然后是在各自的父节点上。事件不会在元素的相邻节点或者孩子节点被触发（如果发生向下冒泡，这被称作事件捕捉）。<a href="http://www.nczonline.net/blog/2009/06/30/event-delegation-in-javascript/" target="_blank" rel="external">学习更多关于事件冒泡和捕捉</a><br><a id="more"></a></p>
+<h3 id="对症下药">对症下药</h3><p>为什么<code>return false</code> 被如此广泛的误用呢，是因为它刚巧满足了我们想要的。超链回调不再跳转了，表单也不会被提交了，所以为什么它还是不好的呢？</p>
+<h4 id="RETURN_FALSE真正做的是什么？"><code>RETURN FALSE</code>真正做的是什么？</h4><p>首先，当你执行了<code>return false</code> 时，它真正做了以下三件独立的操作：</p>
+<ol>
+<li>event.preventDefault();</li>
+<li>event.stopPropagation();</li>
+<li>Stops callback execution and returns immediately when called.</li>
+</ol>
+<p>“等下”，我觉得。。。你哭了对不对！我只不过想要阻止浏览器默认行为，并不需要另两个。</p>
+<p>上面3个里面我们唯一需要去实现阻止浏览器默认行为的仅仅是 <code>preventDefault();</code>，除非你真的要阻止事件冒泡，使用<figure class="highlight"><figcaption><span>false```会大大蒙蔽了你的代码。让我们看看一个实际应用场景下的误用是如何发生的：</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;&#25105;&#20204;&#30340;&#20363;&#23376;&#65306;&#10;``` HTML&#10;&#60;div class=&#34;post&#34;&#62;&#10;    &#60;h2&#62;&#60;a href=&#34;/path/to/page&#34;&#62;My Page&#60;/a&#62;&#60;/h2&#62;&#10;    &#60;div class=&#34;content&#34;&#62;&#10;        Teaser text...&#10;    &#60;/div&#62;&#10;&#60;/div&#62;&#10;&#60;div class=&#34;post&#34;&#62;&#10;    &#60;h2&#62;&#60;a href=&#34;/path/to/other_page&#34;&#62;My Other Page&#60;/a&#62;&#60;/h2&#62;&#10;    &#60;div class=&#34;content&#34;&#62;&#10;        Teaser text...&#10;    &#60;/div&#62;&#10;&#60;/div&#62;</span><br></pre></td></tr></table></figure></p>
+<p>现在我们需要将用户点击的每篇文章标题对应的文章内容加载到<code>div.content</code>元素中。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">jQuery(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span> (<span class="params">$</span>) </span>&#123;</span><br><span class="line">   $(<span class="string">"div.post h2 a"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> a    = $(<span class="keyword">this</span>),</span><br><span class="line">          href = a.attr(<span class="string">'href'</span>), <span class="comment">// Let jQuery normalize `href`,</span></span><br><span class="line">          content  = a.parent().next();</span><br><span class="line">      content.load(href + <span class="string">" #content"</span>);</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">// "cancel" the default behavior of following the link</span></span><br><span class="line">   &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>看上去挺好（起码现在是），我们的动态页面也准备好了，此时我们又想要在每个被点击的<code>div.post</code>元素上加上一个样式类<code>active</code>，所以我们决定加上下面这块：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Inside Document Ready:</span></span><br><span class="line"><span class="keyword">var</span> posts = $(<span class="string">"div.post"</span>);</span><br><span class="line">posts.click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Remove active from all div.post</span></span><br><span class="line">    posts.removeClass(<span class="string">"active"</span>);</span><br><span class="line">    <span class="comment">// Add it back to this one</span></span><br><span class="line">    $(<span class="keyword">this</span>).addClass(<span class="string">"active"</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这段代码会在我们点击一个标题链接时正常工作么？当然不会！因为我们用了<code>return false</code>，而不是我们真正想要的，要记得<code>return false</code>也等于<code>event.preventDefault(); event.stopPropagation();</code> 单击事件就不会被往上冒泡到父节点<code>div.post</code>，so我们新加的事件没有被触发。</p>
+<p>当我们混合使用<code>live</code> 或者 <code>delegate</code> 时，这甚至会造成问题：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"a"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">$(<span class="string">"a"</span>).live(<span class="string">"click"</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// THIS WON'T FIRE</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h4 id="然，我们真正需要什么呢？">然，我们真正需要什么呢？</h4><p><code>**preventDefault()**</code></p>
+<p>在我们使用<code>return false</code>的大多数情况下，其实我们真正想要的是<code>e.preventDefault()</code>。使用<code>preventDefault</code>时，你需要在回调中传入一个事件对象作为参数（下面例子中的e就是）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"a"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// e == our event data</span></span><br><span class="line">    e.preventDefault();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这就搞定了全部我们需要的，而且没有阻碍父节点元素获取这些冒泡上来的事件。在你代码中越少的约束往往意味着更容易被维护。</p>
+<p><code>**stopPropagation()**</code></p>
+<p>有时候你仅仅需要停止向上冒泡，看看下面这个例子：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"post"</span>&gt;</span></span><br><span class="line">    Normal text and then a <span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"/path"</span>&gt;</span>link<span class="tag">&lt;/<span class="title">a</span>&gt;</span> and then more text.</span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>现在，假设我们需要在<code>div</code>中除了超链部分外点击后发生点什么，然后需要用户在点击超链时真的能跳转出去（以可用性角度出发的话，这还真是个不好的例子，也许你并不想当用户失误点在超链外时发生任何的什么）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"div.post"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">   <span class="comment">// Do the first thing;</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">$(<span class="string">"div.post a"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Don't cancel the browser's default action</span></span><br><span class="line">    <span class="comment">// and don't bubble this event!</span></span><br><span class="line">    e.stopPropagation();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>在这个例子中，如果我们用了<code>return false</code>，那<code>div</code>的click事件就不会被触发，而且用户同样也不会被引导到正确的页面。</p>
+<p><code>**stopImmediatePropagation()**</code></p>
+<p>这个方法会停止执行任何在这个对象元素上的任何其它事件，甚至是绑定在它上面的其它操作，所有在一个特定元素上的事件会按照绑定时的顺序被触发执行。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"div a"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">   <span class="comment">// Do something</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">$(<span class="string">"div a"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">   <span class="comment">// Do something else</span></span><br><span class="line">   e.stopImmediatePropagation();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">$(<span class="string">"div a"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">   <span class="comment">// THIS NEVER FIRES</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">$(<span class="string">"div"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">   <span class="comment">// THIS NEVER FIRES</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>如果你觉得这个例子看上去太勉强了的话，它还真的是（^_^）。然而，这种情况也是挺真实的一种。当越来越多的项目代码被抽象化后，你所写的那些代码实现的各种控件和插件也许会在同一个对象上注册许多事件监听。这种情形就是比较合理的使用<code>stopImmediatePropagation()</code>的一种场景。</p>
+<p><code>**return false**</code><br>仅仅在你需要<code>preventDefault()</code> and <code>stopPropagation()</code>同时发挥作用时才可以使用<code>return false</code>，这样代码可以支持不取消默认行为，直到你达到你的回调执行结束。我强烈反对在任何给学习jQuery的新手例子中使用这个方法，它推荐了一个坏的阻止事件执行的演示，它仅仅应该在你明确你知道它提供什么功能的前提下才可以用。</p>
+<h3 id="顶部、底部或者是其它中间区域：哪些是在一些事件回调函数中应该阻止默认行为的地方？">顶部、底部或者是其它中间区域：哪些是在一些事件回调函数中应该阻止默认行为的地方？</h3><p>之前，当误用<code>return false</code>时，它经常出现在你函数的最后位置，或者是在后续没有需要被执行的代码块前的最后一行。有了<code>e.preventDefault</code>之后，我们就有了更多的选择，它可以在一个回调函数中的任何位置被执行，所以呢？</p>
+<p><strong>1. 在开发阶段，它几乎都是在非常靠前的行数</strong><br>当你尝试在回调函数中调试一个JavaScript的错误时，你最后一件事对你的表单在向另一个页面提交一个AJAX异步请求时。</p>
+<p><strong>2. 在生产环境，如果你需要跟进一个渐进增强，将它放在回调的最后，或者执行流的最后。</strong><br>如果你在逐步提高一个普通的页面，对于那些不支持JavaScript的浏览器来说你的<code>click</code>事件或者表单的<code>submit</code>事件将会有对应的server端代码来接手，然而，这不仅仅和浏览器是否支持JavaScript有关，更是在当你的代码抛出一个错误时浏览器能捕捉到。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> data = &#123;&#125;;</span><br><span class="line">$(<span class="string">"a"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    e.preventDefault(); <span class="comment">// cancel default behavior</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Throws an error because `my` is undefined</span></span><br><span class="line">    $(<span class="string">"body"</span>).append(data.my.link);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// The original link doesn't work AND the "cool"</span></span><br><span class="line">    <span class="comment">// JavaScript has broken. The user is left with NOTHING!</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>让我们看看<code>preventDefault</code>放在相同的监听事件在最后处时会发生什么：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> data = &#123;&#125;;</span><br><span class="line">$(<span class="string">"a"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Throws an error because `my` is undefined</span></span><br><span class="line">    $(<span class="string">"body"</span>).append(data.my.link);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// This line is never reached, and your website</span></span><br><span class="line">    <span class="comment">// falls back to using the `href` instead of this</span></span><br><span class="line">    <span class="comment">// "cool" broken JavaScript!</span></span><br><span class="line"></span><br><span class="line">    e.preventDefault(); <span class="comment">// cancel default behavior</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>对于表单提交的相同事件代码，提供了所需要的依赖。永远不要相信你的代码能永远正常工作。去准备一个漂亮的依赖会比假设不会有错误来的好！</p>
+<p><strong>3. 在生产环境，如果这些功能仅仅是JavaScript，那始终保持在首行</strong><br>记住，它不是非要在函数的第一行的，但尽量出现在你逻辑里的靠前位置。核心概念应该是：如果你的程序的这部分是靠JavaScript加入到第一的位置，那么依赖就并不是必须的。在这例子中，前面的部分是为了确保随机的#字符不会出现在url中，或者是会引起页面跳来跳去。明显的，提供尽可能多的容错处理能确保你的用户不会轻易离开。</p>
+<h3 id="总结">总结</h3><p>我希望这篇文章已经向你表达清楚了如何在阻止浏览器默认事件时做出正确的选择。记得仅仅在你真正需要的时候才使用<code>return false</code>，而且确保你在你的回调函数中的正确位置阻止了默认行为。尽可能地让你的代码更灵活，切记别在使用<code>return false</code>！</p>
+<hr>
+<p><em>This Article is posted on FUEL copyright <a href="http://fuelyourcoding.com/author/dougnein/" target="_blank" rel="external">Douglas Neiner</a>, thanks to his efforts.</em></p>
+<p><em>该文章转载自 <a href="&#39;http://fuelyourcoding.com/jquery-events-stop-misusing-return-false/">FUEL</a>，翻译自 <a href="http://www.staydan.com" target="_blank" rel="external">Staydan.com</a></em></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>也许当你刚开始学习关于 jQuery Events 的时候，第一点被提及到的核心内容就是关于如何阻止浏览器的默认行为。比如，一个初学者的click教程会包含下面的内容：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"a.toggle"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    $(<span class="string">"#mydiv"</span>).toggle();</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">// Prevent browser from visiting `#`</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>上面的函数就是隐藏和显示 <code>#mydiv</code>的元素，接着取消浏览器访问a标签超链的默认行为。</p>
+<p>在这些最初的例子中，坏习惯就潜移默化的影响着读者在任何想阻止浏览器默认行为时去使用<code>return falsee;</code>。我将在这篇文章中提到两个非常重要的关于阻止浏览器默认行为时的观点：</p>
+<ul>
+<li>使用正确的方法做事：<code>return false</code> vs. <code>preventDefault</code>, <code>stopPropagation</code>，和<code>stopImmediatePropagation</code></li>
+<li>顶部、底部或者是其它中间区域：哪些是在一些事件回调函数中应该阻止默认行为的地方？</li>
+</ul>
+<p>注：在这篇文章中当我提到事件冒泡（event bubbing）时，我的意思就是在原始DOM元素被触发事件时如何让更多事件被触发，然后是在各自的父节点上。事件不会在元素的相邻节点或者孩子节点被触发（如果发生向下冒泡，这被称作事件捕捉）。<a href="http://www.nczonline.net/blog/2009/06/30/event-delegation-in-javascript/">学习更多关于事件冒泡和捕捉</a><br>]]>
+    
+    </summary>
+    
+      <category term="JavaScript" scheme="http://blog.staydan.com/tags/JavaScript/"/>
+    
+      <category term="jQuery" scheme="http://blog.staydan.com/tags/jQuery/"/>
+    
+      <category term="JavaScript" scheme="http://blog.staydan.com/categories/JavaScript/"/>
+    
+      <category term="jQuery" scheme="http://blog.staydan.com/categories/JavaScript/jQuery/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[How to trigger Single Click and Double Click event in Ext.grid]]></title>
-    <link href="http://blog.staydan.com/2014/10/03/2014-10-03-how-to-trigger-single-click-and-double-click-event-in-ext-dot-grid/"/>
-    <id>http://blog.staydan.com/2014/10/03/2014-10-03-how-to-trigger-single-click-and-double-click-event-in-ext-dot-grid/</id>
+    <link href="http://blog.staydan.com/2014/10/03/how-to-trigger-single-click-and-double-click-event-in-ext-dot-grid/"/>
+    <id>http://blog.staydan.com/2014/10/03/how-to-trigger-single-click-and-double-click-event-in-ext-dot-grid/</id>
     <published>2014-10-03T08:00:11.000Z</published>
     <updated>2015-06-19T01:57:18.000Z</updated>
     <content type="html"><![CDATA[<p>在ExtJS中，Grid应当是频繁使用的控件之一，而且Grid表格和用户交互的方式有很多种，包括单击、双击单元格，单击、双击一整行，右键上下文菜单，长按某行，鼠标选中平移某行，单选、多选行等等。。。</p>
@@ -65,8 +147,8 @@
   
   <entry>
     <title><![CDATA[蜂巢图 —— 四维互动]]></title>
-    <link href="http://blog.staydan.com/2014/10/01/2014-10-01-hive-plots-with-node-link-diagram-in-four-dimension/"/>
-    <id>http://blog.staydan.com/2014/10/01/2014-10-01-hive-plots-with-node-link-diagram-in-four-dimension/</id>
+    <link href="http://blog.staydan.com/2014/10/01/hive-plots-with-node-link-diagram-in-four-dimension/"/>
+    <id>http://blog.staydan.com/2014/10/01/hive-plots-with-node-link-diagram-in-four-dimension/</id>
     <published>2014-09-30T16:47:49.000Z</published>
     <updated>2015-06-19T01:57:18.000Z</updated>
     <content type="html"><![CDATA[<p>Hive Plot，又叫蜂巢图，主要用来可视化节点和它们之间的各种联系。</p>
@@ -109,8 +191,8 @@
   
   <entry>
     <title><![CDATA[Customized Pull To Refresh List Using iScroll]]></title>
-    <link href="http://blog.staydan.com/2014/07/31/2014-07-31-customized-pull-to-refresh-list-using-iscroll/"/>
-    <id>http://blog.staydan.com/2014/07/31/2014-07-31-customized-pull-to-refresh-list-using-iscroll/</id>
+    <link href="http://blog.staydan.com/2014/07/31/customized-pull-to-refresh-list-using-iscroll/"/>
+    <id>http://blog.staydan.com/2014/07/31/customized-pull-to-refresh-list-using-iscroll/</id>
     <published>2014-07-31T05:54:33.000Z</published>
     <updated>2015-06-19T01:57:18.000Z</updated>
     <content type="html"><![CDATA[<h4 id="VVebo">VVebo</h4><p>用了几个月的<a href="https://vvebo.me/" target="_blank" rel="external">VVebo</a>，这款第三方的sina微博客户端，不得不说它在当时那个时候相比同类软件来讲绝对拥有了无与伦比的视觉享受。</p>
@@ -166,8 +248,8 @@
   
   <entry>
     <title><![CDATA[在AngularJs的项目中使用iScroll控件碰到的问题集合]]></title>
-    <link href="http://blog.staydan.com/2014/07/29/2014-07-29-using-iscroll-in-angularjs/"/>
-    <id>http://blog.staydan.com/2014/07/29/2014-07-29-using-iscroll-in-angularjs/</id>
+    <link href="http://blog.staydan.com/2014/07/29/using-iscroll-in-angularjs/"/>
+    <id>http://blog.staydan.com/2014/07/29/using-iscroll-in-angularjs/</id>
     <published>2014-07-29T14:11:31.000Z</published>
     <updated>2015-06-19T01:57:18.000Z</updated>
     <content type="html"><![CDATA[<h2 id="背景">背景</h2><p>这两天有在帮忙看一个项目，期间我们有碰到一个滚动列表的问题，还真有不少问题。</p>
@@ -219,8 +301,8 @@
   
   <entry>
     <title><![CDATA[Docing - A new document generator for all programming languages]]></title>
-    <link href="http://blog.staydan.com/2014/07/19/2014-07-19-docing-a-new-document-generator-for-all-programming-languages/"/>
-    <id>http://blog.staydan.com/2014/07/19/2014-07-19-docing-a-new-document-generator-for-all-programming-languages/</id>
+    <link href="http://blog.staydan.com/2014/07/19/docing-a-new-document-generator-for-all-programming-languages/"/>
+    <id>http://blog.staydan.com/2014/07/19/docing-a-new-document-generator-for-all-programming-languages/</id>
     <published>2014-07-19T02:10:07.000Z</published>
     <updated>2015-06-19T01:57:18.000Z</updated>
     <content type="html"><![CDATA[<p>fs.CreateReadStream()<br>Each time it can read 65536 bytes from a file.<br>So it’s not fitable for Docing. I need to read the whole file, not a part after a part.<br><figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ node --debug-brk libs/main.js</span><br><span class="line">debugger listening on port <span class="number">5858</span></span><br><span class="line"><span class="variable">DEBUG</span>: <span class="variable">Starting</span> ...</span><br><span class="line">null</span><br><span class="line">null</span><br><span class="line">[<span class="string">"docs"</span>,<span class="string">"jquery-2.0.3.js"</span>]</span><br><span class="line">got <span class="number">65536</span> bytes <span class="keyword">of</span> data</span><br><span class="line">split<span class="variable">OutSrc</span> start...</span><br><span class="line">split<span class="variable">OutSrc</span> <span class="keyword">end</span>...</span><br><span class="line">got <span class="number">65536</span> bytes <span class="keyword">of</span> data</span><br><span class="line">split<span class="variable">OutSrc</span> start...</span><br><span class="line">split<span class="variable">OutSrc</span> <span class="keyword">end</span>...</span><br><span class="line">got <span class="number">65536</span> bytes <span class="keyword">of</span> data</span><br><span class="line">split<span class="variable">OutSrc</span> start...</span><br></pre></td></tr></table></figure></p>
@@ -242,8 +324,8 @@
   
   <entry>
     <title><![CDATA[Memory Card Flip Using HTML5 & CSS3]]></title>
-    <link href="http://blog.staydan.com/2014/07/17/2014-07-17-memory-card-flip/"/>
-    <id>http://blog.staydan.com/2014/07/17/2014-07-17-memory-card-flip/</id>
+    <link href="http://blog.staydan.com/2014/07/17/memory-card-flip/"/>
+    <id>http://blog.staydan.com/2014/07/17/memory-card-flip/</id>
     <published>2014-07-17T09:47:09.000Z</published>
     <updated>2015-06-19T01:57:18.000Z</updated>
     <content type="html"></content>
@@ -261,8 +343,8 @@
   
   <entry>
     <title><![CDATA[My left foot's broken when rope skipping]]></title>
-    <link href="http://blog.staydan.com/2014/05/26/2014-05-26-my-left-foots-broken-when-rope-skipping/"/>
-    <id>http://blog.staydan.com/2014/05/26/2014-05-26-my-left-foots-broken-when-rope-skipping/</id>
+    <link href="http://blog.staydan.com/2014/05/26/my-left-foots-broken-when-rope-skipping/"/>
+    <id>http://blog.staydan.com/2014/05/26/my-left-foots-broken-when-rope-skipping/</id>
     <published>2014-05-26T09:22:20.000Z</published>
     <updated>2015-06-19T01:57:18.000Z</updated>
     <content type="html"><![CDATA[<blockquote>
@@ -305,8 +387,8 @@
   
   <entry>
     <title><![CDATA[Create 2048 using HTML5 Canvas(Play)]]></title>
-    <link href="http://blog.staydan.com/2014/05/15/2014-05-15-create-2048-using-html5-canvas-play/"/>
-    <id>http://blog.staydan.com/2014/05/15/2014-05-15-create-2048-using-html5-canvas-play/</id>
+    <link href="http://blog.staydan.com/2014/05/15/create-2048-using-html5-canvas-play/"/>
+    <id>http://blog.staydan.com/2014/05/15/create-2048-using-html5-canvas-play/</id>
     <published>2014-05-15T03:13:08.000Z</published>
     <updated>2015-06-19T01:57:18.000Z</updated>
     <content type="html"><![CDATA[<blockquote>
@@ -440,8 +522,8 @@
   
   <entry>
     <title><![CDATA[How to handle the loading mask automatically in ExtJS]]></title>
-    <link href="http://blog.staydan.com/2014/05/03/2014-05-03-how-to-handle-the-loading-mask-automatically-in-extjs/"/>
-    <id>http://blog.staydan.com/2014/05/03/2014-05-03-how-to-handle-the-loading-mask-automatically-in-extjs/</id>
+    <link href="http://blog.staydan.com/2014/05/03/how-to-handle-the-loading-mask-automatically-in-extjs/"/>
+    <id>http://blog.staydan.com/2014/05/03/how-to-handle-the-loading-mask-automatically-in-extjs/</id>
     <published>2014-05-03T13:12:54.000Z</published>
     <updated>2015-06-19T01:57:18.000Z</updated>
     <content type="html"><![CDATA[<blockquote>
@@ -483,8 +565,8 @@
   
   <entry>
     <title><![CDATA[Sorting Visualization using JavaScript]]></title>
-    <link href="http://blog.staydan.com/2014/04/30/2014-04-30-sorting-visualization-using-javascript/"/>
-    <id>http://blog.staydan.com/2014/04/30/2014-04-30-sorting-visualization-using-javascript/</id>
+    <link href="http://blog.staydan.com/2014/04/30/sorting-visualization-using-javascript/"/>
+    <id>http://blog.staydan.com/2014/04/30/sorting-visualization-using-javascript/</id>
     <published>2014-04-30T02:18:58.000Z</published>
     <updated>2015-06-19T01:57:18.000Z</updated>
     <content type="html"><![CDATA[<p><a href="http://www.sorting-algorithms.com/static/QuicksortIsOptimal.pdf" target="_blank" rel="external">http://www.sorting-algorithms.com/static/QuicksortIsOptimal.pdf</a><br><a href="http://www.sorting-algorithms.com/" target="_blank" rel="external">http://www.sorting-algorithms.com/</a><br><a href="http://stackoverflow.com/questions/22815790/set-a-delay-timeout-inside-a-double-nested-loop?answertab=oldest#tab-top" target="_blank" rel="external">http://stackoverflow.com/questions/22815790/set-a-delay-timeout-inside-a-double-nested-loop?answertab=oldest#tab-top</a><br><a href="http://stackoverflow.com/questions/16150289/angularjs-running-initialization-code-when-view-is-loaded" target="_blank" rel="external">http://stackoverflow.com/questions/16150289/angularjs-running-initialization-code-when-view-is-loaded</a></p>
@@ -503,8 +585,8 @@
   
   <entry>
     <title><![CDATA[Team building at Xi-Lai-Chun from Hewlett Packard]]></title>
-    <link href="http://blog.staydan.com/2014/04/26/2014-04-26-team-building-at-xi-lai-chun-from-hewlett-packard/"/>
-    <id>http://blog.staydan.com/2014/04/26/2014-04-26-team-building-at-xi-lai-chun-from-hewlett-packard/</id>
+    <link href="http://blog.staydan.com/2014/04/26/team-building-at-xi-lai-chun-from-hewlett-packard/"/>
+    <id>http://blog.staydan.com/2014/04/26/team-building-at-xi-lai-chun-from-hewlett-packard/</id>
     <published>2014-04-26T10:44:19.000Z</published>
     <updated>2015-06-19T01:57:18.000Z</updated>
     <content type="html"><![CDATA[<blockquote>
@@ -582,8 +664,8 @@
   
   <entry>
     <title><![CDATA[韩国济州岛-兄弟姐妹游 Travelling in Jeju korea]]></title>
-    <link href="http://blog.staydan.com/2014/04/21/2014-04-21-travelling-in-jeju-island-korea/"/>
-    <id>http://blog.staydan.com/2014/04/21/2014-04-21-travelling-in-jeju-island-korea/</id>
+    <link href="http://blog.staydan.com/2014/04/21/travelling-in-jeju-island-korea/"/>
+    <id>http://blog.staydan.com/2014/04/21/travelling-in-jeju-island-korea/</id>
     <published>2014-04-21T09:52:46.000Z</published>
     <updated>2015-06-19T01:57:18.000Z</updated>
     <content type="html"><![CDATA[<h2 id="前期准备">前期准备</h2><p>由于这次旅行算是女人家里兄弟姐妹出游（不过我貌似不是自己人嘛，挖鼻屎）<br>所以各自都有了分工，查攻略，和旅行社沟通，兑换韩币，租用随身wifi，联系机场停车等。。。<br>而我呢，仅仅负责了最后一项最easy的啦，所以整个前期准备过程我是相当的轻松啊。。。有人弄这么一大堆事真开心<br>提前请了两天假，算上双休日，所以是 济州岛4天3夜游（一天自由行）</p>
@@ -726,8 +808,8 @@
   
   <entry>
     <title><![CDATA[如何将没有无线网卡的台式机连上Wifi呢？]]></title>
-    <link href="http://blog.staydan.com/2014/03/31/2014-03-31-how-to-connect-to-wifi-without-wireless-adpater-for-pc/"/>
-    <id>http://blog.staydan.com/2014/03/31/2014-03-31-how-to-connect-to-wifi-without-wireless-adpater-for-pc/</id>
+    <link href="http://blog.staydan.com/2014/03/31/how-to-connect-to-wifi-without-wireless-adpater-for-pc/"/>
+    <id>http://blog.staydan.com/2014/03/31/how-to-connect-to-wifi-without-wireless-adpater-for-pc/</id>
     <published>2014-03-30T16:00:00.000Z</published>
     <updated>2015-06-19T01:57:18.000Z</updated>
     <content type="html"><![CDATA[<p>前几天把家里的台式机搬到了女朋友家，然后兴奋的她可以每晚都玩网游了呢。。。哈哈</p>
@@ -770,8 +852,8 @@
   
   <entry>
     <title><![CDATA[Add tooltips to Textfield in ExtJS]]></title>
-    <link href="http://blog.staydan.com/2014/02/27/2014-02-27-add-tooltips-to-textfield-in-extjs/"/>
-    <id>http://blog.staydan.com/2014/02/27/2014-02-27-add-tooltips-to-textfield-in-extjs/</id>
+    <link href="http://blog.staydan.com/2014/02/27/add-tooltips-to-textfield-in-extjs/"/>
+    <id>http://blog.staydan.com/2014/02/27/add-tooltips-to-textfield-in-extjs/</id>
     <published>2014-02-26T16:00:00.000Z</published>
     <updated>2015-06-19T01:57:18.000Z</updated>
     <content type="html"><![CDATA[<p>We know Tooltips is very useful in ExtJS, it will help user to understand what it is and often give some guidance information to them from developers.</p>
@@ -812,8 +894,8 @@
   
   <entry>
     <title><![CDATA[Ghost issue in Enyo.Scroller]]></title>
-    <link href="http://blog.staydan.com/2014/02/23/2014-02-23-ghost-issue-in-enyo-scroller/"/>
-    <id>http://blog.staydan.com/2014/02/23/2014-02-23-ghost-issue-in-enyo-scroller/</id>
+    <link href="http://blog.staydan.com/2014/02/23/ghost-issue-in-enyo-scroller/"/>
+    <id>http://blog.staydan.com/2014/02/23/ghost-issue-in-enyo-scroller/</id>
     <published>2014-02-22T16:00:00.000Z</published>
     <updated>2015-06-19T01:57:18.000Z</updated>
     <content type="html"><![CDATA[<p>先描述下问题的背景</p>
@@ -864,8 +946,8 @@
   
   <entry>
     <title><![CDATA[Selection & Paging Error caused by ExtJS ID Generation]]></title>
-    <link href="http://blog.staydan.com/2014/02/23/2014-02-17-selection-paging-error-caused-by-extjs-id-generation/"/>
-    <id>http://blog.staydan.com/2014/02/23/2014-02-17-selection-paging-error-caused-by-extjs-id-generation/</id>
+    <link href="http://blog.staydan.com/2014/02/23/selection-paging-error-caused-by-extjs-id-generation/"/>
+    <id>http://blog.staydan.com/2014/02/23/selection-paging-error-caused-by-extjs-id-generation/</id>
     <published>2014-02-22T16:00:00.000Z</published>
     <updated>2015-06-19T01:57:18.000Z</updated>
     <content type="html"><![CDATA[<p>ExtJS中，Ext.data.Store是用来进行数据交换和交互的Standard Middleware，无论是Grid还是ComboBox，都是通过它实现数据读取、类型转换、排序分页和搜索等操作的。<br>Ext.data.Store中有一个Ext.data.Record数组，所有数据都存放在这些Ext.data. Record实例中，为后面的读取和修改操作做准备。</p>
@@ -897,8 +979,8 @@
   
   <entry>
     <title><![CDATA[Date format in ExtJS]]></title>
-    <link href="http://blog.staydan.com/2014/02/17/2014-02-17-date-format-in-extjs/"/>
-    <id>http://blog.staydan.com/2014/02/17/2014-02-17-date-format-in-extjs/</id>
+    <link href="http://blog.staydan.com/2014/02/17/date-format-in-extjs/"/>
+    <id>http://blog.staydan.com/2014/02/17/date-format-in-extjs/</id>
     <published>2014-02-16T16:00:00.000Z</published>
     <updated>2015-06-19T01:57:18.000Z</updated>
     <content type="html"><![CDATA[<p>如今写代码基本都要靠Google一下，记不住咯，这脑袋瓜装的东西太少了。。。</p>
@@ -1103,8 +1185,8 @@
   
   <entry>
     <title><![CDATA[Radio Grouped Buttons Control with Knockout & Bootstrap]]></title>
-    <link href="http://blog.staydan.com/2013/12/12/2013-12-12-radio-grouped-buttons-control-with-knockout-bootstrap/"/>
-    <id>http://blog.staydan.com/2013/12/12/2013-12-12-radio-grouped-buttons-control-with-knockout-bootstrap/</id>
+    <link href="http://blog.staydan.com/2013/12/12/radio-grouped-buttons-control-with-knockout-bootstrap/"/>
+    <id>http://blog.staydan.com/2013/12/12/radio-grouped-buttons-control-with-knockout-bootstrap/</id>
     <published>2013-12-11T16:00:00.000Z</published>
     <updated>2015-06-19T01:57:18.000Z</updated>
     <content type="html"><![CDATA[<p>用JavaScript写代码也有一年多了，其实也算积累了蛮多东西了，该写下来存存档~</p>

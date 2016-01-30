@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Sorting Visualization using JavaScript | Xiaodan&#39;s Everything</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="http://www.sorting-algorithms.com/static/QuicksortIsOptimal.pdfhttp://www.sorting-algorithms.com/http://stackoverflow.com/questions/22815790/set-a-delay-timeout-inside-a-double-nested-loop?answertab=o">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sorting Visualization using JavaScript">
+<meta property="og:url" content="http://blog.staydan.com/2014/04/30/sorting-visualization-using-javascript/index.html">
+<meta property="og:site_name" content="Xiaodan's Everything">
+<meta property="og:description" content="http://www.sorting-algorithms.com/static/QuicksortIsOptimal.pdfhttp://www.sorting-algorithms.com/http://stackoverflow.com/questions/22815790/set-a-delay-timeout-inside-a-double-nested-loop?answertab=o">
+<meta property="og:updated_time" content="2015-06-19T01:57:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sorting Visualization using JavaScript">
+<meta name="twitter:description" content="http://www.sorting-algorithms.com/static/QuicksortIsOptimal.pdfhttp://www.sorting-algorithms.com/http://stackoverflow.com/questions/22815790/set-a-delay-timeout-inside-a-double-nested-loop?answertab=o">
+  
+  
+  <script src="http://www.staydan.com/libs/jQuery/2.0.3/jquery-2.0.3.min.js"></script>
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div class="container">
+    <div class="wrapper">
+      <header class="site-header">
+  <div id="header-title" class="inner">
+    <h1>
+      <a href="/" title="Xiaodan's Everything">Xiaodan's Everything</a>
+    </h1>
+    
+      <h4 id="subtitle-wrap">
+        <a href="/" title="A foolish Programmer from Shanghai China">A foolish Programmer from Shanghai China</a>
+      </h4>
+    
+  </div>
+  <nav id="site-navs" class="">
+	  <ul>
+      
+	      <li class="ease-animation"><a href="/" title="Home">Home</a></li>
+	    
+	      <li class="ease-animation"><a href="/archives" title="Archives">Archives</a></li>
+	    
+	      <li class="ease-animation"><a href="/about" title="About">About</a></li>
+	    
+	      <li class="ease-animation"><a href="/logs" title="Logs">Logs</a></li>
+	    
+	  </ul>
+	  <div class="clearfix"></div>
+	</nav>
+</header>
+      <div class="outer">
+        <section id="main"><section class="tags-selection">
+  <header class="tags-selection-header">
+    <div class="tags-selection-header-label"><i class="fa fa-tag"></i>Tags</div>
+  </header>
+  <div id="tags-selection-panel">
+  	<div class="tags-selection-navs" title="Sorted by the first English alphabet."><label class="tags-selection-nav active" navid="ad">A - D</label><label class="tags-selection-nav " navid="eh">E - H</label><label class="tags-selection-nav " navid="il">I - L</label><label class="tags-selection-nav " navid="mp">M - P</label><label class="tags-selection-nav " navid="qt">Q - T</label><label class="tags-selection-nav " navid="ux">U - X</label><label class="tags-selection-nav " navid="yz">Y - Z</label></div><div class="tags-selection-content"><div id="tags-selection-content-ad" class="tags-selection-content-part"><a href="/tags/Click Event"><span class="tag-instant" tagid="cik0ir5my000dciwhttxkmgj2">Click-Event<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Data Visualization"><span class="tag-instant" tagid="cik0ir5n3000jciwhrjfmssnw">Data-Visualization<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/docing"><span class="tag-instant" tagid="cik0ir5nf0014ciwhdijtxocq">docing<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/document"><span class="tag-instant" tagid="cik0ir5ng0015ciwhd23pbb3l">document<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/CSS3"><span class="tag-instant" tagid="cik0ir5nk001dciwhzve4q294">CSS3<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Canvas"><span class="tag-instant" tagid="cik0ir5nr001pciwhbmh8zliz">Canvas<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Algorithm"><span class="tag-instant" tagid="cik0ir5nz0023ciwhqo76bn9v">Algorithm<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/DateFormat"><span class="tag-instant" tagid="cik0ir5ok003eciwhejav6r29">DateFormat<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/CSS"><span class="tag-instant" tagid="cik0ir5om003kciwhbhggw2u2">CSS<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/AngularJS"><span class="tag-instant" tagid="cik0ir5ot003tciwhfuhzs60g">AngularJS<sup class="tag-selection-badge">0</sup></span></a><a href="/tags/Bower"><span class="tag-instant" tagid="cik0ir5ou003vciwhxgirgwpd">Bower<sup class="tag-selection-badge">0</sup></span></a></div><div id="tags-selection-content-eh" class="tags-selection-content-part"><a href="/tags/Hive Plot"><span class="tag-instant" tagid="cik0ir5n3000kciwh2bo1ykxv">Hive-Plot<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/HTML5"><span class="tag-instant" tagid="cik0ir5nk001cciwhdjipd8ad">HTML5<sup class="tag-selection-badge">2</sup></span></a><a href="/tags/History"><span class="tag-instant" tagid="cik0ir5oq003pciwh142kgtrz">History<sup class="tag-selection-badge">0</sup></span></a><a href="/tags/Grunt"><span class="tag-instant" tagid="cik0ir5ou003uciwhytrikfjd">Grunt<sup class="tag-selection-badge">0</sup></span></a></div><div id="tags-selection-content-il" class="tags-selection-content-part"><a href="/tags/JavaScript"><span class="tag-instant" tagid="cik0ir5mr0004ciwhhytop5wb">JavaScript<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/jQuery"><span class="tag-instant" tagid="cik0ir5mt0005ciwhxabl4as2">jQuery<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/iScrollJs"><span class="tag-instant" tagid="cik0ir5nb000yciwhfvuvn3uf">iScrollJs<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Jeju"><span class="tag-instant" tagid="cik0ir5o4002fciwhoz8c7q0u">Jeju<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/laptop"><span class="tag-instant" tagid="cik0ir5o8002mciwhyv1pfdtq">laptop<sup class="tag-selection-badge">1</sup></span></a></div><div id="tags-selection-content-mp" class="tags-selection-content-part"><a href="/tags/Pull to refresh"><span class="tag-instant" tagid="cik0ir5n7000rciwhdw87asha">Pull-to-refresh<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Mask"><span class="tag-instant" tagid="cik0ir5nw001xciwh7chgmm6g">Mask<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Network"><span class="tag-instant" tagid="cik0ir5o8002lciwhwsorp6tk">Network<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/PC"><span class="tag-instant" tagid="cik0ir5o9002ociwhj3oew0mf">PC<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Paging"><span class="tag-instant" tagid="cik0ir5oh0039ciwhzuldohmf">Paging<sup class="tag-selection-badge">1</sup></span></a></div><div id="tags-selection-content-qt" class="tags-selection-content-part"><a href="/tags/Sort"><span class="tag-instant" tagid="cik0ir5ny0022ciwhpgf38v4f">Sort<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Team Building"><span class="tag-instant" tagid="cik0ir5o10028ciwhabm0sd3s">Team-Building<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Tooltips"><span class="tag-instant" tagid="cik0ir5oa002uciwh2o6czx4e">Tooltips<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Textfield"><span class="tag-instant" tagid="cik0ir5ob002wciwht8teps92">Textfield<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Render"><span class="tag-instant" tagid="cik0ir5od0031ciwhkbos4atp">Render<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Selection"><span class="tag-instant" tagid="cik0ir5oh0037ciwhm0z70avf">Selection<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/RadioButton"><span class="tag-instant" tagid="cik0ir5om003jciwhsxwp5fqj">RadioButton<sup class="tag-selection-badge">1</sup></span></a></div><div id="tags-selection-content-ux" class="tags-selection-content-part"></div><div id="tags-selection-content-yz" class="tags-selection-content-part"></div></div>
+  </div>
+</section>
+<article id="post-sorting-visualization-using-javascript"  class=" ease-animation">
+  <header class="article-header">
+    
+        
+  
+    <div class="article-title" itemprop="name">
+      Sorting Visualization using JavaScript
+    </div>
+  
+
+    
+    <div class="article-meta sm-font">
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a>
+  </div>
+
+
+      <a href="/2014/04/30/sorting-visualization-using-javascript/" class="article-updated">
+  <time datetime="2014-04-30T02:18:58.000Z" itemprop="datePublished">14/04/30 10:04</time>
+</a>
+    </div>
+  </header>
+  <div class="article-entry">
+  
+    <p><a href="http://www.sorting-algorithms.com/static/QuicksortIsOptimal.pdf" target="_blank" rel="external">http://www.sorting-algorithms.com/static/QuicksortIsOptimal.pdf</a><br><a href="http://www.sorting-algorithms.com/" target="_blank" rel="external">http://www.sorting-algorithms.com/</a><br><a href="http://stackoverflow.com/questions/22815790/set-a-delay-timeout-inside-a-double-nested-loop?answertab=oldest#tab-top" target="_blank" rel="external">http://stackoverflow.com/questions/22815790/set-a-delay-timeout-inside-a-double-nested-loop?answertab=oldest#tab-top</a><br><a href="http://stackoverflow.com/questions/16150289/angularjs-running-initialization-code-when-view-is-loaded" target="_blank" rel="external">http://stackoverflow.com/questions/16150289/angularjs-running-initialization-code-when-view-is-loaded</a></p>
+
+  
+  </div>
+  <footer class="article-footer">
+    <div class="article-footer-left">
+      <a href="hexo_post.html#disqus" class="article-footer-left"><span class="comments"><i class="fa fa-comments"></i> 0 Comment</span></a>
+      <i class="fa fa-circle dot-separator"></i>
+    </div>
+    
+  <ul class="ease-animation sm-font tag-list"><li class="ease-animation sm-font tag-list-item"><a class="ease-animation sm-font tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="ease-animation sm-font tag-list-item"><a class="ease-animation sm-font tag-list-link" href="/tags/Sort/">Sort</a></li></ul>
+
+    <div class="article-footer-right">
+    
+      <a href="hexo_post.html"><span class="save-pocket button sm-font ease-animation"><i class="fa fa-share"></i> Share</span></a>
+    </div>
+  </footer>
+</article>
+
+  
+<div class="link-to-article"> 
+  <div class="link-to-article-next">
+  
+    
+      <div class="article-nav-date">
+        2014-04-26
+      </div>
+      <div class="article-nav-title">
+        <a href="/2014/04/26/team-building-at-xi-lai-chun-from-hewlett-packard/" title="Team building at Xi-Lai-Chun from Hewlett Packard">Team building at Xi-Lai-Chun from Hewlett Packard</a>
+      </div>
+     
+  
+  </div>
+  <div class="link-to-article-separator">
+    <i class="fa fa-circle dot-separator"></i>
+  </div>
+  <div class="link-to-article-prev">
+  
+    
+      <div class="article-nav-date">
+        2014-05-03
+      </div>
+      <div class="article-nav-title">
+        <a href="/2014/05/03/how-to-handle-the-loading-mask-automatically-in-extjs/" title="How to handle the loading mask automatically in ExtJS">How to handle the loading mask automatically in ExtJS</a>
+      </div>
+        
+  
+  </div>
+</div>
+
+
+</section>
+      </div>
+      <footer id="footer" class="site-footer">
+	&copy; 2016 Daniel Zhu<br>
+  <p>Theme by <a href="http://github.com/danielzhu" title="Line" target="_blank" rel="external">Line</a> Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="external">Hexo</a>
+</footer>
+    </div>
+    
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+<script src="/js/grouped_tag.js" type="text/javascript"></script>
+  </div>
+</body>
+</html>

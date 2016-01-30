@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>jQuery Events: Stop (Mis)Using Return False | Xiaodan&#39;s Everything</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="也许当你刚开始学习关于 jQuery Events 的时候，第一点被提及到的核心内容就是关于如何阻止浏览器的默认行为。比如，一个初学者的click教程会包含下面的内容：
+1234$(&quot;a.toggle&quot;).click(function () &amp;#123;    $(&quot;#mydiv&quot;).toggle();    return false; // Prevent browser from visiti">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jQuery Events: Stop (Mis)Using Return False">
+<meta property="og:url" content="http://blog.staydan.com/2016/01/30/jQuery-Events-Stop-Mis-Using-Return-False/index.html">
+<meta property="og:site_name" content="Xiaodan's Everything">
+<meta property="og:description" content="也许当你刚开始学习关于 jQuery Events 的时候，第一点被提及到的核心内容就是关于如何阻止浏览器的默认行为。比如，一个初学者的click教程会包含下面的内容：
+1234$(&quot;a.toggle&quot;).click(function () &amp;#123;    $(&quot;#mydiv&quot;).toggle();    return false; // Prevent browser from visiti">
+<meta property="og:updated_time" content="2016-01-30T05:29:31.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jQuery Events: Stop (Mis)Using Return False">
+<meta name="twitter:description" content="也许当你刚开始学习关于 jQuery Events 的时候，第一点被提及到的核心内容就是关于如何阻止浏览器的默认行为。比如，一个初学者的click教程会包含下面的内容：
+1234$(&quot;a.toggle&quot;).click(function () &amp;#123;    $(&quot;#mydiv&quot;).toggle();    return false; // Prevent browser from visiti">
+  
+  
+  <script src="http://www.staydan.com/libs/jQuery/2.0.3/jquery-2.0.3.min.js"></script>
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div class="container">
+    <div class="wrapper">
+      <header class="site-header">
+  <div id="header-title" class="inner">
+    <h1>
+      <a href="/" title="Xiaodan's Everything">Xiaodan's Everything</a>
+    </h1>
+    
+      <h4 id="subtitle-wrap">
+        <a href="/" title="A foolish Programmer from Shanghai China">A foolish Programmer from Shanghai China</a>
+      </h4>
+    
+  </div>
+  <nav id="site-navs" class="">
+	  <ul>
+      
+	      <li class="ease-animation"><a href="/" title="Home">Home</a></li>
+	    
+	      <li class="ease-animation"><a href="/archives" title="Archives">Archives</a></li>
+	    
+	      <li class="ease-animation"><a href="/about" title="About">About</a></li>
+	    
+	      <li class="ease-animation"><a href="/logs" title="Logs">Logs</a></li>
+	    
+	  </ul>
+	  <div class="clearfix"></div>
+	</nav>
+</header>
+      <div class="outer">
+        <section id="main"><section class="tags-selection">
+  <header class="tags-selection-header">
+    <div class="tags-selection-header-label"><i class="fa fa-tag"></i>Tags</div>
+  </header>
+  <div id="tags-selection-panel">
+  	<div class="tags-selection-navs" title="Sorted by the first English alphabet."><label class="tags-selection-nav active" navid="ad">A - D</label><label class="tags-selection-nav " navid="eh">E - H</label><label class="tags-selection-nav " navid="il">I - L</label><label class="tags-selection-nav " navid="mp">M - P</label><label class="tags-selection-nav " navid="qt">Q - T</label><label class="tags-selection-nav " navid="ux">U - X</label><label class="tags-selection-nav " navid="yz">Y - Z</label></div><div class="tags-selection-content"><div id="tags-selection-content-ad" class="tags-selection-content-part"><a href="/tags/Click Event"><span class="tag-instant" tagid="cik0ir5my000dciwhttxkmgj2">Click-Event<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Data Visualization"><span class="tag-instant" tagid="cik0ir5n3000jciwhrjfmssnw">Data-Visualization<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/docing"><span class="tag-instant" tagid="cik0ir5nf0014ciwhdijtxocq">docing<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/document"><span class="tag-instant" tagid="cik0ir5ng0015ciwhd23pbb3l">document<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/CSS3"><span class="tag-instant" tagid="cik0ir5nk001dciwhzve4q294">CSS3<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Canvas"><span class="tag-instant" tagid="cik0ir5nr001pciwhbmh8zliz">Canvas<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Algorithm"><span class="tag-instant" tagid="cik0ir5nz0023ciwhqo76bn9v">Algorithm<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/DateFormat"><span class="tag-instant" tagid="cik0ir5ok003eciwhejav6r29">DateFormat<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/CSS"><span class="tag-instant" tagid="cik0ir5om003kciwhbhggw2u2">CSS<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/AngularJS"><span class="tag-instant" tagid="cik0ir5ot003tciwhfuhzs60g">AngularJS<sup class="tag-selection-badge">0</sup></span></a><a href="/tags/Bower"><span class="tag-instant" tagid="cik0ir5ou003vciwhxgirgwpd">Bower<sup class="tag-selection-badge">0</sup></span></a></div><div id="tags-selection-content-eh" class="tags-selection-content-part"><a href="/tags/Hive Plot"><span class="tag-instant" tagid="cik0ir5n3000kciwh2bo1ykxv">Hive-Plot<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/HTML5"><span class="tag-instant" tagid="cik0ir5nk001cciwhdjipd8ad">HTML5<sup class="tag-selection-badge">2</sup></span></a><a href="/tags/History"><span class="tag-instant" tagid="cik0ir5oq003pciwh142kgtrz">History<sup class="tag-selection-badge">0</sup></span></a><a href="/tags/Grunt"><span class="tag-instant" tagid="cik0ir5ou003uciwhytrikfjd">Grunt<sup class="tag-selection-badge">0</sup></span></a></div><div id="tags-selection-content-il" class="tags-selection-content-part"><a href="/tags/JavaScript"><span class="tag-instant" tagid="cik0ir5mr0004ciwhhytop5wb">JavaScript<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/jQuery"><span class="tag-instant" tagid="cik0ir5mt0005ciwhxabl4as2">jQuery<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/iScrollJs"><span class="tag-instant" tagid="cik0ir5nb000yciwhfvuvn3uf">iScrollJs<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Jeju"><span class="tag-instant" tagid="cik0ir5o4002fciwhoz8c7q0u">Jeju<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/laptop"><span class="tag-instant" tagid="cik0ir5o8002mciwhyv1pfdtq">laptop<sup class="tag-selection-badge">1</sup></span></a></div><div id="tags-selection-content-mp" class="tags-selection-content-part"><a href="/tags/Pull to refresh"><span class="tag-instant" tagid="cik0ir5n7000rciwhdw87asha">Pull-to-refresh<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Mask"><span class="tag-instant" tagid="cik0ir5nw001xciwh7chgmm6g">Mask<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Network"><span class="tag-instant" tagid="cik0ir5o8002lciwhwsorp6tk">Network<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/PC"><span class="tag-instant" tagid="cik0ir5o9002ociwhj3oew0mf">PC<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Paging"><span class="tag-instant" tagid="cik0ir5oh0039ciwhzuldohmf">Paging<sup class="tag-selection-badge">1</sup></span></a></div><div id="tags-selection-content-qt" class="tags-selection-content-part"><a href="/tags/Sort"><span class="tag-instant" tagid="cik0ir5ny0022ciwhpgf38v4f">Sort<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Team Building"><span class="tag-instant" tagid="cik0ir5o10028ciwhabm0sd3s">Team-Building<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Tooltips"><span class="tag-instant" tagid="cik0ir5oa002uciwh2o6czx4e">Tooltips<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Textfield"><span class="tag-instant" tagid="cik0ir5ob002wciwht8teps92">Textfield<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Render"><span class="tag-instant" tagid="cik0ir5od0031ciwhkbos4atp">Render<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Selection"><span class="tag-instant" tagid="cik0ir5oh0037ciwhm0z70avf">Selection<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/RadioButton"><span class="tag-instant" tagid="cik0ir5om003jciwhsxwp5fqj">RadioButton<sup class="tag-selection-badge">1</sup></span></a></div><div id="tags-selection-content-ux" class="tags-selection-content-part"></div><div id="tags-selection-content-yz" class="tags-selection-content-part"></div></div>
+  </div>
+</section>
+<article id="post-jQuery-Events-Stop-Mis-Using-Return-False"  class=" ease-animation">
+  <header class="article-header">
+    
+        
+  
+    <div class="article-title" itemprop="name">
+      jQuery Events: Stop (Mis)Using Return False
+    </div>
+  
+
+    
+    <div class="article-meta sm-font">
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a><i class="fa fa-circle dot-separator"></i><a class="article-category-link" href="/categories/JavaScript/jQuery/">jQuery</a>
+  </div>
+
+
+      <a href="/2016/01/30/jQuery-Events-Stop-Mis-Using-Return-False/" class="article-updated">
+  <time datetime="2016-01-30T02:30:35.000Z" itemprop="datePublished">16/01/30 10:01</time>
+</a>
+    </div>
+  </header>
+  <div class="article-entry">
+  
+    <p>也许当你刚开始学习关于 jQuery Events 的时候，第一点被提及到的核心内容就是关于如何阻止浏览器的默认行为。比如，一个初学者的click教程会包含下面的内容：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"a.toggle"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    $(<span class="string">"#mydiv"</span>).toggle();</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">// Prevent browser from visiting `#`</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>上面的函数就是隐藏和显示 <code>#mydiv</code>的元素，接着取消浏览器访问a标签超链的默认行为。</p>
+<p>在这些最初的例子中，坏习惯就潜移默化的影响着读者在任何想阻止浏览器默认行为时去使用<code>return falsee;</code>。我将在这篇文章中提到两个非常重要的关于阻止浏览器默认行为时的观点：</p>
+<ul>
+<li>使用正确的方法做事：<code>return false</code> vs. <code>preventDefault</code>, <code>stopPropagation</code>，和<code>stopImmediatePropagation</code></li>
+<li>顶部、底部或者是其它中间区域：哪些是在一些事件回调函数中应该阻止默认行为的地方？</li>
+</ul>
+<p>注：在这篇文章中当我提到事件冒泡（event bubbing）时，我的意思就是在原始DOM元素被触发事件时如何让更多事件被触发，然后是在各自的父节点上。事件不会在元素的相邻节点或者孩子节点被触发（如果发生向下冒泡，这被称作事件捕捉）。<a href="http://www.nczonline.net/blog/2009/06/30/event-delegation-in-javascript/" target="_blank" rel="external">学习更多关于事件冒泡和捕捉</a><br><a id="more"></a></p>
+<h3 id="对症下药">对症下药</h3><p>为什么<code>return false</code> 被如此广泛的误用呢，是因为它刚巧满足了我们想要的。超链回调不再跳转了，表单也不会被提交了，所以为什么它还是不好的呢？</p>
+<h4 id="RETURN_FALSE真正做的是什么？"><code>RETURN FALSE</code>真正做的是什么？</h4><p>首先，当你执行了<code>return false</code> 时，它真正做了以下三件独立的操作：</p>
+<ol>
+<li>event.preventDefault();</li>
+<li>event.stopPropagation();</li>
+<li>Stops callback execution and returns immediately when called.</li>
+</ol>
+<p>“等下”，我觉得。。。你哭了对不对！我只不过想要阻止浏览器默认行为，并不需要另两个。</p>
+<p>上面3个里面我们唯一需要去实现阻止浏览器默认行为的仅仅是 <code>preventDefault();</code>，除非你真的要阻止事件冒泡，使用<figure class="highlight"><figcaption><span>false```会大大蒙蔽了你的代码。让我们看看一个实际应用场景下的误用是如何发生的：</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;&#25105;&#20204;&#30340;&#20363;&#23376;&#65306;&#10;``` HTML&#10;&#60;div class=&#34;post&#34;&#62;&#10;    &#60;h2&#62;&#60;a href=&#34;/path/to/page&#34;&#62;My Page&#60;/a&#62;&#60;/h2&#62;&#10;    &#60;div class=&#34;content&#34;&#62;&#10;        Teaser text...&#10;    &#60;/div&#62;&#10;&#60;/div&#62;&#10;&#60;div class=&#34;post&#34;&#62;&#10;    &#60;h2&#62;&#60;a href=&#34;/path/to/other_page&#34;&#62;My Other Page&#60;/a&#62;&#60;/h2&#62;&#10;    &#60;div class=&#34;content&#34;&#62;&#10;        Teaser text...&#10;    &#60;/div&#62;&#10;&#60;/div&#62;</span><br></pre></td></tr></table></figure></p>
+<p>现在我们需要将用户点击的每篇文章标题对应的文章内容加载到<code>div.content</code>元素中。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">jQuery(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span> (<span class="params">$</span>) </span>&#123;</span><br><span class="line">   $(<span class="string">"div.post h2 a"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> a    = $(<span class="keyword">this</span>),</span><br><span class="line">          href = a.attr(<span class="string">'href'</span>), <span class="comment">// Let jQuery normalize `href`,</span></span><br><span class="line">          content  = a.parent().next();</span><br><span class="line">      content.load(href + <span class="string">" #content"</span>);</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">// "cancel" the default behavior of following the link</span></span><br><span class="line">   &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>看上去挺好（起码现在是），我们的动态页面也准备好了，此时我们又想要在每个被点击的<code>div.post</code>元素上加上一个样式类<code>active</code>，所以我们决定加上下面这块：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Inside Document Ready:</span></span><br><span class="line"><span class="keyword">var</span> posts = $(<span class="string">"div.post"</span>);</span><br><span class="line">posts.click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Remove active from all div.post</span></span><br><span class="line">    posts.removeClass(<span class="string">"active"</span>);</span><br><span class="line">    <span class="comment">// Add it back to this one</span></span><br><span class="line">    $(<span class="keyword">this</span>).addClass(<span class="string">"active"</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这段代码会在我们点击一个标题链接时正常工作么？当然不会！因为我们用了<code>return false</code>，而不是我们真正想要的，要记得<code>return false</code>也等于<code>event.preventDefault(); event.stopPropagation();</code> 单击事件就不会被往上冒泡到父节点<code>div.post</code>，so我们新加的事件没有被触发。</p>
+<p>当我们混合使用<code>live</code> 或者 <code>delegate</code> 时，这甚至会造成问题：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"a"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">$(<span class="string">"a"</span>).live(<span class="string">"click"</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// THIS WON'T FIRE</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h4 id="然，我们真正需要什么呢？">然，我们真正需要什么呢？</h4><p><code>**preventDefault()**</code></p>
+<p>在我们使用<code>return false</code>的大多数情况下，其实我们真正想要的是<code>e.preventDefault()</code>。使用<code>preventDefault</code>时，你需要在回调中传入一个事件对象作为参数（下面例子中的e就是）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"a"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// e == our event data</span></span><br><span class="line">    e.preventDefault();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这就搞定了全部我们需要的，而且没有阻碍父节点元素获取这些冒泡上来的事件。在你代码中越少的约束往往意味着更容易被维护。</p>
+<p><code>**stopPropagation()**</code></p>
+<p>有时候你仅仅需要停止向上冒泡，看看下面这个例子：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"post"</span>&gt;</span></span><br><span class="line">    Normal text and then a <span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"/path"</span>&gt;</span>link<span class="tag">&lt;/<span class="title">a</span>&gt;</span> and then more text.</span><br><span class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>现在，假设我们需要在<code>div</code>中除了超链部分外点击后发生点什么，然后需要用户在点击超链时真的能跳转出去（以可用性角度出发的话，这还真是个不好的例子，也许你并不想当用户失误点在超链外时发生任何的什么）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"div.post"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">   <span class="comment">// Do the first thing;</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">$(<span class="string">"div.post a"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Don't cancel the browser's default action</span></span><br><span class="line">    <span class="comment">// and don't bubble this event!</span></span><br><span class="line">    e.stopPropagation();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>在这个例子中，如果我们用了<code>return false</code>，那<code>div</code>的click事件就不会被触发，而且用户同样也不会被引导到正确的页面。</p>
+<p><code>**stopImmediatePropagation()**</code></p>
+<p>这个方法会停止执行任何在这个对象元素上的任何其它事件，甚至是绑定在它上面的其它操作，所有在一个特定元素上的事件会按照绑定时的顺序被触发执行。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"div a"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">   <span class="comment">// Do something</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">$(<span class="string">"div a"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">   <span class="comment">// Do something else</span></span><br><span class="line">   e.stopImmediatePropagation();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">$(<span class="string">"div a"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">   <span class="comment">// THIS NEVER FIRES</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">$(<span class="string">"div"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">   <span class="comment">// THIS NEVER FIRES</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>如果你觉得这个例子看上去太勉强了的话，它还真的是（^_^）。然而，这种情况也是挺真实的一种。当越来越多的项目代码被抽象化后，你所写的那些代码实现的各种控件和插件也许会在同一个对象上注册许多事件监听。这种情形就是比较合理的使用<code>stopImmediatePropagation()</code>的一种场景。</p>
+<p><code>**return false**</code><br>仅仅在你需要<code>preventDefault()</code> and <code>stopPropagation()</code>同时发挥作用时才可以使用<code>return false</code>，这样代码可以支持不取消默认行为，直到你达到你的回调执行结束。我强烈反对在任何给学习jQuery的新手例子中使用这个方法，它推荐了一个坏的阻止事件执行的演示，它仅仅应该在你明确你知道它提供什么功能的前提下才可以用。</p>
+<h3 id="顶部、底部或者是其它中间区域：哪些是在一些事件回调函数中应该阻止默认行为的地方？">顶部、底部或者是其它中间区域：哪些是在一些事件回调函数中应该阻止默认行为的地方？</h3><p>之前，当误用<code>return false</code>时，它经常出现在你函数的最后位置，或者是在后续没有需要被执行的代码块前的最后一行。有了<code>e.preventDefault</code>之后，我们就有了更多的选择，它可以在一个回调函数中的任何位置被执行，所以呢？</p>
+<p><strong>1. 在开发阶段，它几乎都是在非常靠前的行数</strong><br>当你尝试在回调函数中调试一个JavaScript的错误时，你最后一件事对你的表单在向另一个页面提交一个AJAX异步请求时。</p>
+<p><strong>2. 在生产环境，如果你需要跟进一个渐进增强，将它放在回调的最后，或者执行流的最后。</strong><br>如果你在逐步提高一个普通的页面，对于那些不支持JavaScript的浏览器来说你的<code>click</code>事件或者表单的<code>submit</code>事件将会有对应的server端代码来接手，然而，这不仅仅和浏览器是否支持JavaScript有关，更是在当你的代码抛出一个错误时浏览器能捕捉到。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> data = &#123;&#125;;</span><br><span class="line">$(<span class="string">"a"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    e.preventDefault(); <span class="comment">// cancel default behavior</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Throws an error because `my` is undefined</span></span><br><span class="line">    $(<span class="string">"body"</span>).append(data.my.link);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// The original link doesn't work AND the "cool"</span></span><br><span class="line">    <span class="comment">// JavaScript has broken. The user is left with NOTHING!</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>让我们看看<code>preventDefault</code>放在相同的监听事件在最后处时会发生什么：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> data = &#123;&#125;;</span><br><span class="line">$(<span class="string">"a"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Throws an error because `my` is undefined</span></span><br><span class="line">    $(<span class="string">"body"</span>).append(data.my.link);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// This line is never reached, and your website</span></span><br><span class="line">    <span class="comment">// falls back to using the `href` instead of this</span></span><br><span class="line">    <span class="comment">// "cool" broken JavaScript!</span></span><br><span class="line"></span><br><span class="line">    e.preventDefault(); <span class="comment">// cancel default behavior</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>对于表单提交的相同事件代码，提供了所需要的依赖。永远不要相信你的代码能永远正常工作。去准备一个漂亮的依赖会比假设不会有错误来的好！</p>
+<p><strong>3. 在生产环境，如果这些功能仅仅是JavaScript，那始终保持在首行</strong><br>记住，它不是非要在函数的第一行的，但尽量出现在你逻辑里的靠前位置。核心概念应该是：如果你的程序的这部分是靠JavaScript加入到第一的位置，那么依赖就并不是必须的。在这例子中，前面的部分是为了确保随机的#字符不会出现在url中，或者是会引起页面跳来跳去。明显的，提供尽可能多的容错处理能确保你的用户不会轻易离开。</p>
+<h3 id="总结">总结</h3><p>我希望这篇文章已经向你表达清楚了如何在阻止浏览器默认事件时做出正确的选择。记得仅仅在你真正需要的时候才使用<code>return false</code>，而且确保你在你的回调函数中的正确位置阻止了默认行为。尽可能地让你的代码更灵活，切记别在使用<code>return false</code>！</p>
+<hr>
+<p><em>This Article is posted on FUEL copyright <a href="http://fuelyourcoding.com/author/dougnein/" target="_blank" rel="external">Douglas Neiner</a>, thanks to his efforts.</em></p>
+<p><em>该文章转载自 <a href="&#39;http://fuelyourcoding.com/jquery-events-stop-misusing-return-false/">FUEL</a>，翻译自 <a href="http://www.staydan.com" target="_blank" rel="external">Staydan.com</a></em></p>
+
+  
+  </div>
+  <footer class="article-footer">
+    <div class="article-footer-left">
+      <a href="hexo_post.html#disqus" class="article-footer-left"><span class="comments"><i class="fa fa-comments"></i> 0 Comment</span></a>
+      <i class="fa fa-circle dot-separator"></i>
+    </div>
+    
+  <ul class="ease-animation sm-font tag-list"><li class="ease-animation sm-font tag-list-item"><a class="ease-animation sm-font tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="ease-animation sm-font tag-list-item"><a class="ease-animation sm-font tag-list-link" href="/tags/jQuery/">jQuery</a></li></ul>
+
+    <div class="article-footer-right">
+    
+      <a href="hexo_post.html"><span class="save-pocket button sm-font ease-animation"><i class="fa fa-share"></i> Share</span></a>
+    </div>
+  </footer>
+</article>
+
+  
+<div class="link-to-article"> 
+  <div class="link-to-article-next">
+  
+    
+      <div class="article-nav-date">
+        2014-10-03
+      </div>
+      <div class="article-nav-title">
+        <a href="/2014/10/03/how-to-trigger-single-click-and-double-click-event-in-ext-dot-grid/" title="How to trigger Single Click and Double Click event in Ext.grid">How to trigger Single Click and Double Click event in Ext.grid</a>
+      </div>
+     
+  
+  </div>
+  <div class="link-to-article-separator">
+    <i class="fa fa-circle dot-separator"></i>
+  </div>
+  <div class="link-to-article-prev">
+  
+  </div>
+</div>
+
+
+</section>
+      </div>
+      <footer id="footer" class="site-footer">
+	&copy; 2016 Daniel Zhu<br>
+  <p>Theme by <a href="http://github.com/danielzhu" title="Line" target="_blank" rel="external">Line</a> Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="external">Hexo</a>
+</footer>
+    </div>
+    
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+<script src="/js/grouped_tag.js" type="text/javascript"></script>
+  </div>
+</body>
+</html>

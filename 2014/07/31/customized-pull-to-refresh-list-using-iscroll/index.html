@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Customized Pull To Refresh List Using iScroll | Xiaodan&#39;s Everything</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="VVebo用了几个月的VVebo，这款第三方的sina微博客户端，不得不说它在当时那个时候相比同类软件来讲绝对拥有了无与伦比的视觉享受。
+所有界面融合贯通、一气呵成，让人没有突兀的感觉，在触摸和滑动的处理上，我想作者是花了很多心思去研究用户的使用习惯的。
+印象深刻的一点是它的Loading界面，列表头尾都会有上下两个圆形，往下拉列表的同时，圆A逐渐靠近圆B，随后合体，自然而然的动画也感觉loadi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Customized Pull To Refresh List Using iScroll">
+<meta property="og:url" content="http://blog.staydan.com/2014/07/31/customized-pull-to-refresh-list-using-iscroll/index.html">
+<meta property="og:site_name" content="Xiaodan's Everything">
+<meta property="og:description" content="VVebo用了几个月的VVebo，这款第三方的sina微博客户端，不得不说它在当时那个时候相比同类软件来讲绝对拥有了无与伦比的视觉享受。
+所有界面融合贯通、一气呵成，让人没有突兀的感觉，在触摸和滑动的处理上，我想作者是花了很多心思去研究用户的使用习惯的。
+印象深刻的一点是它的Loading界面，列表头尾都会有上下两个圆形，往下拉列表的同时，圆A逐渐靠近圆B，随后合体，自然而然的动画也感觉loadi">
+<meta property="og:updated_time" content="2015-06-19T01:57:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Customized Pull To Refresh List Using iScroll">
+<meta name="twitter:description" content="VVebo用了几个月的VVebo，这款第三方的sina微博客户端，不得不说它在当时那个时候相比同类软件来讲绝对拥有了无与伦比的视觉享受。
+所有界面融合贯通、一气呵成，让人没有突兀的感觉，在触摸和滑动的处理上，我想作者是花了很多心思去研究用户的使用习惯的。
+印象深刻的一点是它的Loading界面，列表头尾都会有上下两个圆形，往下拉列表的同时，圆A逐渐靠近圆B，随后合体，自然而然的动画也感觉loadi">
+  
+  
+  <script src="http://www.staydan.com/libs/jQuery/2.0.3/jquery-2.0.3.min.js"></script>
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div class="container">
+    <div class="wrapper">
+      <header class="site-header">
+  <div id="header-title" class="inner">
+    <h1>
+      <a href="/" title="Xiaodan's Everything">Xiaodan's Everything</a>
+    </h1>
+    
+      <h4 id="subtitle-wrap">
+        <a href="/" title="A foolish Programmer from Shanghai China">A foolish Programmer from Shanghai China</a>
+      </h4>
+    
+  </div>
+  <nav id="site-navs" class="">
+	  <ul>
+      
+	      <li class="ease-animation"><a href="/" title="Home">Home</a></li>
+	    
+	      <li class="ease-animation"><a href="/archives" title="Archives">Archives</a></li>
+	    
+	      <li class="ease-animation"><a href="/about" title="About">About</a></li>
+	    
+	      <li class="ease-animation"><a href="/logs" title="Logs">Logs</a></li>
+	    
+	  </ul>
+	  <div class="clearfix"></div>
+	</nav>
+</header>
+      <div class="outer">
+        <section id="main"><section class="tags-selection">
+  <header class="tags-selection-header">
+    <div class="tags-selection-header-label"><i class="fa fa-tag"></i>Tags</div>
+  </header>
+  <div id="tags-selection-panel">
+  	<div class="tags-selection-navs" title="Sorted by the first English alphabet."><label class="tags-selection-nav active" navid="ad">A - D</label><label class="tags-selection-nav " navid="eh">E - H</label><label class="tags-selection-nav " navid="il">I - L</label><label class="tags-selection-nav " navid="mp">M - P</label><label class="tags-selection-nav " navid="qt">Q - T</label><label class="tags-selection-nav " navid="ux">U - X</label><label class="tags-selection-nav " navid="yz">Y - Z</label></div><div class="tags-selection-content"><div id="tags-selection-content-ad" class="tags-selection-content-part"><a href="/tags/Click Event"><span class="tag-instant" tagid="cik0ir5my000dciwhttxkmgj2">Click-Event<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Data Visualization"><span class="tag-instant" tagid="cik0ir5n3000jciwhrjfmssnw">Data-Visualization<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/docing"><span class="tag-instant" tagid="cik0ir5nf0014ciwhdijtxocq">docing<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/document"><span class="tag-instant" tagid="cik0ir5ng0015ciwhd23pbb3l">document<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/CSS3"><span class="tag-instant" tagid="cik0ir5nk001dciwhzve4q294">CSS3<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Canvas"><span class="tag-instant" tagid="cik0ir5nr001pciwhbmh8zliz">Canvas<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Algorithm"><span class="tag-instant" tagid="cik0ir5nz0023ciwhqo76bn9v">Algorithm<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/DateFormat"><span class="tag-instant" tagid="cik0ir5ok003eciwhejav6r29">DateFormat<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/CSS"><span class="tag-instant" tagid="cik0ir5om003kciwhbhggw2u2">CSS<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/AngularJS"><span class="tag-instant" tagid="cik0ir5ot003tciwhfuhzs60g">AngularJS<sup class="tag-selection-badge">0</sup></span></a><a href="/tags/Bower"><span class="tag-instant" tagid="cik0ir5ou003vciwhxgirgwpd">Bower<sup class="tag-selection-badge">0</sup></span></a></div><div id="tags-selection-content-eh" class="tags-selection-content-part"><a href="/tags/Hive Plot"><span class="tag-instant" tagid="cik0ir5n3000kciwh2bo1ykxv">Hive-Plot<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/HTML5"><span class="tag-instant" tagid="cik0ir5nk001cciwhdjipd8ad">HTML5<sup class="tag-selection-badge">2</sup></span></a><a href="/tags/History"><span class="tag-instant" tagid="cik0ir5oq003pciwh142kgtrz">History<sup class="tag-selection-badge">0</sup></span></a><a href="/tags/Grunt"><span class="tag-instant" tagid="cik0ir5ou003uciwhytrikfjd">Grunt<sup class="tag-selection-badge">0</sup></span></a></div><div id="tags-selection-content-il" class="tags-selection-content-part"><a href="/tags/JavaScript"><span class="tag-instant" tagid="cik0ir5mr0004ciwhhytop5wb">JavaScript<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/jQuery"><span class="tag-instant" tagid="cik0ir5mt0005ciwhxabl4as2">jQuery<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/iScrollJs"><span class="tag-instant" tagid="cik0ir5nb000yciwhfvuvn3uf">iScrollJs<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Jeju"><span class="tag-instant" tagid="cik0ir5o4002fciwhoz8c7q0u">Jeju<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/laptop"><span class="tag-instant" tagid="cik0ir5o8002mciwhyv1pfdtq">laptop<sup class="tag-selection-badge">1</sup></span></a></div><div id="tags-selection-content-mp" class="tags-selection-content-part"><a href="/tags/Pull to refresh"><span class="tag-instant" tagid="cik0ir5n7000rciwhdw87asha">Pull-to-refresh<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Mask"><span class="tag-instant" tagid="cik0ir5nw001xciwh7chgmm6g">Mask<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Network"><span class="tag-instant" tagid="cik0ir5o8002lciwhwsorp6tk">Network<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/PC"><span class="tag-instant" tagid="cik0ir5o9002ociwhj3oew0mf">PC<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Paging"><span class="tag-instant" tagid="cik0ir5oh0039ciwhzuldohmf">Paging<sup class="tag-selection-badge">1</sup></span></a></div><div id="tags-selection-content-qt" class="tags-selection-content-part"><a href="/tags/Sort"><span class="tag-instant" tagid="cik0ir5ny0022ciwhpgf38v4f">Sort<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Team Building"><span class="tag-instant" tagid="cik0ir5o10028ciwhabm0sd3s">Team-Building<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Tooltips"><span class="tag-instant" tagid="cik0ir5oa002uciwh2o6czx4e">Tooltips<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Textfield"><span class="tag-instant" tagid="cik0ir5ob002wciwht8teps92">Textfield<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Render"><span class="tag-instant" tagid="cik0ir5od0031ciwhkbos4atp">Render<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/Selection"><span class="tag-instant" tagid="cik0ir5oh0037ciwhm0z70avf">Selection<sup class="tag-selection-badge">1</sup></span></a><a href="/tags/RadioButton"><span class="tag-instant" tagid="cik0ir5om003jciwhsxwp5fqj">RadioButton<sup class="tag-selection-badge">1</sup></span></a></div><div id="tags-selection-content-ux" class="tags-selection-content-part"></div><div id="tags-selection-content-yz" class="tags-selection-content-part"></div></div>
+  </div>
+</section>
+<article id="post-customized-pull-to-refresh-list-using-iscroll"  class=" ease-animation">
+  <header class="article-header">
+    
+        
+  
+    <div class="article-title" itemprop="name">
+      Customized Pull To Refresh List Using iScroll
+    </div>
+  
+
+    
+    <div class="article-meta sm-font">
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/CSS3/">CSS3</a><i class="fa fa-circle dot-separator"></i><a class="article-category-link" href="/categories/CSS3/Animation/">Animation</a>
+  </div>
+
+
+      <a href="/2014/07/31/customized-pull-to-refresh-list-using-iscroll/" class="article-updated">
+  <time datetime="2014-07-31T05:54:33.000Z" itemprop="datePublished">14/07/31 13:07</time>
+</a>
+    </div>
+  </header>
+  <div class="article-entry">
+  
+    <h4 id="VVebo">VVebo</h4><p>用了几个月的<a href="https://vvebo.me/" target="_blank" rel="external">VVebo</a>，这款第三方的sina微博客户端，不得不说它在当时那个时候相比同类软件来讲绝对拥有了无与伦比的视觉享受。</p>
+<p>所有界面融合贯通、一气呵成，让人没有突兀的感觉，在触摸和滑动的处理上，我想作者是花了很多心思去研究用户的使用习惯的。</p>
+<p>印象深刻的一点是它的Loading界面，列表头尾都会有上下两个圆形，往下拉列表的同时，圆A逐渐靠近圆B，随后合体，自然而然的动画也感觉loading的时间没那么漫长了。在配合了音效之后，效果甚佳，此处必须给作者无数个赞。</p>
+<h4 id="iScroll_-_Pull_to_Refresh">iScroll - Pull to Refresh</h4><p>同事最近在一个项目中使用iScroll，就如我上篇post中提到的那样。</p>
+<p>其中在iScroll4（5开始没有了pull to refresh 控件）中，其中的Pull To Refresh<br>就是模拟实现了现在最流行的下拉刷新和上拉加载更多。但说实话，那个最原始的提示已经看腻掉了，加上VVebo的出现，我就想重新做个加载动画。。。</p>
+<p>首先上Demo，请随意把玩。。。</p>
+<iframe width="100%" height="300" src="http://jsfiddle.net/6gRDL/embedded/js,resources,html,css,result/light" frameborder="0" allowfullscreen></iframe>
+<a id="more"></a>
+<h4 id="思路">思路</h4><ul>
+<li><h5 id="动画部分">动画部分</h5></li>
+</ul>
+<p>最初的设想是，利用3个横向的填充矩形，同时从左右两个方向朝中间回合，然后重叠，因为颜色的不同加上透明度数，可以合成不同的颜色，上下两个矩形向中间那个靠拢后消失，最后一个细矩形绕中心点自转。<br>整个动画结束。</p>
+<p>关于动画部分的Demo在一开始也做了出来，为了证明它的可行性。<br><iframe width="100%" height="300" src="http://jsfiddle.net/jgcxtysn/embedded/js,resources,html,css,result/light" frameborder="0" allowfullscreen></iframe><br><em>将焦点定在进度条上，然后用键盘左右方向键控制动画即可</em></p>
+<ul>
+<li>逻辑部分  </li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下拉的最大距离</span></span><br><span class="line">pullDownMaxValue = pullDownOffset;</span><br><span class="line"><span class="comment">// 左边矩形体的左间距</span></span><br><span class="line">pullDownLeftRectMarginLeft = <span class="built_in">parseFloat</span>($(<span class="string">'.pullDown-left'</span>).css(<span class="string">'margin-left'</span>)),</span><br><span class="line"><span class="comment">// 右边矩形体的右间距</span></span><br><span class="line">pullDownRightRectMarginRight = <span class="built_in">parseFloat</span>($(<span class="string">'.pullDown-right'</span>).css(<span class="string">'margin-right'</span>)),</span><br><span class="line"></span><br><span class="line"><span class="comment">// 左边矩形体的右偏移量</span></span><br><span class="line">pullDownLeftOffset = pullDownLeftRectMarginLeft,</span><br><span class="line"><span class="comment">// 右边矩形体的右偏移量</span></span><br><span class="line">pullDownRightOffset = <span class="built_in">window</span>.innerWidth - pullDownLeftOffset - $(<span class="string">'.pullDown-right'</span>).width(),</span><br><span class="line"><span class="comment">// 两边矩形体到重合的总移动距离</span></span><br><span class="line">pullDownDistance = <span class="built_in">parseFloat</span>((pullDownRightOffset - pullDownLeftOffset) / <span class="number">2</span>),</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据下拉的最大距离来计算每像素对应的矩形体的移动量</span></span><br><span class="line">pullDownMoveStepDis = <span class="built_in">parseFloat</span>(pullDownDistance / pullDownMaxValue);</span><br></pre></td></tr></table></figure>
+<p>观察iScroll的pullToRefresh控件即可清晰的知道，想要完成自己的加载动画，只需要重写以下3个方法：</p>
+<ul>
+<li><strong>onRefresh</strong><br>重置动画主体的初始状态</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 如果在释放时已满足refresh条件，在700ms后重置所有矩形体恢复到最初</span></span><br><span class="line"><span class="keyword">if</span> (pullDownFit) &#123;</span><br><span class="line">	setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	  $(<span class="string">'.pullDown-left-top, .pullDown-right-top'</span>).css(<span class="string">'visibility'</span>, <span class="string">'visible'</span>);</span><br><span class="line">	  $(<span class="string">'.pullDown-left-bottom, .pullDown-right-bottom'</span>).css(<span class="string">'visibility'</span>, <span class="string">'visible'</span>);</span><br><span class="line"></span><br><span class="line">	  $(<span class="string">'.pullDown-left-middle'</span>).removeClass(<span class="string">'rotating'</span>);</span><br><span class="line">	  $(<span class="string">'.pullDown-right-middle'</span>).removeClass(<span class="string">'rotating'</span>);</span><br><span class="line">	&#125;, <span class="number">700</span>);</span><br><span class="line">	pullDownFit = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>onScrollMove</strong><br>监听滚动事件，所有的动画过程都是在这里监听完成，并且重置各种标志位</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 计算下拉的幅度（即百分比）</span></span><br><span class="line"><span class="keyword">var</span> pullDownProgress = <span class="number">1</span> - <span class="built_in">parseFloat</span>(<span class="keyword">this</span>.y /  (- pullDownOffset));</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (pullDownProgress &lt; <span class="number">1</span>) &#123;</span><br><span class="line">	<span class="comment">// 未达到100%， 继续移动</span></span><br><span class="line">	<span class="keyword">var</span> pullDownMoveDis = pullDownMoveStepDis * pullDownProgress * pullDownMaxValue;</span><br><span class="line">	resetPullDownPos(pullDownLeftRectMarginLeft + pullDownMoveDis, pullDownRightRectMarginRight + pullDownMoveDis);</span><br><span class="line">	pullDownFit = <span class="literal">false</span>;</span><br><span class="line">	<span class="keyword">this</span>.minScrollY = -pullDownOffset;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	<span class="comment">// 移动矩形体到最大位置</span></span><br><span class="line">	resetPullDownPos(pullDownLeftRectMarginLeft + pullDownDistance, pullDownRightRectMarginRight + pullDownDistance);</span><br><span class="line">	<span class="comment">// 设置标志位为True</span></span><br><span class="line">	pullDownFit = <span class="literal">true</span>;</span><br><span class="line">	<span class="comment">// 将最大下拉距离设为0，即能把动画完整的显示在屏幕上，否则会被吸回顶部以内</span></span><br><span class="line">	<span class="keyword">this</span>.minScrollY = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据标志位移动上下矩形</span></span><br><span class="line">$(<span class="string">'.pullDown-left-top, .pullDown-right-top'</span>).toggleClass(<span class="string">'rect-pullDown-top-disappear'</span>, pullDownFit);</span><br><span class="line">$(<span class="string">'.pullDown-left-bottom, .pullDown-right-bottom'</span>).toggleClass(<span class="string">'rect-pullDown-bottom-disappear'</span>, pullDownFit);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>onScrollEnd</strong><br>滚动结束后的操作。通过标志位来判断是否需要进入旋转动画</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (pullDownFit) &#123;</span><br><span class="line">	<span class="comment">// 更新动画</span></span><br><span class="line">	$(<span class="string">'.pullDown-left-top, .pullDown-right-top'</span>).removeClass(<span class="string">'rect-pullDown-top-disappear'</span>);</span><br><span class="line">	$(<span class="string">'.pullDown-left-bottom, .pullDown-right-bottom'</span>).removeClass(<span class="string">'rect-pullDown-bottom-disappear'</span>);</span><br><span class="line">	$(<span class="string">'.pullDown-left-top, .pullDown-right-top'</span>).css(<span class="string">'visibility'</span>, <span class="string">'hidden'</span>);</span><br><span class="line">	$(<span class="string">'.pullDown-left-bottom, .pullDown-right-bottom'</span>).css(<span class="string">'visibility'</span>, <span class="string">'hidden'</span>);</span><br><span class="line"></span><br><span class="line">	$(<span class="string">'.pullDown-left-middle'</span>).addClass(<span class="string">'rotating'</span>);</span><br><span class="line">	$(<span class="string">'.pullDown-right-middle'</span>).addClass(<span class="string">'rotating'</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 触发刷新动作</span></span><br><span class="line">	pullDownAction(); <span class="comment">// Execute custom function (ajax call?)</span></span><br><span class="line"></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	<span class="comment">// 未达到终点，继续移动</span></span><br><span class="line">	resetPullDownPos(marginWidth, marginWidth);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样，就完成了最核心的部分，剩下的就看看jsFiddle中的完整Demo代码吧，相信没难度了。</p>
+
+  
+  </div>
+  <footer class="article-footer">
+    <div class="article-footer-left">
+      <a href="hexo_post.html#disqus" class="article-footer-left"><span class="comments"><i class="fa fa-comments"></i> 0 Comment</span></a>
+      <i class="fa fa-circle dot-separator"></i>
+    </div>
+    
+  <ul class="ease-animation sm-font tag-list"><li class="ease-animation sm-font tag-list-item"><a class="ease-animation sm-font tag-list-link" href="/tags/Pull-to-refresh/">Pull to refresh</a></li></ul>
+
+    <div class="article-footer-right">
+    
+      <a href="hexo_post.html"><span class="save-pocket button sm-font ease-animation"><i class="fa fa-share"></i> Share</span></a>
+    </div>
+  </footer>
+</article>
+
+  
+<div class="link-to-article"> 
+  <div class="link-to-article-next">
+  
+    
+      <div class="article-nav-date">
+        2014-07-29
+      </div>
+      <div class="article-nav-title">
+        <a href="/2014/07/29/using-iscroll-in-angularjs/" title="在AngularJs的项目中使用iScroll控件碰到的问题集合">在AngularJs的项目中使用iScroll控件碰到的问题集合</a>
+      </div>
+     
+  
+  </div>
+  <div class="link-to-article-separator">
+    <i class="fa fa-circle dot-separator"></i>
+  </div>
+  <div class="link-to-article-prev">
+  
+    
+      <div class="article-nav-date">
+        2014-10-01
+      </div>
+      <div class="article-nav-title">
+        <a href="/2014/10/01/hive-plots-with-node-link-diagram-in-four-dimension/" title="蜂巢图 —— 四维互动">蜂巢图 —— 四维互动</a>
+      </div>
+        
+  
+  </div>
+</div>
+
+
+</section>
+      </div>
+      <footer id="footer" class="site-footer">
+	&copy; 2016 Daniel Zhu<br>
+  <p>Theme by <a href="http://github.com/danielzhu" title="Line" target="_blank" rel="external">Line</a> Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="external">Hexo</a>
+</footer>
+    </div>
+    
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+<script src="/js/grouped_tag.js" type="text/javascript"></script>
+  </div>
+</body>
+</html>

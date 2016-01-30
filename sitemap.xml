@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.staydan.com/2016/01/30/jQuery-Events-Stop-Mis-Using-Return-False/</loc>
+    <lastmod>2016-01-30T05:29:31.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.staydan.com/about/index.html</loc>
     <lastmod>2015-07-12T11:28:26.000Z</lastmod>
   </url>
@@ -12,92 +17,92 @@
   </url>
   
   <url>
-    <loc>http://blog.staydan.com/2014/07/31/2014-07-31-customized-pull-to-refresh-list-using-iscroll/</loc>
+    <loc>http://blog.staydan.com/2014/04/21/travelling-in-jeju-island-korea/</loc>
     <lastmod>2015-06-19T01:57:18.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.staydan.com/2014/07/29/2014-07-29-using-iscroll-in-angularjs/</loc>
+    <loc>http://blog.staydan.com/2014/07/31/customized-pull-to-refresh-list-using-iscroll/</loc>
     <lastmod>2015-06-19T01:57:18.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.staydan.com/2014/07/19/2014-07-19-docing-a-new-document-generator-for-all-programming-languages/</loc>
+    <loc>http://blog.staydan.com/2014/07/19/docing-a-new-document-generator-for-all-programming-languages/</loc>
     <lastmod>2015-06-19T01:57:18.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.staydan.com/2014/07/17/2014-07-17-memory-card-flip/</loc>
+    <loc>http://blog.staydan.com/2014/07/17/memory-card-flip/</loc>
     <lastmod>2015-06-19T01:57:18.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.staydan.com/2014/05/26/2014-05-26-my-left-foots-broken-when-rope-skipping/</loc>
+    <loc>http://blog.staydan.com/2014/05/26/my-left-foots-broken-when-rope-skipping/</loc>
     <lastmod>2015-06-19T01:57:18.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.staydan.com/2014/05/15/2014-05-15-create-2048-using-html5-canvas-play/</loc>
+    <loc>http://blog.staydan.com/2014/05/15/create-2048-using-html5-canvas-play/</loc>
     <lastmod>2015-06-19T01:57:18.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.staydan.com/2014/05/03/2014-05-03-how-to-handle-the-loading-mask-automatically-in-extjs/</loc>
+    <loc>http://blog.staydan.com/2014/05/03/how-to-handle-the-loading-mask-automatically-in-extjs/</loc>
     <lastmod>2015-06-19T01:57:18.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.staydan.com/2014/04/30/2014-04-30-sorting-visualization-using-javascript/</loc>
+    <loc>http://blog.staydan.com/2014/10/03/how-to-trigger-single-click-and-double-click-event-in-ext-dot-grid/</loc>
     <lastmod>2015-06-19T01:57:18.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.staydan.com/2014/10/01/2014-10-01-hive-plots-with-node-link-diagram-in-four-dimension/</loc>
+    <loc>http://blog.staydan.com/2014/04/26/team-building-at-xi-lai-chun-from-hewlett-packard/</loc>
     <lastmod>2015-06-19T01:57:18.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.staydan.com/2014/04/21/2014-04-21-travelling-in-jeju-island-korea/</loc>
+    <loc>http://blog.staydan.com/2014/07/29/using-iscroll-in-angularjs/</loc>
     <lastmod>2015-06-19T01:57:18.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.staydan.com/2014/03/31/2014-03-31-how-to-connect-to-wifi-without-wireless-adpater-for-pc/</loc>
+    <loc>http://blog.staydan.com/2014/03/31/how-to-connect-to-wifi-without-wireless-adpater-for-pc/</loc>
     <lastmod>2015-06-19T01:57:18.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.staydan.com/2014/02/27/2014-02-27-add-tooltips-to-textfield-in-extjs/</loc>
+    <loc>http://blog.staydan.com/2014/02/27/add-tooltips-to-textfield-in-extjs/</loc>
     <lastmod>2015-06-19T01:57:18.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.staydan.com/2014/02/23/2014-02-23-ghost-issue-in-enyo-scroller/</loc>
+    <loc>http://blog.staydan.com/2014/02/23/ghost-issue-in-enyo-scroller/</loc>
     <lastmod>2015-06-19T01:57:18.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.staydan.com/2014/02/23/2014-02-17-selection-paging-error-caused-by-extjs-id-generation/</loc>
+    <loc>http://blog.staydan.com/2014/02/23/selection-paging-error-caused-by-extjs-id-generation/</loc>
     <lastmod>2015-06-19T01:57:18.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.staydan.com/2014/02/17/2014-02-17-date-format-in-extjs/</loc>
+    <loc>http://blog.staydan.com/2014/02/17/date-format-in-extjs/</loc>
     <lastmod>2015-06-19T01:57:18.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.staydan.com/2013/12/12/2013-12-12-radio-grouped-buttons-control-with-knockout-bootstrap/</loc>
+    <loc>http://blog.staydan.com/2013/12/12/radio-grouped-buttons-control-with-knockout-bootstrap/</loc>
     <lastmod>2015-06-19T01:57:18.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.staydan.com/2014/10/03/2014-10-03-how-to-trigger-single-click-and-double-click-event-in-ext-dot-grid/</loc>
+    <loc>http://blog.staydan.com/2014/10/01/hive-plots-with-node-link-diagram-in-four-dimension/</loc>
     <lastmod>2015-06-19T01:57:18.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.staydan.com/2014/04/26/2014-04-26-team-building-at-xi-lai-chun-from-hewlett-packard/</loc>
+    <loc>http://blog.staydan.com/2014/04/30/sorting-visualization-using-javascript/</loc>
     <lastmod>2015-06-19T01:57:18.000Z</lastmod>
   </url>
   
