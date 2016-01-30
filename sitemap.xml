@@ -2,17 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://blog.staydan.com/2016/01/30/jQuery-Events-Stop-Mis-Using-Return-False/</loc>
-    <lastmod>2016-01-30T05:34:10.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://blog.staydan.com/about/index.html</loc>
-    <lastmod>2015-07-12T11:28:26.000Z</lastmod>
+    <loc>http://blog.staydan.com/2014/07/29/using-iscroll-in-angularjs/</loc>
+    <lastmod>2016-01-30T06:24:26.000Z</lastmod>
   </url>
   
   <url>
     <loc>http://blog.staydan.com/logs/index.html</loc>
+    <lastmod>2016-01-30T05:35:39.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.staydan.com/2016/01/30/jQuery-Events-Stop-Mis-Using-Return-False/</loc>
+    <lastmod>2016-01-30T05:34:07.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.staydan.com/about/index.html</loc>
     <lastmod>2015-07-12T11:28:26.000Z</lastmod>
   </url>
   
@@ -23,11 +28,6 @@
   
   <url>
     <loc>http://blog.staydan.com/2014/07/31/customized-pull-to-refresh-list-using-iscroll/</loc>
-    <lastmod>2015-06-19T01:57:18.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://blog.staydan.com/2014/07/19/docing-a-new-document-generator-for-all-programming-languages/</loc>
     <lastmod>2015-06-19T01:57:18.000Z</lastmod>
   </url>
   
@@ -62,7 +62,7 @@
   </url>
   
   <url>
-    <loc>http://blog.staydan.com/2014/07/29/using-iscroll-in-angularjs/</loc>
+    <loc>http://blog.staydan.com/2014/07/19/docing-a-new-document-generator-for-all-programming-languages/</loc>
     <lastmod>2015-06-19T01:57:18.000Z</lastmod>
   </url>
   

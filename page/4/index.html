@@ -38,6 +38,7 @@
   </div>
   <nav id="site-navs" class="">
 	  <ul>
+      <li class="header-underline"></li>
       
 	      <li class="ease-animation"><a href="/" title="Home">Home</a></li>
 	    
@@ -51,7 +52,8 @@
 	  <div class="clearfix"></div>
 	</nav>
 </header>
-      <div class="outer">
+
+      <div class="outer clearfix">
         <section id="main"><section class="tags-selection">
   <header class="tags-selection-header">
     <div class="tags-selection-header-label"><i class="fa fa-tag"></i>Tags</div>
@@ -62,160 +64,6 @@
 </section>
 <section class="article-index-section">
   
-  
-    <article id="post-ghost-issue-in-enyo-scroller"  class="article-index ease-animation">
-  <header class="article-header">
-    
-        
-  
-    <div class="article-title" itemprop="name">
-      <a class="article-title" href="/2014/02/23/ghost-issue-in-enyo-scroller/">Ghost issue in Enyo.Scroller</a>
-    </div>
-  
-
-    
-    <div class="article-meta sm-font">
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a><i class="fa fa-circle dot-separator"></i><a class="article-category-link" href="/categories/JavaScript/EnyoJS/">EnyoJS</a>
-  </div>
-
-
-      <a href="/2014/02/23/ghost-issue-in-enyo-scroller/" class="article-updated">
-  <time datetime="2014-02-22T16:00:00.000Z" itemprop="datePublished">14/02/23 00:02</time>
-</a>
-    </div>
-  </header>
-  <div class="article-entry">
-  
-    <p>先描述下问题的背景</p>
-<p>同事有一个用EnyoJS写的手机app，用PhoneGap打包在Android和iOS下，在iOS升级7.0.*新版本后，许多用户都开发反应，在该新版本下的iPhone5中会出现诡异的现象。</p>
-<p>具体表现为：</p>
-<ol>
-<li>登录后进入Level 1画面，点击某一条数据进入Level 2画面，接下来level 3/4/5都是有用Enyo.Scroller构件的画面，当用户使用搭载着iOS 7.0.*版本的iPhone5时，从Lv2到之后的画面时，所有用Scroller包含的内容都显示空白，但用手指随便在空白处一划，内容就显示了。</li>
-<li>显示为白色的部分，其实内容已经加载到页面里，只是未显示出来。
-  
-  </div>
-  <footer class="article-footer">
-    <div class="article-footer-left">
-      <a href="hexo_post.html#disqus" class="article-footer-left"><span class="comments"><i class="fa fa-comments"></i> 0 Comment</span></a>
-      <i class="fa fa-circle dot-separator"></i>
-    </div>
-    
-  <ul class="ease-animation sm-font tag-list"><li class="ease-animation sm-font tag-list-item"><a class="ease-animation sm-font tag-list-link" href="/tags/Render/">Render</a></li></ul>
-
-    <div class="article-footer-right">
-    
-      <a href="/2014/02/23/ghost-issue-in-enyo-scroller/"><span class="read-more button sm-font ease-animation"><i class="fa fa-angle-right pull-right"></i>Read More</span></a>
-    
-      <a href="hexo_post.html"><span class="save-pocket button sm-font ease-animation"><i class="fa fa-share"></i> Share</span></a>
-    </div>
-  </footer>
-</article>
-
-
-  
-    <article id="post-selection-paging-error-caused-by-extjs-id-generation"  class="article-index ease-animation">
-  <header class="article-header">
-    
-        
-  
-    <div class="article-title" itemprop="name">
-      <a class="article-title" href="/2014/02/23/selection-paging-error-caused-by-extjs-id-generation/">Selection &amp; Paging Error caused by ExtJS ID Generation</a>
-    </div>
-  
-
-    
-    <div class="article-meta sm-font">
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a><i class="fa fa-circle dot-separator"></i><a class="article-category-link" href="/categories/JavaScript/ExtJS/">ExtJS</a>
-  </div>
-
-
-      <a href="/2014/02/23/selection-paging-error-caused-by-extjs-id-generation/" class="article-updated">
-  <time datetime="2014-02-22T16:00:00.000Z" itemprop="datePublished">14/02/23 00:02</time>
-</a>
-    </div>
-  </header>
-  <div class="article-entry">
-  
-    <p>ExtJS中，Ext.data.Store是用来进行数据交换和交互的Standard Middleware，无论是Grid还是ComboBox，都是通过它实现数据读取、类型转换、排序分页和搜索等操作的。<br>Ext.data.Store中有一个Ext.data.Record数组，所有数据都存放在这些Ext.data. Record实例中，为后面的读取和修改操作做准备。</p>
-<p>在实际使用过程中，发现了一个问题，由于每个Record都会有一个唯一特定的id，并且如果每个Record的data中有一个属性为id，那这个Record就会取data中的id作为它的id，问题在于，如果data中的id是object类型，所有的这一切在ExtJS默认的逻辑中就会导致问题，无论这个object类型的id属性中有什么值，无论多么复杂，对应的Record都会生成一个包含[object Object]的id，而默认的前缀都是相同的，所以最后整个Store的record都是相同的id。<br>
-  
-  </div>
-  <footer class="article-footer">
-    <div class="article-footer-left">
-      <a href="hexo_post.html#disqus" class="article-footer-left"><span class="comments"><i class="fa fa-comments"></i> 0 Comment</span></a>
-      <i class="fa fa-circle dot-separator"></i>
-    </div>
-    
-  <ul class="ease-animation sm-font tag-list"><li class="ease-animation sm-font tag-list-item"><a class="ease-animation sm-font tag-list-link" href="/tags/Paging/">Paging</a></li><li class="ease-animation sm-font tag-list-item"><a class="ease-animation sm-font tag-list-link" href="/tags/Selection/">Selection</a></li></ul>
-
-    <div class="article-footer-right">
-    
-      <a href="/2014/02/23/selection-paging-error-caused-by-extjs-id-generation/"><span class="read-more button sm-font ease-animation"><i class="fa fa-angle-right pull-right"></i>Read More</span></a>
-    
-      <a href="hexo_post.html"><span class="save-pocket button sm-font ease-animation"><i class="fa fa-share"></i> Share</span></a>
-    </div>
-  </footer>
-</article>
-
-
-  
-    <article id="post-date-format-in-extjs"  class="article-index ease-animation">
-  <header class="article-header">
-    
-        
-  
-    <div class="article-title" itemprop="name">
-      <a class="article-title" href="/2014/02/17/date-format-in-extjs/">Date format in ExtJS</a>
-    </div>
-  
-
-    
-    <div class="article-meta sm-font">
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/JavaScript/">JavaScript</a><i class="fa fa-circle dot-separator"></i><a class="article-category-link" href="/categories/JavaScript/ExtJS/">ExtJS</a>
-  </div>
-
-
-      <a href="/2014/02/17/date-format-in-extjs/" class="article-updated">
-  <time datetime="2014-02-16T16:00:00.000Z" itemprop="datePublished">14/02/17 00:02</time>
-</a>
-    </div>
-  </header>
-  <div class="article-entry">
-  
-    <p>如今写代码基本都要靠Google一下，记不住咯，这脑袋瓜装的东西太少了。。。</p>
-<p>这大半年多一直在用ExtJS</p>
-<p>前不久遇到一个简单的时间转换，看了之前同事写的</p>
-<p>觉得不大合理，就想全部换掉</p>
-<p>原本打算是把以前项目中的一个时间的库拿过来直接用，简单省事</p>
-<p>可套进当前Project的format始终会碰到点问题（因为写法不大一样）</p>
-<p>刚巧在看ExtJS一个源码时，发现ExtJS它自带一个Date的库，好啦。。。更简单省事</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line"><span class="built_in">document</span>.write(Ext.Date.format(date, <span class="string">'Y-m-d'</span>))  </span><br><span class="line">Output:  <span class="number">2014</span>-<span class="number">02</span>-<span class="number">17</span></span><br></pre></td></tr></table></figure>
-  
-  </div>
-  <footer class="article-footer">
-    <div class="article-footer-left">
-      <a href="hexo_post.html#disqus" class="article-footer-left"><span class="comments"><i class="fa fa-comments"></i> 0 Comment</span></a>
-      <i class="fa fa-circle dot-separator"></i>
-    </div>
-    
-  <ul class="ease-animation sm-font tag-list"><li class="ease-animation sm-font tag-list-item"><a class="ease-animation sm-font tag-list-link" href="/tags/DateFormat/">DateFormat</a></li></ul>
-
-    <div class="article-footer-right">
-    
-      <a href="/2014/02/17/date-format-in-extjs/"><span class="read-more button sm-font ease-animation"><i class="fa fa-angle-right pull-right"></i>Read More</span></a>
-    
-      <a href="hexo_post.html"><span class="save-pocket button sm-font ease-animation"><i class="fa fa-share"></i> Share</span></a>
-    </div>
-  </footer>
-</article>
-
-
   
     <article id="post-radio-grouped-buttons-control-with-knockout-bootstrap"  class="article-index ease-animation">
   <header class="article-header">
@@ -271,6 +119,7 @@
       <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
     </nav>
   
+
 
 </section></section>
       </div>
