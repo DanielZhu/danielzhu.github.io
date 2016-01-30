@@ -118,7 +118,7 @@
   position: absolute;
   bottom: 0;
   width: 100%;
-  background-color: #3c9233;
+  background-color: #c5d4c4;
   right: 0;
   height: 2px;
   margin: 0;
@@ -130,7 +130,19 @@
   float: right;
   padding: 8px;
   margin: 0px 5px;
-  border-bottom: 1px solid #3c9233;
+  border-bottom: 2px solid #3c9233;
+}
+#site-navs ul li:not(.header-underline).header-item-Home {
+  border-color: #d08321;
+}
+#site-navs ul li:not(.header-underline).header-item-Archive {
+  border-color: #00f;
+}
+#site-navs ul li:not(.header-underline).header-item-About {
+  border-color: #ceb32f;
+}
+#site-navs ul li:not(.header-underline).header-item-Logs {
+  border-color: #dfafda;
 }
 #site-navs ul li:not(.header-underline):hover {
   background-color: #3c9233;
