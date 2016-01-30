@@ -5,7 +5,7 @@
   <subtitle><![CDATA[A foolish Programmer from Shanghai China]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.staydan.com//"/>
-  <updated>2016-01-30T05:29:31.000Z</updated>
+  <updated>2016-01-30T05:34:10.000Z</updated>
   <id>http://blog.staydan.com//</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[jQuery Events: Stop (Mis)Using Return False]]></title>
+    <title><![CDATA[jQuery事件: 停止错误地使用Return False]]></title>
     <link href="http://blog.staydan.com/2016/01/30/jQuery-Events-Stop-Mis-Using-Return-False/"/>
     <id>http://blog.staydan.com/2016/01/30/jQuery-Events-Stop-Mis-Using-Return-False/</id>
     <published>2016-01-30T02:30:35.000Z</published>
-    <updated>2016-01-30T05:29:31.000Z</updated>
+    <updated>2016-01-30T05:34:10.000Z</updated>
     <content type="html"><![CDATA[<p>也许当你刚开始学习关于 jQuery Events 的时候，第一点被提及到的核心内容就是关于如何阻止浏览器的默认行为。比如，一个初学者的click教程会包含下面的内容：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"a.toggle"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    $(<span class="string">"#mydiv"</span>).toggle();</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">// Prevent browser from visiting `#`</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p>上面的函数就是隐藏和显示 <code>#mydiv</code>的元素，接着取消浏览器访问a标签超链的默认行为。</p>
