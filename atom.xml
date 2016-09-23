@@ -5,7 +5,7 @@
   <subtitle><![CDATA[A foolish Programmer from Shanghai China]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.staydan.com//"/>
-  <updated>2016-01-30T05:34:07.000Z</updated>
+  <updated>2016-07-09T09:52:24.000Z</updated>
   <id>http://blog.staydan.com//</id>
   
   <author>
@@ -16,11 +16,151 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[v1.1.3 Released for liqi.io.chrome-newtab]]></title>
+    <link href="http://blog.staydan.com/2016/07/09/v1-1-3-Released-for-liqi-io-chrome-newtab/"/>
+    <id>http://blog.staydan.com/2016/07/09/v1-1-3-Released-for-liqi-io-chrome-newtab/</id>
+    <published>2016-07-09T09:50:18.000Z</published>
+    <updated>2016-07-09T09:52:24.000Z</updated>
+    <content type="html"><![CDATA[<p>07.09，这个在等待台风尼伯特的双休日里，花了1个多小时，把利器灵感生成器的Chrome Extension小小的更新了下，版本号变化： <strong>v1.1.2</strong> -&gt; <strong>v1.1.3</strong></p>
+<p><a href="http://staydan.com/#!/product/liqi.newtab" target="_blank" rel="external">Official Site | 插件官网</a></p>
+<h5 id="更新记录：">更新记录：</h5><ul>
+<li>右侧增加前往Chrome商店评论点赞入口</li>
+<li>离线数据更新至2016.06底</li>
+<li>提高引言内容格式处理的兼容性</li>
+</ul>
+<p><img width="680px" src="https://lh3.googleusercontent.com/NZHL-HRJLK5Ldl97b2o2TDojOMxEaXNlafoQPdJvzDk7XXRO4Z4NH6LUnFu2lTgShC-SyKczQA=s1280-h800-e365-rw"></p>
+<a id="more"></a>
+<h5 id="更新详细">更新详细</h5><p>因为利器当下的数据缓存机制是将一部分数据离线在本地，目的是为了当用户安装插件后，可以立即使用利器专属的新标签页，而不是每次打开都需要等待请求数据返回，这样的体验是糟糕的。</p>
+<p>基于上述原因，本次更新包含了5、6月的新数据，为了避免那些安装插件比较晚的用户更新不到完整的数据，就比如：如果用户昨天安装了老版本v1.1.2，然后内部的增量更新策略是仅仅会拿最新的30条，于是这些用户会错过5月份的大部分数据，此次更新避免了这种情况的发生。</p>
+<p>在v1.1.2中，有极少数的个例引言会显示格式错误，比如图拉鼎的某条，显示作者时会丢失样式等等的问题。此次更新已修正该问题，并且处理了多种不同格式导致的样式错乱。另外，如果用户还有发现，可以及时联系我，在此表示感谢</p>
+<p>为了在Chrome商店中收集到更多的用户评论，此次更新特意在右侧工具栏添加了点赞按钮入口，点击后将打开Chrome商店评论标签，谢谢每一位使用该插件的用户，也谢谢你们用心的反馈。</p>
+<h5 id="新版预览图">新版预览图</h5><p><img width="680px" src="https://lh3.googleusercontent.com/HDqeCiD1NMlInJvxZERGonDk9Sts9wZLuGInTDcbBk0_ZmQLGT7-IkTe1wqHefrqMfPQ3DkuuA=s1280-h800-e365-rw"></p>
+<p><img width="680px" src="https://lh3.googleusercontent.com/vvU8AjK8Z0xPDcNTYs357JeDoqSUWisJg-eSCV1cfbtW4WG8kPGbcMjDjvQWP8ZK9gL0FlPZ=s1280-h800-e365-rw"></p>
+<p><img width="680px" src="https://lh3.googleusercontent.com/MO22uvG6nYJjB3XzVIyVGOtydgPR9RGx6hJyBGBLl6ybNypynmWcy4RmBA2Uq4pXQEfFPuD4A9A=s1280-h800-e365-rw"></p>
+<p><img width="680px" src="https://lh3.googleusercontent.com/64cUbinqPNZ2AXiiRlpB6xS5RfteiHx6p3ZA9mAGknxoFiYPhPuC89SoeXXUVI_3ZAimXTaH=s1280-h800-e365-rw"></p>
+<p>:)</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>07.09，这个在等待台风尼伯特的双休日里，花了1个多小时，把利器灵感生成器的Chrome Extension小小的更新了下，版本号变化： <strong>v1.1.2</strong> -&gt; <strong>v1.1.3</strong></p>
+<p><a href="http://staydan.com/#!/product/liqi.newtab">Official Site | 插件官网</a></p>
+<h5 id="更新记录：">更新记录：</h5><ul>
+<li>右侧增加前往Chrome商店评论点赞入口</li>
+<li>离线数据更新至2016.06底</li>
+<li>提高引言内容格式处理的兼容性</li>
+</ul>
+<p><img width="680px" src="https://lh3.googleusercontent.com/NZHL-HRJLK5Ldl97b2o2TDojOMxEaXNlafoQPdJvzDk7XXRO4Z4NH6LUnFu2lTgShC-SyKczQA=s1280-h800-e365-rw"></p>]]>
+    
+    </summary>
+    
+      <category term="ChromeExtension" scheme="http://blog.staydan.com/tags/ChromeExtension/"/>
+    
+      <category term="JavaScript" scheme="http://blog.staydan.com/categories/JavaScript/"/>
+    
+      <category term="Tools" scheme="http://blog.staydan.com/categories/JavaScript/Tools/"/>
+    
+      <category term="ChromeExtension" scheme="http://blog.staydan.com/categories/JavaScript/Tools/ChromeExtension/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[利器 · 灵感生成器 New Tab - Chrome Extension]]></title>
+    <link href="http://blog.staydan.com/2016/05/26/Publishing-A-New-Tab-Chrome-Extension-liqi-io-idea-generator/"/>
+    <id>http://blog.staydan.com/2016/05/26/Publishing-A-New-Tab-Chrome-Extension-liqi-io-idea-generator/</id>
+    <published>2016-05-26T09:44:31.000Z</published>
+    <updated>2016-07-01T15:28:09.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="她美么？">她美么？</h3><p><a href="https://chrome.google.com/webstore/detail/lidppokaooioojchghdjekhcgdjkkohe" target="_blank" rel="external"><img src="http://staydan.com/sweet/homePage/preImgs/liqi.newtab/wangtao@Worktile.png" alt="扩展预览图"></a></p>
+<h3 id="她是什么">她是什么</h3><p>是一个 Google Chrome 的新标签页扩展，她是<a href="http://liqi.io/idea-pump/" target="_blank" rel="external">利器 · 灵感生成器</a>的延伸</p>
+<a id="more"></a>
+<h3 id="她有什么">她有什么</h3><p>她来自于利器的采访，利器邀请这些优秀的创造者来分享工作时所使用的工具，以及使用工具的方式和原则，进而探索人与工具，人与科技之间的关系。</p>
+<p>她又胜于利器自身，在于她汲取了所有优秀创造者在利器采访时留下的经典语录，让你在浏览其它网页时总能先驻足停留在新建标签页中，阅读与体会，从这些语录中找寻属于你的利器。</p>
+<h3 id="什么是利器">什么是利器</h3><p>工具可以是一个高效的软件或硬件，也可以是一本书或网站…但凡能辅助创造者完成创造的物件，都是「利器」。这样的工具将赋予更多个体力量，让个体创造出更多可能性。</p>
+<h3 id="小丹有话说">小丹有话说</h3><p>Chrome 扩展做了也有3个了，虽然前两个的用户数并不尽如人意，但这回有利器这个大靠山，在经历了前期微信群中推广试验，后期微信公众号、官网周六破例更新了一篇介绍软文、微博宣传之后，用户数始终保持着稳定增长的趋势，发布差不多3周左右，现在UV约250，PV约2.5k-3k，每天都有一些安装量，小丹就非常放心了。</p>
+<p>希望各位体验过而且觉得棒的话，可以去<a href="https://chrome.google.com/webstore/detail/lidppokaooioojchghdjekhcgdjkkohe" target="_blank" rel="external">商店</a>点评个顺便点个5星哦~</p>
+<h3 id="如果你也有做浏览器插件的需求">如果你也有做浏览器插件的需求</h3><p>如上标题，若你也有做插件的需求，那就联系我吧，联系方式有很多种，自己找找咯 :)</p>
+<blockquote>
+<p>下面是来自于 利器的一篇对于我的简短问答，<a href="http://liqi.io/new-tab-for-idea-pump/" target="_blank" rel="external">原文在此</a></p>
+</blockquote>
+<h3 id="介绍下你自己吧！">介绍下你自己吧！</h3><p>我叫诸梦丹，习惯被朋友们称呼为 Dan 或小丹，前端开发。热爱阅读、烘焙和吃甜点、喜欢游泳，乒乓和羽毛球等运动。之前在 HP 用前端技术开发手机 app，现在在百度专注于电商业务的前端，主要项目为百度惠。业余时间做过 <a href="https://chrome.google.com/webstore/detail/moemebbgcnbmdpnjiaijefhoahhikmec" target="_blank" rel="external">Tinning the Tabs</a> 和 <a href="https://chrome.google.com/webstore/detail/blcmlhpbpimcnifnkgkfjhhmoolbidik" target="_blank" rel="external">百度惠：专业推荐优惠</a> 这两款 Chrome 插件，前者是在 HP 时本本内存总是吃紧故应运而生的标签暂存插件，后者是我想要能实时掌握百度惠的最新优惠信息而做的，还有些小东西就不值得一提了。最新的作品就是在这个劳动节抽空完成了<a href="https://chrome.google.com/webstore/detail/lidppokaooioojchghdjekhcgdjkkohe" target="_blank" rel="external">「利器 · 灵感生成器 New Tab」</a>的初版。对了，正在学习 Swift。</p>
+<h3 id="为什么想做这么一个扩展？">为什么想做这么一个扩展？</h3><p>我在 15 年 10 月因为<a href="http://liqi.io/matrix67/" target="_blank" rel="external">《Matrix67｜自由职业者，数学爱好者》</a>这篇文章而知道了利器，当即订阅了后又翻看了以前的访谈。在加入利器微信群后潜水了相当长的时间，这回五一放假前跟利器负责人聊了下最初在群里提过的插件想法，了解到还未实施后，就决定：我要来搞定它，就在这个劳动节！因为我也是个工具尝鲜的爱好者，而灵感生成器也可以看作是访谈中的精华，正中我心。</p>
+<h3 id="制作扩展过程中，你都用到哪些工具？">制作扩展过程中，你都用到哪些工具？</h3><p>硬件是一台 13 寸 MacBook Pro。 刚开始的首要任务是解决数据接口问题，感谢利器的超级配合，在插件开发过程中，主要使用 Vue.js 负责页面元素，webpack 和 gulp 负责工作流程，包括开发环境构建、编译和发布等，Dropbox 负责同步双方的设计稿等资源，Sketch 负责图片处理，参考最多的资源就是 Google 官方开发者文档，Chrome 是其中不可或缺的重要平台，最后要感谢全球码农交友社区 GitHub。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="她美么？">她美么？</h3><p><a href="https://chrome.google.com/webstore/detail/lidppokaooioojchghdjekhcgdjkkohe"><img src="http://staydan.com/sweet/homePage/preImgs/liqi.newtab/wangtao@Worktile.png" alt="扩展预览图"></a></p>
+<h3 id="她是什么">她是什么</h3><p>是一个 Google Chrome 的新标签页扩展，她是<a href="http://liqi.io/idea-pump/">利器 · 灵感生成器</a>的延伸</p>]]>
+    
+    </summary>
+    
+      <category term="Chrome Extension" scheme="http://blog.staydan.com/tags/Chrome-Extension/"/>
+    
+      <category term="Vue.js" scheme="http://blog.staydan.com/tags/Vue-js/"/>
+    
+      <category term="liqi.io" scheme="http://blog.staydan.com/tags/liqi-io/"/>
+    
+      <category term="Chrome Extension" scheme="http://blog.staydan.com/categories/Chrome-Extension/"/>
+    
+      <category term="Tools" scheme="http://blog.staydan.com/categories/Chrome-Extension/Tools/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Error: [env: node: No such file or directory]]]></title>
+    <link href="http://blog.staydan.com/2016/05/16/Error-Happened-When-Installing-My-Own-npm-module-With-Bin/"/>
+    <id>http://blog.staydan.com/2016/05/16/Error-Happened-When-Installing-My-Own-npm-module-With-Bin/</id>
+    <published>2016-05-16T13:26:20.000Z</published>
+    <updated>2016-07-01T15:28:44.000Z</updated>
+    <content type="html"><![CDATA[<p>当我们从其它平台迁移过来继续开发项目时，有时候经常会遇到一些因为编码不同而导致的问题</p>
+<p>在开发npm模块时，遇到了个</p>
+<p>在本地新建的项目，文件夹结构是从之前windows的PC上直接copy过来，在执行<a href="https://docs.npmjs.com/getting-started/installing-npm-packages-locally" target="_blank" rel="external">npm install <em>*</em></a> 时，就总是会提示</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">192</span>:xxx xiaodan$ npm install /Users/xiaodan/projectAbc/xxx -g</span><br><span class="line">npm ERR! Darwin <span class="number">15.3</span>.<span class="number">0</span></span><br><span class="line">npm ERR! argv <span class="string">"/usr/local/Cellar/node4-lts/4.2.6/bin/node"</span> <span class="string">"/usr/local/bin/npm"</span> <span class="string">"install"</span> <span class="string">"/Users/xiaodan/projectAbc/xxx"</span> <span class="string">"-g"</span></span><br><span class="line">npm ERR! node v4.<span class="number">2.6</span></span><br><span class="line">npm ERR! npm  v2.<span class="number">14.12</span></span><br><span class="line">npm ERR! path /usr/<span class="built_in">local</span>/lib/node_modules/xxx/bin/abc</span><br><span class="line">npm ERR! code ENOENT</span><br><span class="line">npm ERR! errno -<span class="number">2</span></span><br><span class="line">npm ERR! syscall chmod</span><br><span class="line"></span><br><span class="line">npm ERR! enoent ENOENT: no such file or directory, chmod <span class="string">'/usr/local/lib/node_modules/xxx/bin/xxx'</span></span><br><span class="line">npm ERR! enoent This is most likely not a problem with npm itself</span><br><span class="line">npm ERR! enoent and is related to npm not being able to find a file.</span><br><span class="line">npm ERR! enoent </span><br><span class="line"></span><br><span class="line">npm ERR! Please include the following file with any support request:</span><br><span class="line">npm ERR!     /Enjoys/xiaodan/npm-debug.log</span><br></pre></td></tr></table></figure>
+<p>也真的是醉了呀，试了那个旧的pc的module，还是可以通过npm install来安装的，只是在执行cli时，会报错。。。 <code>env: node\r: No such file or directory</code> 一查是因为编码的不同而导致的问题，</p>
+<a id="more"></a>
+<p>参考以下帖子：</p>
+<ul>
+<li><a href="http://stackoverflow.com/questions/30344858/node-script-executable-not-working-on-mac-env-node-r-no-such-file-or-directo" target="_blank" rel="external">StackOverflow | Node script executable not working on Mac : env: node\r: No such file or directory</a></li>
+<li><a href="https://github.com/nwjs/nw-builder/issues/75" target="_blank" rel="external">Github | env: node\r: No such file or directory #75</a></li>
+</ul>
+<p>于是考虑重新更换成unix编码格式保存旧的项目文件 <code>./bin/***</code>，卸载后重新安装，搞定，能够执行 <code>*** --version</code> 拿到版本号。</p>
+<p>思路迁移回来，考虑到新的npm模块的规模很小，所以手动删掉了总是报错找不到文件的那个 /bin/A 的文件A，retry install，继续失败</p>
+<h2 id="最终解决方案：">最终解决方案：</h2><p>重新利用 <code>npm init</code> 来新建新项目，当然代码还是从有问题的module里 copy &amp; paste， <a href="https://www.sublimetext.com/" target="_blank" rel="external">sublime text</a>操作一切，最后再retry install，终于不再报错了！！！浪费了昨天凌晨2个小时在那研究到底哪儿出问题了。。。不就是个简单的在原本npm module里支持command么。。。醉了。。。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>当我们从其它平台迁移过来继续开发项目时，有时候经常会遇到一些因为编码不同而导致的问题</p>
+<p>在开发npm模块时，遇到了个</p>
+<p>在本地新建的项目，文件夹结构是从之前windows的PC上直接copy过来，在执行<a href="https://docs.npmjs.com/getting-started/installing-npm-packages-locally">npm install <em>*</em></a> 时，就总是会提示</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">192</span>:xxx xiaodan$ npm install /Users/xiaodan/projectAbc/xxx -g</span><br><span class="line">npm ERR! Darwin <span class="number">15.3</span>.<span class="number">0</span></span><br><span class="line">npm ERR! argv <span class="string">"/usr/local/Cellar/node4-lts/4.2.6/bin/node"</span> <span class="string">"/usr/local/bin/npm"</span> <span class="string">"install"</span> <span class="string">"/Users/xiaodan/projectAbc/xxx"</span> <span class="string">"-g"</span></span><br><span class="line">npm ERR! node v4.<span class="number">2.6</span></span><br><span class="line">npm ERR! npm  v2.<span class="number">14.12</span></span><br><span class="line">npm ERR! path /usr/<span class="built_in">local</span>/lib/node_modules/xxx/bin/abc</span><br><span class="line">npm ERR! code ENOENT</span><br><span class="line">npm ERR! errno -<span class="number">2</span></span><br><span class="line">npm ERR! syscall chmod</span><br><span class="line"></span><br><span class="line">npm ERR! enoent ENOENT: no such file or directory, chmod <span class="string">'/usr/local/lib/node_modules/xxx/bin/xxx'</span></span><br><span class="line">npm ERR! enoent This is most likely not a problem with npm itself</span><br><span class="line">npm ERR! enoent and is related to npm not being able to find a file.</span><br><span class="line">npm ERR! enoent </span><br><span class="line"></span><br><span class="line">npm ERR! Please include the following file with any support request:</span><br><span class="line">npm ERR!     /Enjoys/xiaodan/npm-debug.log</span><br></pre></td></tr></table></figure>
+<p>也真的是醉了呀，试了那个旧的pc的module，还是可以通过npm install来安装的，只是在执行cli时，会报错。。。 <code>env: node\r: No such file or directory</code> 一查是因为编码的不同而导致的问题，</p>]]>
+    
+    </summary>
+    
+      <category term="Encoding" scheme="http://blog.staydan.com/tags/Encoding/"/>
+    
+      <category term="npmjs" scheme="http://blog.staydan.com/tags/npmjs/"/>
+    
+      <category term="npmjs" scheme="http://blog.staydan.com/categories/npmjs/"/>
+    
+      <category term="nodejs" scheme="http://blog.staydan.com/categories/npmjs/nodejs/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[这个主题码字很舒服]]></title>
+    <link href="http://blog.staydan.com/2016/04/15/%E8%BF%99%E4%B8%AA%E4%B8%BB%E9%A2%98%E7%A0%81%E5%AD%97%E5%BE%88%E8%88%92%E6%9C%8D/"/>
+    <id>http://blog.staydan.com/2016/04/15/这个主题码字很舒服/</id>
+    <published>2016-04-15T00:36:19.000Z</published>
+    <updated>2016-04-15T00:36:19.000Z</updated>
+    <content type="html"></content>
+    <summary type="html">
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[jQuery事件: 停止错误地使用Return False]]></title>
     <link href="http://blog.staydan.com/2016/01/30/jQuery-Events-Stop-Mis-Using-Return-False/"/>
     <id>http://blog.staydan.com/2016/01/30/jQuery-Events-Stop-Mis-Using-Return-False/</id>
     <published>2016-01-30T02:30:35.000Z</published>
-    <updated>2016-01-30T05:34:07.000Z</updated>
+    <updated>2016-01-30T05:34:10.000Z</updated>
     <content type="html"><![CDATA[<p>也许当你刚开始学习关于 jQuery Events 的时候，第一点被提及到的核心内容就是关于如何阻止浏览器的默认行为。比如，一个初学者的click教程会包含下面的内容：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"a.toggle"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    $(<span class="string">"#mydiv"</span>).toggle();</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">// Prevent browser from visiting `#`</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p>上面的函数就是隐藏和显示 <code>#mydiv</code>的元素，接着取消浏览器访问a标签超链的默认行为。</p>
@@ -941,294 +1081,6 @@
       <category term="JavaScript" scheme="http://blog.staydan.com/categories/JavaScript/"/>
     
       <category term="EnyoJS" scheme="http://blog.staydan.com/categories/JavaScript/EnyoJS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Selection & Paging Error caused by ExtJS ID Generation]]></title>
-    <link href="http://blog.staydan.com/2014/02/23/selection-paging-error-caused-by-extjs-id-generation/"/>
-    <id>http://blog.staydan.com/2014/02/23/selection-paging-error-caused-by-extjs-id-generation/</id>
-    <published>2014-02-22T16:00:00.000Z</published>
-    <updated>2015-06-19T01:57:18.000Z</updated>
-    <content type="html"><![CDATA[<p>ExtJS中，Ext.data.Store是用来进行数据交换和交互的Standard Middleware，无论是Grid还是ComboBox，都是通过它实现数据读取、类型转换、排序分页和搜索等操作的。<br>Ext.data.Store中有一个Ext.data.Record数组，所有数据都存放在这些Ext.data. Record实例中，为后面的读取和修改操作做准备。</p>
-<p>在实际使用过程中，发现了一个问题，由于每个Record都会有一个唯一特定的id，并且如果每个Record的data中有一个属性为id，那这个Record就会取data中的id作为它的id，问题在于，如果data中的id是object类型，所有的这一切在ExtJS默认的逻辑中就会导致问题，无论这个object类型的id属性中有什么值，无论多么复杂，对应的Record都会生成一个包含[object Object]的id，而默认的前缀都是相同的，所以最后整个Store的record都是相同的id。<br><a id="more"></a><br>后果是什么。。。后果是如果你将这个Store绑定到某个Grid，你将永远无法选中你点的那一行，焦点永远会移动到第一行，原因就是出在那一模一样的id上。。。<br>具体的错误store请看下图：</p>
-<p><a href="https://www.flickr.com/photos/123460474@N06/13943147482" title="grid-item-id-error-blur by Mengdan zhu, on Flickr" target="_blank" rel="external"><img src="https://farm3.staticflickr.com/2925/13943147482_b5017a659a_o.png" alt="grid-item-id-error-blur" title="grid-item-id-error-blur"></a></p>
-<p>那解决这个问题的办法就显而易见，只要找到能给Store中的每个Record生成唯一id的方法就搞定了。</p>
-<ol>
-<li>在Model中定义 YourId</li>
-<li>在第一步的Model中定义一个idgen来生成id</li>
-</ol>
-<p>如果正确使用idgen请参考官方的docs：</p>
-<p><a href="http://docs-origin.sencha.com/extjs/4.2.2/#!/api/Ext.data.Model-cfg-idgen" target="_blank" rel="external">http://docs-origin.sencha.com/extjs/4.2.2/#!/api/Ext.data.Model-cfg-idgen</a></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>ExtJS中，Ext.data.Store是用来进行数据交换和交互的Standard Middleware，无论是Grid还是ComboBox，都是通过它实现数据读取、类型转换、排序分页和搜索等操作的。<br>Ext.data.Store中有一个Ext.data.Record数组，所有数据都存放在这些Ext.data. Record实例中，为后面的读取和修改操作做准备。</p>
-<p>在实际使用过程中，发现了一个问题，由于每个Record都会有一个唯一特定的id，并且如果每个Record的data中有一个属性为id，那这个Record就会取data中的id作为它的id，问题在于，如果data中的id是object类型，所有的这一切在ExtJS默认的逻辑中就会导致问题，无论这个object类型的id属性中有什么值，无论多么复杂，对应的Record都会生成一个包含[object Object]的id，而默认的前缀都是相同的，所以最后整个Store的record都是相同的id。<br>]]>
-    
-    </summary>
-    
-      <category term="Paging" scheme="http://blog.staydan.com/tags/Paging/"/>
-    
-      <category term="Selection" scheme="http://blog.staydan.com/tags/Selection/"/>
-    
-      <category term="JavaScript" scheme="http://blog.staydan.com/categories/JavaScript/"/>
-    
-      <category term="ExtJS" scheme="http://blog.staydan.com/categories/JavaScript/ExtJS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Date format in ExtJS]]></title>
-    <link href="http://blog.staydan.com/2014/02/17/date-format-in-extjs/"/>
-    <id>http://blog.staydan.com/2014/02/17/date-format-in-extjs/</id>
-    <published>2014-02-16T16:00:00.000Z</published>
-    <updated>2015-06-19T01:57:18.000Z</updated>
-    <content type="html"><![CDATA[<p>如今写代码基本都要靠Google一下，记不住咯，这脑袋瓜装的东西太少了。。。</p>
-<p>这大半年多一直在用ExtJS</p>
-<p>前不久遇到一个简单的时间转换，看了之前同事写的</p>
-<p>觉得不大合理，就想全部换掉</p>
-<p>原本打算是把以前项目中的一个时间的库拿过来直接用，简单省事</p>
-<p>可套进当前Project的format始终会碰到点问题（因为写法不大一样）</p>
-<p>刚巧在看ExtJS一个源码时，发现ExtJS它自带一个Date的库，好啦。。。更简单省事</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line"><span class="built_in">document</span>.write(Ext.Date.format(date, <span class="string">'Y-m-d'</span>))  </span><br><span class="line">Output:  <span class="number">2014</span>-<span class="number">02</span>-<span class="number">17</span></span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<p><table width="618" border="1" cellspacing="0" cellpadding="0"></table></p>
-<p><tbody></tbody></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">format</td></p>
-<p><td valign="top" width="329">Description</td></p>
-<p><td valign="top" width="210">Example returned values</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">d</td></p>
-<p><td valign="top" width="329">Day of the month, 2 digits with leading zeros</td></p>
-<p><td valign="top" width="210">01 to 31</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">D</td></p>
-<p><td valign="top" width="329">A short textual representation of the day of the week</td></p>
-<p><td valign="top" width="210">Mon to Sun</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">j</td></p>
-<p><td valign="top" width="329">Day of the month without leading zeros</td></p>
-<p><td valign="top" width="210">1 to 31</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">l</td></p>
-<p><td valign="top" width="329">A full textual representation of the day of the week</td></p>
-<p><td valign="top" width="210">Sunday to Saturday</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">N</td></p>
-<p><td valign="top" width="329">ISO-8601 numeric representation of the day of the week</td></p>
-<p><td valign="top" width="210">1 (for Monday) through 7 (for Sunday)</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">S</td></p>
-<p><td valign="top" width="329">English ordinal suffix for the day of the month, 2 characters</td></p>
-<p><td valign="top" width="210">st, nd, rd or th. Works well with j</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">w</td></p>
-<p><td valign="top" width="329">Numeric representation of the day of the week</td></p>
-<p><td valign="top" width="210">0 (for Sunday) to 6 (for Saturday)</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">z</td></p>
-<p><td valign="top" width="329">The day of the year (starting from 0)</td></p>
-<p><td valign="top" width="210">0 to 364 (365 in leap years)</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">W</td></p>
-<p><td valign="top" width="329">ISO-8601 week number of year, weeks starting on Monday</td></p>
-<p><td valign="top" width="210">01 to 53</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">F</td></p>
-<p><td valign="top" width="329">A full textual representation of a month, such as January or March</td></p>
-<p><td valign="top" width="210">January to December</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">m</td></p>
-<p><td valign="top" width="329">Numeric representation of a month, with leading zeros</td></p>
-<p><td valign="top" width="210">01 to 12</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">M</td></p>
-<p><td valign="top" width="329">A short textual representation of a month</td></p>
-<p><td valign="top" width="210">Jan to Dec</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">n</td></p>
-<p><td valign="top" width="329">Numeric representation of a month, without leading zeros</td></p>
-<p><td valign="top" width="210">1 to 12</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">t</td></p>
-<p><td valign="top" width="329">Number of days in the given month</td></p>
-<p><td valign="top" width="210">28 to 31</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">L</td></p>
-<p><td valign="top" width="329">Whether it&amp;#39;s a leap year</td></p>
-<p><td valign="top" width="210">1 if it is a leap year, 0 otherwise.</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">O</td></p>
-<p><td valign="top" width="329">ISO-8601 year number (identical to (Y), but if the ISO week number (W) belongs to the previous or next year, that year is used instead)</td></p>
-<p><td valign="top" width="210">1998 or 2004</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">Y</td></p>
-<p><td valign="top" width="329">A full numeric representation of a year, 4 digits</td></p>
-<p><td valign="top" width="210">1999 or 2003</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">y</td></p>
-<p><td valign="top" width="329">A two digit representation of a year</td></p>
-<p><td valign="top" width="210">99 or 03</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">a</td></p>
-<p><td valign="top" width="329">Lowercase Ante meridiem and Post meridiem</td></p>
-<p><td valign="top" width="210">am or pm</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">A</td></p>
-<p><td valign="top" width="329">Uppercase Ante meridiem and Post meridiem</td></p>
-<p><td valign="top" width="210">AM or PM</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">g</td></p>
-<p><td valign="top" width="329">12-hour format of an hour without leading zeros</td></p>
-<p><td valign="top" width="210">1 to 12</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">G</td></p>
-<p><td valign="top" width="329">24-hour format of an hour without leading zeros</td></p>
-<p><td valign="top" width="210">0 to 23</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">h</td></p>
-<p><td valign="top" width="329">12-hour format of an hour with leading zeros</td></p>
-<p><td valign="top" width="210">01 to 12</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">H</td></p>
-<p><td valign="top" width="329">24-hour format of an hour with leading zeros</td></p>
-<p><td valign="top" width="210">00 to 23</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">i</td></p>
-<p><td valign="top" width="329">Minutes, with leading zeros</td></p>
-<p><td valign="top" width="210">00 to 59</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">s</td></p>
-<p><td valign="top" width="329">Seconds, with leading zeros</td></p>
-<p><td valign="top" width="210">00 to 59</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">u</td></p>
-<p><td valign="top" width="329">Decimal fraction of a second (minimum 1 digit, arbitrary number of digits allowed)</td></p>
-<p><td valign="top" width="210">001 (i.e. 0.001s) or100 (i.e. 0.100s) or</td></p>
-<p>999 (i.e. 0.999s) or</p>
-<p>999876543210 (i.e. 0.999876543210s)<br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">O</td></p>
-<p><td valign="top" width="329">Difference to Greenwich time (GMT) in hours and minutes</td></p>
-<p><td valign="top" width="210">+1030</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">P</td></p>
-<p><td valign="top" width="329">Difference to Greenwich time (GMT) with colon between hours and minutes</td></p>
-<p><td valign="top" width="210">-08:00</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">T</td></p>
-<p><td valign="top" width="329">Timezone abbreviation of the machine running the code</td></p>
-<p><td valign="top" width="210">EST, MDT, PDT …</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">Z</td></p>
-<p><td valign="top" width="329">Timezone offset in seconds (negative if west of UTC, positive if east)</td></p>
-<p><td valign="top" width="210">-43200 to 50400</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">c</td></p>
-<p><td valign="top" width="329">ISO 8601 dateNotes:</td></p>
-<ol>
-<li><p>If unspecified, the month / day defaults to the current month / day, the time defaults to midnight, while the timezone defaults to the browser’s timezone. If a time is specified, it must include both hours and minutes. The “T” delimiter, seconds, milliseconds and timezone are optional.</p>
-</li>
-<li><p>The decimal fraction of a second, if specified, must contain at least 1 digit (there is no limit to the maximum number of digits allowed), and may be delimited by either a ‘.’ or a ‘,’</p>
-</li>
-</ol>
-<p>Refer to the examples on the right for the various levels of date-time granularity which are supported, or see</p>
-<p><a href="http://www.w3.org/TR/NOTE-datetime" target="_blank" rel="external">http://www.w3.org/TR/NOTE-datetime</a> for more info.</p>
-<p><td valign="top" width="210">1991 or1992-10 or</td></p>
-<p>1993-09-20 or</p>
-<p>1994-08-19T16:20+01:00 or</p>
-<p>1995-07-18T17:21:28-02:00 or</p>
-<p>1996-06-17T18:22:29.98765+03:00 or</p>
-<p>1997-05-16T19:23:30,12345-0400 or</p>
-<p>1998-04-15T20:24:31.2468Z or</p>
-<p>1999-03-14T20:24:32Z or</p>
-<p>2000-02-13T21:25:33</p>
-<p>2001-01-12 22:26:34<br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">U</td></p>
-<p><td valign="top" width="329">Seconds since the Unix Epoch (January 1 1970 00:00:00 GMT)</td></p>
-<p><td valign="top" width="210">1193432466 or -2138434463</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">MS</td></p>
-<p><td valign="top" width="329">Microsoft AJAX serialized dates</td></p>
-<p><td valign="top" width="210">\/Date(1238606590509)\/ (i.e. UTC milliseconds since epoch) or \/Date(1238606590509+0800)\/</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">time</td></p>
-<p><td valign="top" width="329">A javascript millisecond timestamp</td></p>
-<p><td valign="top" width="210">1350024476440</td><br></p>
-<p><tr></tr></p>
-<p><td valign="top" width="79">  timestamp</td></p>
-<p><td valign="top" width="329">A UNIX timestamp (same as U)</td></p>
-<p><td valign="top" width="210">1350024866</td><br><br><br><br>The excellent work of Baron Schwartz, his blog below:</p>
-<p><a href="http://www.xaprb.com/blog/2005/12/12/javascript-closures-for-runtime-efficiency/" target="_blank" rel="external">http://www.xaprb.com/blog/2005/12/12/javascript-closures-for-runtime-efficiency/</a></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>如今写代码基本都要靠Google一下，记不住咯，这脑袋瓜装的东西太少了。。。</p>
-<p>这大半年多一直在用ExtJS</p>
-<p>前不久遇到一个简单的时间转换，看了之前同事写的</p>
-<p>觉得不大合理，就想全部换掉</p>
-<p>原本打算是把以前项目中的一个时间的库拿过来直接用，简单省事</p>
-<p>可套进当前Project的format始终会碰到点问题（因为写法不大一样）</p>
-<p>刚巧在看ExtJS一个源码时，发现ExtJS它自带一个Date的库，好啦。。。更简单省事</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line"><span class="built_in">document</span>.write(Ext.Date.format(date, <span class="string">'Y-m-d'</span>))  </span><br><span class="line">Output:  <span class="number">2014</span>-<span class="number">02</span>-<span class="number">17</span></span><br></pre></td></tr></table></figure>]]>
-    
-    </summary>
-    
-      <category term="DateFormat" scheme="http://blog.staydan.com/tags/DateFormat/"/>
-    
-      <category term="JavaScript" scheme="http://blog.staydan.com/categories/JavaScript/"/>
-    
-      <category term="ExtJS" scheme="http://blog.staydan.com/categories/JavaScript/ExtJS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Radio Grouped Buttons Control with Knockout & Bootstrap]]></title>
-    <link href="http://blog.staydan.com/2013/12/12/radio-grouped-buttons-control-with-knockout-bootstrap/"/>
-    <id>http://blog.staydan.com/2013/12/12/radio-grouped-buttons-control-with-knockout-bootstrap/</id>
-    <published>2013-12-11T16:00:00.000Z</published>
-    <updated>2015-06-19T01:57:18.000Z</updated>
-    <content type="html"><![CDATA[<p>用JavaScript写代码也有一年多了，其实也算积累了蛮多东西了，该写下来存存档~</p>
-<iframe width="100%" height="300" src="http://jsfiddle.net/w6wwq/embedded/js,resources,html,css,result/light" frameborder="0" allowfullscreen></iframe>
-<p>这次是一个结合了knockout和bootstrap的一个小控件，虽然也不是很美观，但也凑合吧<br><a id="more"></a><br>Knockout 负责该控件中的数据耦合，Bootstrap负责用户界面。<br>这边想要实现的功能是，在这种表现良好的单选框控件上通过knockout来同步上下两个控件的值，具体为：</p>
-<ol>
-<li>勾选单选框任意一项，下面文本框随之更新激活的单选框值；</li>
-<li>更改文本框的值，上面单选框也随之更改激活项；</li>
-</ol>
-<p>用Bootstrap把radio Button Group实现后，由于knockout自身提供的radiobox的demo是基于checked这种最原始的方式，而Bootstrap对radiobox进行了一些小装饰，使得在每个input外层都套了一层label，而仅用active的css类附加在对应label上来表示激活项。<br>如此一来，knockout那一套就必须稍作修改，参考该文顶部附上的JSFiddle代码块</p>
-<p>监听radioValue的值，并设默认值为1，即选中第一项</p>
-<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.radioValue = ko.observable(<span class="string">"1"</span>);</span><br></pre></td></tr></table></figure>
-<p>捕捉click事件来更改radioValue的值，更改后文本框也就随之被knockout更改，通过逐一判断radioValue的值是否等于当前单选框的值来修改css中active项</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">label</span> <span class="attribute">style</span>=<span class="value">"background-color: #0e9bd7;"</span><span class="value">data-bind="click:</span> <span class="attribute">function</span>()&#123;<span class="attribute">radioValue</span>(<span class="attribute">1</span>)&#125;, <span class="attribute">css:</span> &#123;<span class="attribute">active:</span> <span class="attribute">radioValue</span>() =<span class="value">=</span> <span class="attribute">1</span>&#125;"&gt;</span><span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"radio"</span> <span class="attribute">value</span>=<span class="value">"1"</span> /&gt;</span>1<span class="tag">&lt;/<span class="title">label</span>&gt;</span>`</span><br></pre></td></tr></table></figure>
-<p>如此一来，就完全不需要写单独的JavaScript来实现逻辑判断了</p>
-<p>关于css的实现大家就直接看代码吧~</p>
-<p>Worked on JavaScript for more than 1 year, so it’s the correct time to write down something.</p>
-<iframe width="100%" height="300" src="http://jsfiddle.net/w6wwq/embedded/js,resources,html,css,result/light" frameborder="0" allowfullscreen></iframe>
-<p>It’s a simple radio grouped button component made by Knockout and Bootstrap, not very beautiful, but I think it’s good.In this case, knockout is in charge of the data layer, bootstrap is in charge of implement the UI.<br>What I want to realize is that the radio grouped button and textbox will sync their data automatically by knockout’s databind.</p>
-<ol>
-<li>Active one of radio buttons, the textbox will show the value.</li>
-<li>Modify the textbox, the radio buttons will active the correct one.</li>
-</ol>
-<p>Monitoring the value of radioValue, and set the default equals to 1</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.radioValue = ko.observable(<span class="string">"1"</span>);</span><br></pre></td></tr></table></figure>
-<p>Capture click event to change the value of radioValue, and then the textbox will be change automatically. Set the active item of radio grouped buttons by css codes via the value of radioValue.</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&amp;lt;label style="background-color: #0e9bd7;" data-bind="click: function()&#123;radioValue(1)&#125;, css: &#123;active: radioValue() == 1&#125;"&gt;<span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"radio"</span> <span class="attribute">value</span>=<span class="value">"1"</span> /&gt;</span>1<span class="tag">&lt;/<span class="title">label</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>Thus, we don’t need JavaScript anymore to process the logic.</p>
-<p>You can read the CSS codes to understand how to implement this UI.</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>用JavaScript写代码也有一年多了，其实也算积累了蛮多东西了，该写下来存存档~</p>
-<iframe width="100%" height="300" src="http://jsfiddle.net/w6wwq/embedded/js,resources,html,css,result/light" frameborder="0" allowfullscreen></iframe>
-<p>这次是一个结合了knockout和bootstrap的一个小控件，虽然也不是很美观，但也凑合吧<br>]]>
-    
-    </summary>
-    
-      <category term="CSS" scheme="http://blog.staydan.com/tags/CSS/"/>
-    
-      <category term="RadioButton" scheme="http://blog.staydan.com/tags/RadioButton/"/>
-    
-      <category term="JavaScript" scheme="http://blog.staydan.com/categories/JavaScript/"/>
     
   </entry>
   
